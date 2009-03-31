@@ -1,0 +1,426 @@
+== READ THIS NOTE FIRST ==
+
+This is a technology preview release of pkMediaPlugin. Although the
+media plugin already works quite well and we are close to launching a production
+site based on it, certain aspects are still maturing. In particular
+we intend to ship a stylesheet containing just what you need for an
+attractive pkMediaPlugin site. Right now we ship a more complete
+stylesheet in the cmstest project which utilizes pkMediaPlugin. You can
+refer to that for ideas.
+
+== pkMediaPlugin ==
+
+pkMedia provides five key services:
+
+* A front end user interface for browsing, uploading, 
+and managing media (still images and video). 
+
+* A front end user interface for selecting media and then returning
+the user to a specified URL within your application, passing on information 
+about the selection the user made. 
+
+* A simple, RESTful API that accepts a query for information about one
+or more media items and returns everything your application needs to
+know about them in an easily understood JSON response. 
+
+* Efficient, 100% cached access to media that resides directly in the
+plugin (that is, all still images, and the thumbnails of videos). 
+"100% cached" means that with the help of a few Apache directives
+these images will come directly from static files once they are
+first requested in a particular form.
+
+* Video and still image slideshow "slots" for use with our
+CMS solution for Symfony, pkContextCMSPlugin. These slot implementations
+are great demonstrations of the selection interface and the API.
+
+The media plugin is designed to be useful in three situations:
+
+* In the Symfony application in which the media plugin resides;
+* In other Symfony applications accessing the media plugin via its APIs, and
+* In web applications that aren't written in Symfony, or even in PHP. These
+can also use the APIs to take full advantage of the plugin.
+
+We've focused most of our attention thus far on the first two scenarios,
+but due to our use of REST and JSON there is no reason why you can't
+utilize the media plugin from a separate site written in Ruby on Rails,
+or even .NET for that matter.
+
+We'll break down how to use each of these features in turn. But first,
+let's make sure the requirements have been met.
+
+== Requirements ==
+
+pkMediaPlugin requires:
+
+* Symfony 1.2
+* Doctrine
+* pkToolkitPlugin
+* pkPersistentFileUploadPlugin
+* sfJqueryReloadedPlugin
+* sfDoctrineActAsTaggablePlugin
+* pkImageConverterPlugin
+* Zend Search
+
+=== Installing the Required Plugins ===
+
+We recommend picking these up painlessly via svn externals. (If your projects 
+don't live in a subversion repository, you have our sympathies, and our
+firm encouragement to look into that immediately. Trust us, you want
+modern version control.)
+
+Make sure you create the necessary symbolic links from your web folder
+to the web folders of the various plugins:
+
+    cd web
+    ln -s ../plugins/pkToolkitPlugin/web pkToolkitPlugin
+
+And so forth for each plugin that has a `web` folder.
+
+Please note that pkImageConverterPlugin also requires that you install the 
+netpbm utilities (free, open-source tools for image conversion without
+memory overhead). Also, it does not currently run on Windows although
+you could certainly be the one to patch that. See the README for that 
+plugin for details.
+
+=== Installing Zend Search ===
+
+Zend Search is a little bit less painless. You'll need to install a
+portion of the Zend framework in your Symfony project, or install
+Zend globally on your system. One solution is to
+install the complete Zend framework, or just the minimal version
+(which does include Zend_Search),  in lib/vendor/Zend. If you do so
+you'll need to add the following line of code to
+the `setup` method of your `ProjectConfiguration` class:
+
+    set_include_path(
+      sfConfig::get('sf_lib_dir') .
+        '/vendor' . PATH_SEPARATOR . get_include_path());
+
+If you install the Zend framework globally on your system
+(perhaps via PEAR), then you won't need to make any changes
+to your `ProjectConfiguration` class.
+
+=== Configuring Apache ===
+
+Once you have the necessary requirements installed, you're nearly there. However
+you'll need to add a few additional rules to your site's `.htaccess` file
+to enable the delivery of previously-rendered images as static files without
+the need to invoke Symfony at all... something we strongly recommend.
+
+Put these rules BEFORE the normal Symfony rewrite rules in .htaccess,
+but after RewriteBase if you are using it:
+
+    ###### BEGIN special handling for the media module's cached scaled images
+    # If it exists, just deliver it
+    RewriteCond %{REQUEST_URI} ^/media-items/.+$
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule .* - [L]
+    # If it doesn't exist, render it via the front end controller
+    RewriteCond %{REQUEST_URI} ^/media-items/.+$
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+    ###### END special handling for the media module's cached scaled images
+
+=== Creating Writable Data Folders ===
+
+Finally, you'll need to create certain folders and, if you are running
+in a hosting environment that requires such things, make them world-writable:
+
+    web/media-items
+    web/uploaded-image-preview
+    data/persistent-uploads
+    data/pk-tmp
+
+=== Security Decisions ===
+
+Who will be able to upload media to your site? And who will be able to
+delete and edit media belonging to others? 
+
+*By default, any authenticated user can upload media.* If you specify a
+specific credential required for upload privileges by setting
+`app_pkMediaPlugin_upload_credential`, then only users with that
+credential will be allowed to upload media. 
+
+Users can always edit media originally uploaded by them. To edit
+media uploaded by others, you must have the `media_admin` credential.
+You can change the name of this credential by setting
+`app_pkMediaPlugin_admin_credential`.
+
+=== Enabling the pkMedia Module ===
+
+You'll need to enable the pkMedia module in your application. This is
+necessary both for the front-end user interface and to enable access
+to the API and the use of images.
+
+=== Routing Rules ===
+
+By default, the pkMedia plugin provides routing rules that ensure
+images can be accessed dynamically when they are first requested, and
+later accessed directly as a static file as the same URL. You probably
+won't want to disable these, but if you do, you can turn this 
+feature off by setting app_pkMedia_defaultrouting to false. If you
+do turn these routing rules off, be sure to check out `lib/pkMediaRouting.php` 
+to see exactly what you're disabling.
+
+That's it for configuration. Let's check out what this plugin can do.
+
+== Browsing and Managing Media ==
+
+To access the media plugin's user interface, just enable the
+pkMedia module in your project and visit the pkMedia/index action.
+
+If you are logged in as the `sfGuard` superuser or otherwise have
+full credentials, you'll see buttons to add images and video.
+
+Click "add images" to upload photos to the site. Notice that you
+can click "Add Another Photo" to add up to five more browse buttons.
+After you upload your images you'll be prompted for metadata like
+the title, description and tags. Tags should be separated by commas.
+
+Once you have added photos, you'll see them in the index page.
+You can filter the index by tag and search it for any text that
+appears in the title or description using Zend search.
+
+You can also edit and delete items in context using the edit
+and delete buttons. 
+
+Since videos are hosted by YouTube and not directly hosted by the
+plugin, adding video works a little bit differently. When you add
+a video you'll be invited to search YouTube to locate that video.
+If you prefer you can also paste in the YouTube URL of the video directly.
+
+== The Select Action: Selecting Media ==
+
+Many web applications will want to embed images and video that
+reside in the media plugin. pkMediaPlugin offers a simple way
+to invite users to select media. 
+
+To invite the user to select a single media item, just 
+send them to `http://yoursite/media/select` with the following
+additional parameters in the query string:
+
+* `after` is the URL the user should be sent back to after they
+make their selection or decide to cancel.
+* `type` is optional. If present it should be either `image` or
+`video`. It restricts the user's selection to one specific type of
+media, making it less confusing for them to browse.
+* `pkMediaIds`, used for multiple selections only, is a comma-separated 
+list of media item IDs that should already be selected when the user begins.
+* The optional `multiple` parameter, when set to 1, indicates that the user 
+should be allowed to select more than one media item and put them in their
+preferred order. This is great for creating slideshows.
+
+For full-fledged examples see the pkMediaSlideshow and pkMediaVideo
+slot implementations. Specifically, check out their _normalView.php templates
+to see how to build these URLs elegantly and painlessly.
+
+The user will be prompted to select an item, or to select one or more items.
+In the case of a multiple selection the user is permitted to drag and drop
+their selected items into a particular order before confirming their
+selection.
+
+Once the user has made their selection they are sent to 
+the `after` URL, which receives an additional GET-method parameter,
+`pkMediaIds`, containing a comma-separated list of media IDs. In this 
+way you can very easily enable the user to select media without creating
+a new user interface of your own.
+
+== The REST API: Fetching Information About Media ==
+
+The select action gives you back a media ID, or a list of them. But
+what good are they? Well, not much... until you use the REST API to
+find out the details.
+
+Yes, we could have packed this information into the URL. But URLs
+are limited in size both by browser limitations and by the strong
+preference of many developers. And the API provides a more flexible
+way to pass detailed information.
+
+The quickest way to obtain information about media IDs is to use
+the methods provided in the pkMediaAPI class, which is intended
+for use in Symfony applications and makes it very easy to 
+fetch the data. Here I'll explain in a bit more detail so that
+you understand what is going on and so that non-Symfony and
+non-PHP programmers can take advantage of the API.
+
+To find out everything you need to know about a media ID, 
+just take advantage of PHP's built-in support for accessing URLs
+(most other languages can do this too). Note that in rare cases
+PHP might not be built with support for URLs in file-related functions.
+In such cases you may be able to use the cURL functions instead:
+
+    $response = file_get_contents(
+      "http://yourmediasite/media/info?" .
+      http_build_query(
+        "apikey" => $apikey,
+        "pkMediaIds" => $ids,
+        "user" => $username));
+
+Note that you may pass an api key, which must be listed
+under app_pkMedia_apikeys unless app_pkMedia_apipublic is set to true:
+
+    pkMedia:
+      apikeys:
+        - 'anystringyouchoose'
+      apipublic: false
+
+After this call, `$response` will contain a JSON response from the
+media plugin. JSON (JavaScript Object Notation) is a simple
+interchange format for passing data, including objects, between
+programs written in many different languages including PHP.
+
+To decode the response, just write:
+
+    $response = json_decode($response);
+
+Then make sure the response is valid:
+
+    if (is_object($response) && ($response->status === 'ok'))
+    {
+      // We got a good reply
+    }
+
+Now you can check out `$response->result`, which will contain an
+array of objects with `title`, `description`, `type`, `id`, 
+`embed`, `image`, `originalImage`, `width`, `serviceUrl` and `height` 
+properties.
+
+=== Embedding Images and Videos In Your Application ===
+
+The `embed` and `original` properties contain ready-to-use URLs,
+intended to embed the media item in your site. For an image, the embed tag
+will be an `img` tag; for a video it will be the usual
+YouTube embed tag. In both cases, you'll want to replace
+certain placeholders with the width, height, cropping style and 
+file format you actually want. This is very easy to do with `str_replace`:
+
+    echo(str_replace(
+      array("_WIDTH_", "_HEIGHT_", "_c-OR-s_", "_FORMAT_"),
+      array(320, 240, 'c', 'jpg'),
+      $response->result[$i]->embed));
+
+A note on the cropping styles: `c` crops just the largest central portion of
+the image that fits in the aspect ratio you have specified, while 
+`s` scales the entire image into the box specified, with a white border
+to fill it out to the aspect ratio. Images are never stretched.
+Videos do not support cropping styles and will quietly ignore them;
+The YouTube player will be of the size you specify. 
+
+To embed the image or video with a constant width but a flexible height
+that depends on its aspect ratio, just compute the height on the fly:
+
+   $width, ($width / $item->width) * $item->height, ...
+
+You can also easily enable users to access the original image in its
+full size and original format. To do that, just use 
+`$item->originalImage` as the `src` attribute of an `img` element
+or the `href` element of an `a` element, depending on whether you want
+to enable them to view it directly or download it (the latter probably
+being best for large originals).
+
+Since videos do not actually reside in the media plugin you cannot 
+download the original video file. For videos, the `originalImage`
+property points to a thumbnail image of the video, which is quite
+useful because it is often the right thing to show in code that
+does not specifically support video.
+
+The `image` property is similar, but while it is just a URL
+like `originalImage`, it does contain the placeholders for
+width, height, cropping style and format, allowing you to replace
+those with values appropriate to your application. For videos,
+this property points to a copy of the preferred, largest available still image 
+of the video kept in the media plugin.
+
+Videos also have the `serviceUrl` property, which points to the
+YouTube page for the video.
+
+== Cached Media Access ==
+
+Web sites scale images to a variety of styles and crop them in differing
+ways. However, good performance demands that images be served from static files
+whenever possible. And the URLs of images should ideally be meaningful and
+recognizable. pkMediaPlugin seeks to meet all of these requirements.
+
+pkMediaPlugin generates a "slug" for every
+image. The slug is the title the user gives the image when uploading
+it, with characters that are
+problematic in URLs removed, and a unique integer added if necessary 
+to make sure the slug is unique among all images. Once generated the
+slug does not change.
+
+pkMediaPlugin then automatically satisfies requests for URLs of
+the following form:
+
+    /media-items/SLUG.WIDTH.HEIGHT.[c or s].jpg
+
+That is, a URL like this:
+
+    /media-items/monkey.100.100.c.jpg
+
+Will automatically generate a 100x100 image which is cropped and scaled
+down from the largest central part of the original having the same
+aspect ratio as the request (thus the c in the URL). 
+
+A URL like this:
+
+    /media-items/monkey.100.100.s.jpg
+
+Will produce an image that contains every pixel in the original, scaled
+to the desired dimensions, with whitespace padding added on the
+smaller axis if necessary to avoid distortion.
+
+Of course, if the plugin generated these images anew on every request,
+the performance would be terrible. And even simply redelivering existing 
+cached copies of the images via Symfony code would be a large performance hit. 
+So instead the plugin writes them to the actual `web/media-items` folder on 
+your site. And with the Apache configuration rules shown earlier in this 
+document, those static images will automatically be re-delivered in the
+future... *without Symfony being invoked at all*. The performance
+benefits are enormous.
+
+== On Security ==
+
+There are three levels of access to the media plugin:
+
+* Browsing media. Everyone can do this. Of course, you could change that via
+`security.yml` rules.
+
+* Uploading media. By default, everyone can do this. If you set
+`app_pkMedia_upload_credential`, then only users with that
+Symfony credential will be able to upload media. The user who uploaded
+a media item can also edit that item.
+
+* Administering media. By default, only users with the
+credential `media_admin` can edit and delete media that
+were uploaded by others. You can change this by setting
+`app_pkMedia_admin_credential` to a different value.
+
+== About Video Support ==
+
+We didn't try to reinvent the video management wheel. That would be difficult,
+expensive and ultimately unsatisfying due to the huge scope of the problem
+legally, technically and financially. Instead we leveraged YouTube.
+
+Users can search for YouTube videos directly from the media plugin's
+user interface, adding them to your local media repository much as they
+would still images. But the actual videos remain on YouTube and are
+embedded via YouTube embed tags. This strategy is simple, free and
+highly effective. It does 95% of what you'd like to do with video
+at 5% of the cost. Naive code can treat the video as it would treat
+a still image and get similar results.
+
+== If It Doesn't Seem to Work ==
+
+Read the installation section again. Twice. (: The Apache `.htaccess`
+rules are important. So are the writable folders.
+
+== TODO ==
+
+We'll be adding our Symfony 1.0 tag typeahead support to
+sfDoctrineActAsTaggablePlugin in the near future, which will
+make tagging more pleasant and effective in the media plugin.
+
+== Contact ==
+
+Contact tom@punkave.com with any questions you may have
+about this plugin.

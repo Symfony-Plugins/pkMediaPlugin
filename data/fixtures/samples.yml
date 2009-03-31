@@ -1,0 +1,27 @@
+pkMediaItem:
+  cat:
+    type: image
+    title: Cat
+    description: See the pretty kitty cat!
+    credit: Bob Smith
+    owner_id: 1
+  dog:
+    type: image
+    title: Dog
+    description: Be a good dog, now!
+    credit: Jane Doe
+    owner_id: 1
+  elephant:
+    type: video
+    service_url: "http://www.youtube.com/watch?v=KuXAlVLB_9M"
+    title: Elephant Movie
+    description: Go for the peanut!
+    credit: Jane Doe
+    owner_id: 1
+  duckling:
+    type: video
+    service_url: "http://www.youtube.com/watch?v=VSJcf9xfpGA"
+    title: Duckling Film
+    description: Ugly is as ugly does.
+    credit: Bob Smith
+    owner_id: 1
