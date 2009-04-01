@@ -31,7 +31,10 @@ first requested in a particular form.
 
 * Video and still image slideshow "slots" for use with our
 CMS solution for Symfony, pkContextCMSPlugin. These slot implementations
-are great demonstrations of the selection interface and the API.
+are great demonstrations of the selection interface and the API. But not
+everyone will want them, and we didn't want to make this plugin
+dependent on the CMS plugin. So they are kept in the separate plugin 
+pkMediaCMSSlotsPlugin.
 
 The media plugin is designed to be useful in three situations:
 
@@ -287,7 +290,7 @@ properties.
 
 === Embedding Images and Videos In Your Application ===
 
-The `embed` and `original` properties contain ready-to-use URLs,
+The `embed`, `image` and `originalImage` properties contain ready-to-use URLs,
 intended to embed the media item in your site. For an image, the embed tag
 will be an `img` tag; for a video it will be the usual
 YouTube embed tag. In both cases, you'll want to replace
@@ -326,13 +329,16 @@ does not specifically support video.
 
 The `image` property is similar, but while it is just a URL
 like `originalImage`, it does contain the placeholders for
-width, height, cropping style and format, allowing you to replace
+width, height, cropping style and format, allowing you to str_replace
 those with values appropriate to your application. For videos,
 this property points to a copy of the preferred, largest available still image 
-of the video kept in the media plugin.
+of the video, which is mirrored in the media plugin for convenience.
+Note that this means you can safely use it to display a still
+image of any media object without worrying about whether
+it's a video or a photograph.
 
-Videos also have the `serviceUrl` property, which points to the
-YouTube page for the video.
+Videos also have the `serviceUrl` property, which points directly to the
+official YouTube page for the video.
 
 == Cached Media Access ==
 
@@ -419,6 +425,10 @@ rules are important. So are the writable folders.
 We'll be adding our Symfony 1.0 tag typeahead support to
 sfDoctrineActAsTaggablePlugin in the near future, which will
 make tagging more pleasant and effective in the media plugin.
+
+Since we're generating embed tags on your behalf we really ought to
+help you pass additional parameters to YouTube in order to influence
+the behavior of the player.
 
 == Contact ==
 
