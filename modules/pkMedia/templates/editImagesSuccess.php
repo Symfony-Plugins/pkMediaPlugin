@@ -37,7 +37,11 @@
 				</ul>
 				<?php //We should wrap this with logic to say 'photo' if only one object has been uploaded ?>
 				<div class="pk-media-edit-footer">
-					<?php echo link_to_function("Save Images<span></span>", "$('#pk-media-edit-form').submit()", array("class"=>"pk-btn")) ?>
+          <input type="submit" name="submit" value="Save Images" class="submit" />
+          <?php if (0): ?>
+            <?php // Has the usual FCK problems let's not go there right now ?>
+            <?php echo link_to_function("Save Images<span></span>", "$('#pk-media-edit-form').submit()", array("class"=>"pk-btn")) ?>
+          <?php endif ?>
 					<span class="or"> or </span><?php echo link_to("cancel", "pkMedia/resume", array("class"=>"cancel")) ?>
 				</div>
 				</form>

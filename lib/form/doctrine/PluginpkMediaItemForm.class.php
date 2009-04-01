@@ -27,10 +27,22 @@ abstract class PluginpkMediaItemForm extends BasepkMediaItemForm
   public function updateObject($values = null)
   {
     $object = parent::updateObject($values);
-    $object->setDescription(
-      pkHtml::simplify(
-        $this->getValue('description'), "<p><br><b><i><strong><em><ul><li><ol><a>"));
-    $object->setTags($this->getValue('tags'));
+    // Stop trying to second guess how $values works and just
+    // do some postvalidation of what parent::updateObject did
+    $object->setDescription(pkHtml::simplify($object->getDescription(),
+      "<p><br><b><i><strong><em><ul><li><ol><a>"));
+    // But the tags field is not a native Doctrine field 
+    // so we can't rely on parent::updateObject to sort out
+    // whether to use $values or $this->getValue. This 
+    // smells to high heaven
+    if (isset($values))
+    {
+      $object->setTags($values['tags']);
+    }
+    else
+    {
+      $object->setTags($this->getValue('tags'));
+    }
     $object->setOwnerId(
       sfContext::getInstance()->getUser()->getGuardUser()->getId());
     return $object;

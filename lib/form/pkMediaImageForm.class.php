@@ -30,12 +30,13 @@ class pkMediaImageForm extends pkMediaItemForm
         "required" => (!$this->getObject()->getId())),
       array("mime_types" => "JPEG, PNG and GIF only.",
         "required" => "Select a JPEG, PNG or GIF file")));
+    // These have to be brief to work with Rick's styles
     $this->setValidator('title', 
       new sfValidatorString(
         array("min_length" => 3, "max_length" => 200, "required" => true),
-        array("min_length" => "The title must be at least three characters long.",
-          "max_length" => "The title must be 200 characters or less.",
-          "required" => "You must provide a title for your image.")));
+        array("min_length" => "Title must be at least 3 characters.",
+          "max_length" => "Title must be <200 characters.",
+          "required" => "You must provide a title.")));
     $this->widgetSchema->setLabel("view_is_secure", "Login required");
     $this->widgetSchema->setNameFormat('pk_media_item[%s]');
   }
