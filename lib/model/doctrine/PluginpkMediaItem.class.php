@@ -119,6 +119,8 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
       // Scale the height
       $height = floor(($width * $this->width / $this->height) + 0.5); 
     }
+    // Accessible alt title
+    $title = htmlspecialchars($this->getTitle());
     // It would be nice if partials could be used for this.
     // Think about whether that's possible.
     if ($this->getType() === 'video')
@@ -127,7 +129,7 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
       $serviceUrl = $this->getServiceUrl();
       $embeddedUrl = $this->youtubeUrlToEmbeddedUrl($serviceUrl);
       return <<<EOM
-<object width="$width" height="$height"><param name="movie" value="$embeddedUrl"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="$embeddedUrl" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="$width" height="$height"></embed></object>
+<object alt="$title" width="$width" height="$height"><param name="movie" value="$embeddedUrl"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed alt="$title" src="$embeddedUrl" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="$width" height="$height"></embed></object>
 EOM
       ;
     }
@@ -135,7 +137,8 @@ EOM
     {
       $controller = sfContext::getInstance()->getController();
       $slug = $this->getSlug();
-      return "<img src='" . $controller->genUrl("pkMedia/image?" . 
+      // Use named routing rule to ensure the desired result (and for speed)
+      return "<img alt=\"$title\" src='" . $controller->genUrl("@pk_media_image?" . 
         http_build_query(
           array("slug" => $slug, 
             "width" => $width, 
