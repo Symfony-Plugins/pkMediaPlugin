@@ -210,7 +210,7 @@ class pkMediaActions extends sfActions
   public function executeUploadImage(sfRequest $request)
   {
     $this->forward404Unless(pkMediaTools::userHasUploadPrivilege());
-    $this->setLayout('iframe');
+    $this->setIframeLayout();
     $this->form = new pkMediaUploadImageForm();
     if ($request->isMethod('post'))
     {
@@ -228,7 +228,7 @@ class pkMediaActions extends sfActions
   public function executeEditImage(sfRequest $request)
   {
     $this->forward404Unless(pkMediaTools::userHasUploadPrivilege());
-    $this->setLayout('iframe');
+    $this->setIframeLayout();
     $item = null;
     $this->slug = false;
     if ($request->hasParameter('slug'))
@@ -379,7 +379,7 @@ class pkMediaActions extends sfActions
   public function executeUploadImages(sfRequest $request)
   {
     $this->form = new pkMediaUploadImagesForm();
-    $this->setLayout('iframe');
+    $this->setIframeLayout();
     if ($request->isMethod('post'))
     {
       $this->form->bind(
@@ -722,6 +722,11 @@ class pkMediaActions extends sfActions
       $q = $this->form->getValue('q');
       $this->results = pkYoutube::search($q); 
     }
-    $this->setLayout('iframe');
+    $this->setIframeLayout();
+  }
+  
+  protected function setIframeLayout()
+  {
+    $this->setLayout(sfContext::getInstance()->getConfiguration()->getTemplateDir('pkMedia', 'iframe.php').'/iframe');
   }
 }

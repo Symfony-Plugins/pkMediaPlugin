@@ -28,8 +28,8 @@ class pkMediaImageForm extends pkMediaItemForm
     $this->setValidator('file', new pkValidatorFilePersistent(
       array("mime_types" => array("image/jpeg", "image/png", "image/gif"), 
         "required" => (!$this->getObject()->getId())),
-      array("mime_types" => "Sorry, only JPEG, PNG and GIF-format images are accepted.",
-        "required" => "You must select a JPEG, PNG or GIF-format file to upload with the \"Browse\" button.")));
+      array("mime_types" => "JPEG, PNG and GIF only.",
+        "required" => "Select a JPEG, PNG or GIF file")));
     $this->setValidator('title', 
       new sfValidatorString(
         array("min_length" => 3, "max_length" => 200, "required" => true),

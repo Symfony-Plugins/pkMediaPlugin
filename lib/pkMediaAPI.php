@@ -50,7 +50,7 @@ class pkMediaAPI
       $options['user'] = $user->getGuardUser()->getUsername();
     }
 
-    $url = sfConfig::get($key . '_site') .
+    $url = sfConfig::get($key . '_site', sfContext::getInstance()->getRequest()->getUriPrefix()) . 
         '/media/info?' . http_build_query($options);
     $content = file_get_contents($url);
     $response = json_decode($content);

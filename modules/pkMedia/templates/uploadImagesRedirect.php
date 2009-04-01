@@ -1,3 +1,5 @@
+<?php // Must use query_string so that in all projects we wind up with ?>
+<?php // intact parameters ?>
 <script>
-window.parent.location = <?php echo json_encode(url_for("pkMedia/editImages?" . http_build_query($parameters))) ?>
+window.parent.location = <?php echo json_encode(url_for("pkMedia/editImages") . "?" . http_build_query($parameters)) ?>
 </script>
