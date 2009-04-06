@@ -27,8 +27,8 @@ var pkMediaVideoSearchResults = null;
     <ul id="pk-media-video-search-results">
     </ul>
     <br class="clear" />
-    <ul id="pk-media-video-search-pagination">
-    </ul>
+    <div id="pk-media-video-search-pagination" class="pk_pager_navigation">
+    </div>
     <br class="clear" />
     <script>
     var pkMediaVideoSearchResults = <?php echo json_encode($results) ?>;
@@ -57,10 +57,17 @@ function pkMediaVideoSearchRenderResults()
   $('#pk-media-video-search-results').html('');
   for (i = start; (i < limit); i++)
   {
+		li_class = "normal";
+
+		if (i%3 == 2)
+		{
+			li_class = "right-side";
+		}
+
     var result = pkMediaVideoSearchResults[i];
     var id = result.id;
     var embed = template.replace(/_ID_/g, id);
-    var li = $("<li><a href='#' class='pk-media-search-select pk-btn'>Select<span></span></a>" + embed + "</li>");
+    var li = $("<li class='"+li_class+" video-"+i+"'><a href='#' class='pk-media-search-select pk-btn'>Select<span></span></a><br class='clear c'/>" + embed + "</li>");
     var a = li.find('a:first');
     a.data('videoInfo', result);
     a.click(function() {
@@ -83,11 +90,11 @@ function pkMediaVideoSearchRenderResults()
       var item;
       if (i === pkMediaVideoSearchPage)
       {
-        item = $('<li>' + i + '</li>');
+        item = $('<span class="pk_page_navigation_number pk_pager_navigation_disabled">' + i + '</span>');
       }
       else
       {
-        item = $('<li><a href="#">' + i + '</a></li>');
+        item = $('<span class="pk_page_navigation_number"><a href="#">' + i + '</a></span>');
       }  
       item.data('page', i);
       item.click(function() { 

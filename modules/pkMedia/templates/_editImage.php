@@ -55,7 +55,7 @@
 		</div>
 		<div class="form-row credit"><?php echo $form['credit']->renderRow() ?></div>
 		<div class="form-row tags"><?php echo $form['tags']->renderRow() ?></div>
-		<div class="form-row"><?php echo $form['view_is_secure']->renderRow() ?></div>
+		<div class="form-row permissions"><?php echo $form['view_is_secure']->renderRow() ?></div>
 
     <?php if ($item): ?>
 	    <div class="pk-media-edit-footer">

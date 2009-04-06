@@ -12,6 +12,7 @@
         <div class="pk-admin-controls shadow caution">
           <div class="pk-admin-controls-padding caution-padding">
             <h3>Add Video</h3>
+  					<iframe id="pk-media-edit-video-iframe" width="700" height="100" border="0" frameborder="0" src="<?php echo url_for('pkMedia/videoSearch') ?>"></iframe>
           </div>
         </div>
 
@@ -30,8 +31,6 @@
 <form method="POST" id="pk-media-edit-form" enctype="multipart/form-data" 
   action="<?php echo url_for(pkUrl::addParams("pkMedia/editVideo",
     array("slug" => $slug)))?>">
-  <iframe id="pk-media-edit-video-iframe" width="340" height="100" border="0" frameborder="0" src="<?php echo url_for('pkMedia/videoSearch') ?>">
-  </iframe>
   <div class="form-row title">
   	<?php echo $form['title']->renderRow(array("id" => "pk-media-video-title")) ?>
   </div>
@@ -46,7 +45,7 @@
   <div class="form-row credit">
   	<?php echo $form['credit']->renderRow() ?>
   </div>
-  <div class="form-row">
+  <div class="form-row permissions">
   	<?php echo $form['view_is_secure']->renderRow() ?>
   </div>
   <div class="form-row tags">
@@ -74,7 +73,11 @@
   </div>
 </div>
 <?php endif ?>
-<script>
+
+<script type="text/javascript">
+
+pkRadioSelect('#pk_media_item_view_is_secure', { });
+
 function pkMediaVideoSearchResizeIframe(height)
 {
   $('#pk-media-edit-video-iframe')[0].height = height;
@@ -103,3 +106,4 @@ function pkMediaVideoSelected(result)
   $('#pk-media-video-url').val("http://www.youtube.com/watch?v=" + result.id);
 }
 </script>
+	
