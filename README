@@ -6,7 +6,8 @@ site based on it, certain aspects are still maturing. In particular
 we intend to ship a stylesheet containing just what you need for an
 attractive pkMediaPlugin site. Right now we ship a more complete
 stylesheet in the cmstest project which utilizes pkMediaPlugin. You can
-refer to that for ideas.
+refer to that for ideas. See pkContextCMSPlugin for more information
+about cmstest.
 
 == pkMediaPlugin ==
 
@@ -212,6 +213,23 @@ list of media item IDs that should already be selected when the user begins.
 * The optional `multiple` parameter, when set to 1, indicates that the user 
 should be allowed to select more than one media item and put them in their
 preferred order. This is great for creating slideshows.
+
+The following optional parameters limit the plugin to displaying only
+images with the specified characteristics during selection:
+
+* When you pass `width` and `height`, only images with those exact
+dimensions will be displayed.
+
+* When you pass `minimum-width` and-or `minimum-height`, only images
+with dimensions meeting those minimum criteria will be displayed.
+
+* When you pass `aspect-width` and `aspect_height`, only images
+with the specified aspect ratio will be displayed (example: passing
+aspect-width=4 and aspect-height=3 displays only images with
+a 4x3 aspect ratio). This is a powerful option because there is
+usually no real need to require a fixed size due to the automatic
+resizing capabilities of the plugin. Instead, specify the aspect
+ratio and, to ensure adequate quality, specify the minimum width and height.
 
 For full-fledged examples see the pkMediaSlideshow and pkMediaVideo
 slot implementations. Specifically, check out their _normalView.php templates
@@ -421,10 +439,6 @@ Read the installation section again. Twice. (: The Apache `.htaccess`
 rules are important. So are the writable folders.
 
 == TODO ==
-
-We'll be adding our Symfony 1.0 tag typeahead support to
-sfDoctrineActAsTaggablePlugin in the near future, which will
-make tagging more pleasant and effective in the media plugin.
 
 Since we're generating embed tags on your behalf we really ought to
 help you pass additional parameters to YouTube in order to influence

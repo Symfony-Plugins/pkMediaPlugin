@@ -7,18 +7,25 @@ class pkMediaTools
   // methods directly
 
   static public function setSelecting($after, $multiple, $selection, 
-    $type = false)
+    $options = array())
   {
+    self::clearSelecting();
     self::setAttribute("selecting", true);
     self::setAttribute("after", $after);
     self::setAttribute("multiple", $multiple);
     self::setAttribute("selection", $selection);
-    self::setAttribute("type", $type);
+    foreach ($options as $key => $val)
+    {
+      self::setAttribute($key, $val);
+    }
   }
   static public function clearSelecting()
   {
     self::removeAttributes(
-      array("after", "selecting", "multiple", "selection", "type"));
+      array("after", "selecting", "multiple", "selection", 
+        "type", "aspect-width", "aspect-height",
+        "minimum-width", "minimum-height",
+        "width", "height"));
   }
   static public function isSelecting()
   {
@@ -104,20 +111,23 @@ class pkMediaTools
   {
     return sfContext::getInstance()->getUser();
   }
-  static private function getAttribute($attribute, $default = null)
+  // Symfony 1.2 has no namespaces for attributes for some reason
+  static public function getAttribute($attribute, $default = null)
   {
-    return self::getUser()->getAttribute($attribute, $default, "pkMedia");
+    $attribute = "pkMedia-$attribute";
+    return self::getUser()->getAttribute($attribute, $default);
   }
-  static private function setAttribute($attribute, $value = null)
+  static public function setAttribute($attribute, $value = null)
   {
-    self::getUser()->setAttribute($attribute, $value, "pkMedia");
+    $attribute = "pkMedia-$attribute";
+    self::getUser()->setAttribute($attribute, $value);
   }
-  static private function removeAttributes($attributes)
+  static public function removeAttributes($attributes)
   {
     $user = self::getUser();
     foreach ($attributes as $attribute)
     {
-      $user->setAttribute($attribute, null, 'pkMedia');
+      $user->setAttribute("pkMedia-$attribute", null);
     }
   }
   // This is a good convention for plugin options IMHO

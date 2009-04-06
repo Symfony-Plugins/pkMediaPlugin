@@ -48,6 +48,9 @@
   <div class="form-row permissions">
   	<?php echo $form['view_is_secure']->renderRow() ?>
   </div>
+  <div class="form-row about-tags">
+  Tags should be separated by commas. Example: student life, chemistry, laboratory
+  </div>
   <div class="form-row tags">
   	<?php echo $form['tags']->renderRow(array("id" => "pk-media-video-tags")) ?>
  	</div>
@@ -106,4 +109,4 @@ function pkMediaVideoSelected(result)
   $('#pk-media-video-url').val("http://www.youtube.com/watch?v=" + result.id);
 }
 </script>
-	
+<?php include_partial('pkMedia/itemFormScripts') ?>

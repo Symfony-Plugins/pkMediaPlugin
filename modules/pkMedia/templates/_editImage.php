@@ -54,6 +54,9 @@
 			<?php echo $form['description']->render() ?>
 		</div>
 		<div class="form-row credit"><?php echo $form['credit']->renderRow() ?></div>
+    <div class="form-row about-tags">
+    Tags should be separated by commas. Example: student life, chemistry, laboratory
+    </div>
 		<div class="form-row tags"><?php echo $form['tags']->renderRow() ?></div>
 		<div class="form-row permissions"><?php echo $form['view_is_secure']->renderRow() ?></div>
 
@@ -76,6 +79,4 @@
 </div>
 <?php endif ?>
 
-<script type='text/javascript'>
-	pkRadioSelect('#pk_media_item_view_is_secure', { });
-</script>
+<?php include_partial('pkMedia/itemFormScripts') ?>

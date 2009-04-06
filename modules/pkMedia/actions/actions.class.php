@@ -22,8 +22,18 @@ class pkMediaActions extends sfActions
     {
       $ids[] = $item->getId();
     }
-    $type = $request->getParameter('type');
-    pkMediaTools::setSelecting($after, $multiple, $ids, $type);
+    $options = array();
+    $optional = array('type', 'aspect-width', 'aspect-height',
+      'minimum-width', 'minimum-height', 'width', 'height');
+    foreach ($optional as $option)
+    {
+      if ($request->hasParameter($option))
+      {
+        $options[$option] = $request->getParameter($option);
+      }
+    }
+    pkMediaTools::setSelecting($after, $multiple, $ids, $options);
+      
     return $this->redirect("pkMedia/index");
   }
   public function executeIndex(sfRequest $request)
@@ -66,6 +76,37 @@ class pkMediaActions extends sfActions
     if (!$user->isAuthenticated())
     {
       $query->andWhere('pkMediaItem.view_is_secure = false');
+    }
+    // Cheap insurance that these are integers
+    $aspectWidth = floor(pkMediaTools::getAttribute('aspect-width'));
+    $aspectHeight = floor(pkMediaTools::getAttribute('aspect-height'));
+    // TODO: performance of these is not awesome (it's a linear search). 
+    // It would be more awesome with the right kind of indexing. For the 
+    // aspect ratio test to be more efficient we'd have to store the lowest 
+    // common denominator aspect ratio and index that.
+    if ($aspectWidth && $aspectHeight)
+    {
+      $query->andWhere('(pkMediaItem.width * ? / ?) = pkMediaItem.height', array($aspectHeight, $aspectWidth));
+    }
+    $minimumWidth = floor(pkMediaTools::getAttribute('minimum-width'));
+    if ($minimumWidth)
+    {
+      $query->andWhere('pkMediaItem.width >= ?', array($minimumWidth));
+    }
+    $minimumHeight = floor(pkMediaTools::getAttribute('minimum-height'));
+    if ($minimumHeight)
+    {
+      $query->andWhere('pkMediaItem.height >= ?', array($minimumHeight));
+    }
+    $width = floor(pkMediaTools::getAttribute('width'));
+    if ($width)
+    {
+      $query->andWhere('pkMediaItem.width = ?', array($width));
+    }
+    $height = floor(pkMediaTools::getAttribute('height'));
+    if ($height)
+    {
+      $query->andWhere('pkMediaItem.height = ?', array($height));
     }
     $this->pager = new sfDoctrinePager(
       'pkMediaItem',
