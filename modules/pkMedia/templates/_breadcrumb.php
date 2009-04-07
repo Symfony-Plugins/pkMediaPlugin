@@ -4,7 +4,7 @@
       <span class="pk-breadcrumb-slash media"> / </span>
     <?php endif ?>
     <?php if (isset($crumb['last'])): ?>
-      <h2>
+      <h2 class="you-are-here">
     <?php endif ?>
     <?php echo link_to($crumb['label'], $crumb['link']) ?>
     <?php if (isset($crumb['last'])): ?>
