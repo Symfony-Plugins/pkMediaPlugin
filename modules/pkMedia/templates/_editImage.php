@@ -58,7 +58,11 @@
     Tags should be separated by commas. Example: student life, chemistry, laboratory
     </div>
 		<div class="form-row tags"><?php echo $form['tags']->renderRow() ?></div>
-		<div class="form-row permissions"><?php echo $form['view_is_secure']->renderRow() ?></div>
+		<div class="form-row permissions">
+			<?php echo $form['description']->renderLabel() ?>
+			<?php echo $form['description']->renderError() ?>
+			<?php echo $form['view_is_secure']->render() ?>
+		</div>
 
     <?php if ($item): ?>
 	    <div class="pk-media-edit-footer">
