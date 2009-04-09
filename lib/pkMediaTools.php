@@ -25,7 +25,7 @@ class pkMediaTools
       array("after", "selecting", "multiple", "selection", 
         "type", "aspect-width", "aspect-height",
         "minimum-width", "minimum-height",
-        "width", "height"));
+        "width", "height", "label"));
   }
   static public function isSelecting()
   {

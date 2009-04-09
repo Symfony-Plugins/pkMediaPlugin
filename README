@@ -214,6 +214,17 @@ list of media item IDs that should already be selected when the user begins.
 should be allowed to select more than one media item and put them in their
 preferred order. This is great for creating slideshows.
 
+The user will be prompted to select an item, or to select one or more items.
+In the case of a multiple selection the user is permitted to drag and drop
+their selected items into a particular order before confirming their
+selection.
+
+Once the user has made their selection they are sent to 
+the `after` URL, which receives an additional GET-method parameter,
+`pkMediaIds`, containing a comma-separated list of media IDs. In this 
+way you can very easily enable the user to select media without creating
+a new user interface of your own.
+
 The following optional parameters limit the plugin to displaying only
 images with the specified characteristics during selection:
 
@@ -231,20 +242,15 @@ usually no real need to require a fixed size due to the automatic
 resizing capabilities of the plugin. Instead, specify the aspect
 ratio and, to ensure adequate quality, specify the minimum width and height.
 
-For full-fledged examples see the pkMediaSlideshow and pkMediaVideo
-slot implementations. Specifically, check out their _normalView.php templates
-to see how to build these URLs elegantly and painlessly.
+Finally, the `label` parameter is useful to display a subheading
+to the user reminding them what they are looking for and why
+(for instance, "Create a Slideshow"). The `label` parameter may not
+contain HTML markup, only plaintext is permitted.
 
-The user will be prompted to select an item, or to select one or more items.
-In the case of a multiple selection the user is permitted to drag and drop
-their selected items into a particular order before confirming their
-selection.
-
-Once the user has made their selection they are sent to 
-the `after` URL, which receives an additional GET-method parameter,
-`pkMediaIds`, containing a comma-separated list of media IDs. In this 
-way you can very easily enable the user to select media without creating
-a new user interface of your own.
+For full-fledged examples see the pkMediaSlideshow, pkMediaVideo
+and pkMediaImage slot implementations. Specifically, check out their 
+_normalView.php templates to see how to build these URLs elegantly and 
+painlessly.
 
 == The REST API: Fetching Information About Media ==
 

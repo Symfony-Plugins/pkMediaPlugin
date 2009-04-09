@@ -24,7 +24,7 @@ class pkMediaActions extends sfActions
     }
     $options = array();
     $optional = array('type', 'aspect-width', 'aspect-height',
-      'minimum-width', 'minimum-height', 'width', 'height');
+      'minimum-width', 'minimum-height', 'width', 'height', 'label');
     foreach ($optional as $option)
     {
       if ($request->hasParameter($option))
@@ -138,6 +138,16 @@ class pkMediaActions extends sfActions
     if (pkMediaTools::isSelecting())
     {
       $this->selecting = true;
+      if (pkMediaTools::getAttribute("label"))
+      {
+        $this->label = pkMediaTools::getAttribute("label");
+      }
+      $this->limitSizes = false;
+      if ($aspectWidth || $aspectHeight || $minimumWidth || $minimumHeight ||
+        $width || $height)
+      {
+        $this->limitSizes = true;
+      }
     }
   }
 

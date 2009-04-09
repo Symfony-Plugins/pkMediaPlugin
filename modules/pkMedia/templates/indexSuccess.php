@@ -14,16 +14,27 @@
 				<div class="pk-admin-controls shadow caution">
 					<div class="pk-admin-controls-padding caution-padding">
 						<?php if (pkMediaTools::isSelecting()): ?>
+              <?php if (isset($label)): ?>
+                <h3><?php echo htmlspecialchars($label) ?></h3>
+              <?php endif ?>
 						  <?php if (pkMediaTools::isMultiple()): ?>
-						    <?php include_partial('pkMedia/selectMultiple') ?>
+						    <?php include_partial('pkMedia/selectMultiple', array('limitSizes' => $limitSizes)) ?>
 						  <?php else: ?>
-						    <?php include_partial('pkMedia/selectSingle') ?>
+						    <?php include_partial('pkMedia/selectSingle', array('limitSizes' => $limitSizes)) ?>
 						  <?php endif ?>
 						<?php endif ?>
+            <div>
 	          <?php if (pkMediaTools::userHasUploadPrivilege()): ?>
-	            <a href="<?php echo url_for("pkMedia/uploadImages") ?>" class="pk-btn add">Add Images<span></span></a>
-	            <a href="<?php echo url_for("pkMedia/newVideo") ?>" class="pk-btn add">Add Video<span></span></a>
+              <?php $selecting = pkMediaTools::isSelecting() ?>
+              <?php $type = pkMediaTools::getAttribute('type') ?>
+              <?php if (!($selecting && $type && ($type !== 'image'))): ?>
+                <a href="<?php echo url_for("pkMedia/uploadImages") ?>" class="pk-btn add">Add Images<span></span></a>
+              <?php endif ?>
+              <?php if (!($selecting && $type && ($type !== 'video'))): ?>
+                <a href="<?php echo url_for("pkMedia/newVideo") ?>" class="pk-btn add">Add Video<span></span></a>
+              <?php endif ?>
 	          <?php endif ?>
+            </div>
 					</div>
 				</div>
 

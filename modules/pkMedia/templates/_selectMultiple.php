@@ -1,5 +1,13 @@
 <div class="pk-media-select">
-	<p>Select one or more media items by clicking on them. You can remove and reorder items using the controls on the right. Drag and drop items to reorder them within the list of selected items. When you're done, click "Save."</p>
+<?php $type = pkMediaTools::getAttribute('type') ?>
+<?php if (!$type): ?>
+<?php $type = "media item" ?>
+<?php endif ?>
+	<p>Select one or more <?php echo $type ?>s by clicking on them. You can remove and reorder <?php echo $type ?>s using the controls on the right. Drag and drop <?php echo $type ?>s to reorder them within the list of selected items. 
+  <?php if ($limitSizes): ?>
+  Only appropriately sized <?php echo $type ?>s are shown.
+  <?php endif ?>
+  When you're done, click "Save."</p>
 
 	<ul id="pk-media-selection-list">
 	<?php include_component("pkMedia", "multipleList") ?>
