@@ -8,7 +8,7 @@ class pkMediaVideoForm extends pkMediaItemForm
     $this->setValidator('service_url',
       new sfValidatorUrl(
         array('required' => true, 'trim' => true),
-        array('required' => "You must provide the URL of this video on the video hosting service (YouTube). Hint: try the YouTube search feature.")));
+        array('required' => "Not a valid YouTube URL")));
   }
   public function updateObject($values = null)
   {

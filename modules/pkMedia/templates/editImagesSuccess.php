@@ -45,6 +45,6 @@
 					<span class="or"> or </span><?php echo link_to("cancel", "pkMedia/resume", array("class"=>"cancel")) ?>
 				</div>
 				</form>
-
+    </div>
 	</div>
 </div>

@@ -21,14 +21,10 @@
 						  <?php endif ?>
 						<?php endif ?>
 	          <?php if (pkMediaTools::userHasUploadPrivilege()): ?>
-	            <a href="#" onClick="pkMediaUploadOpen(); return false" class="pk-btn add">Add Images<span></span></a>
-	            <a href="<?php echo url_for("pkMedia/editVideo") ?>" class="pk-btn add">Add Video<span></span></a>
+	            <a href="<?php echo url_for("pkMedia/uploadImages") ?>" class="pk-btn add">Add Images<span></span></a>
+	            <a href="<?php echo url_for("pkMedia/newVideo") ?>" class="pk-btn add">Add Video<span></span></a>
 	          <?php endif ?>
 					</div>
-	        <?php if (pkMediaTools::userHasUploadPrivilege()): ?>
-	          <div id="pk-media-upload-iframe-container"></div>
-	          <div id="pk-media-video-iframe-container"></div>
-	        <?php endif ?>
 				</div>
 
 			<?php endif ?>
@@ -53,44 +49,3 @@
 		</div>
 	</div>
 </div>
-
-<script>
-function pkMediaItemRefresh(id)
-{
-  jQuery.ajax({
-    type: 'POST',
-    dataType: 'html',
-    success: function(data, textStatus)
-    {
-      jQuery('#pk-media-item-' + id).html(data);
-    },
-    url: '<?php echo url_for("pkMedia/refreshItem") ?>?id=' + id
-  })
-}
-
-function pkMediaUploadOpen()
-{
-  $('#pk-media-upload-iframe-container').html(
-    "<iframe id='pk-media-upload-iframe' src='<?php echo url_for("pkMedia/uploadImages") ?>' width='700' height='145' border='0' frameborder='0'></iframe>");
-  $('.pk-admin-controls-padding').hide();
-}
-
-function pkMediaUploadClose()
-{
-  $('#pk-media-upload-iframe-container').html('');
-  $('.pk-admin-controls-padding').show();
-}
-
-function pkMediaAddVideoOpen()
-{
-  $('#pk-media-video-iframe-container').html(
-    "<iframe id='pk-media-video-iframe' src='<?php echo url_for("pkMedia/editVideo") ?>' width='700' height='400' border='0' frameborder='0'></iframe>");
-  $('.pk-admin-controls-padding').hide();
-}
-
-function pkMediaAddVideoClose()
-{
-  $('#pk-media-video-iframe-container').html();
-  $('.pk-admin-controls').show();
-}</script>
-

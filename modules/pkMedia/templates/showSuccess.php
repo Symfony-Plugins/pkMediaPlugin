@@ -5,11 +5,7 @@
 			<?php include_component('pkMedia', 'browser') ?>
 			
 <div class="main">
-  <?php if ($mediaItem->userHasPrivilege('edit')): ?>
-    <?php $id = "pk-media-iframe-container-" . $mediaItem->getId() ?>
-    <div id="<?php echo $id ?>" class="pk-media-item-edit-form"></div>
-  <?php endif ?>
-  <?php // The edit iframe looks for this one ?>
+  <?php // John and Rick, you can probably remove a lot of layers of div here ?>
   <div class="pk-media-item-content" id="pk-media-item-content-<?php echo $mediaItem->getId()?>">
     <div class="content-container">
       <div class="content">

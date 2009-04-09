@@ -143,10 +143,31 @@ class pkMediaActions extends sfActions
 
   public function executeResume()
   {
+    return $this->resumeBody(false);
+  }
+
+  public function executeResumeWithPage()
+  {
+    return $this->resumeBody(true);
+  }
+
+  protected function resumeBody($withPage = false)
+  {
     $parameters = pkMediaTools::getSearchParameters();
+    if (!$withPage)
+    {
+      if (isset($parameters['page']))
+      {
+        unset($parameters['page']);
+      }
+    }
     if (isset($parameters['page']))
     {
-      unset($parameters['page']);
+      // keep the URL clean
+      if ($parameters['page'] == 1)
+      {
+        unset($parameters['page']);
+      }
     }
     return $this->redirect(pkUrl::addParams("pkMedia/index",
       $parameters));
@@ -248,28 +269,9 @@ class pkMediaActions extends sfActions
     return $this->redirect($after);
   }
 
-  public function executeUploadImage(sfRequest $request)
-  {
-    $this->forward404Unless(pkMediaTools::userHasUploadPrivilege());
-    $this->setIframeLayout();
-    $this->form = new pkMediaUploadImageForm();
-    if ($request->isMethod('post'))
-    {
-      $parameters = $request->getParameter('pk_media_item');
-      $files = $request->getFiles('pk_media_item');
-      $this->form->bind($parameters, $files);
-      if ($this->form->isValid())
-      {
-        $request->setParameter('first_pass', true);
-        $this->forward('pkMedia', 'editImage');
-      }
-    }
-  }
-
   public function executeEditImage(sfRequest $request)
   {
     $this->forward404Unless(pkMediaTools::userHasUploadPrivilege());
-    $this->setIframeLayout();
     $item = null;
     $this->slug = false;
     if ($request->hasParameter('slug'))
@@ -309,8 +311,7 @@ class pkMediaActions extends sfActions
         {
           $object->saveImage($file->getTempName());
         }
-        return $this->renderPartial('pkMedia/editDone',
-          array('mediaItem' => $object));
+        return $this->redirect("pkMedia/resumeWithPage");
       }
     }
   }
@@ -328,17 +329,23 @@ class pkMediaActions extends sfActions
     if ($item)
     {
       $this->forward404Unless($item->userHasPrivilege('edit'));
-      $this->setLayout("iframe");
     }
     $this->item = $item;
     $this->form = new pkMediaVideoForm($item);
-    if ($request->isMethod('post'))
+    if ($request->hasParameter('pk_media_item[]'))
     {
       $parameters = $request->getParameter('pk_media_item[]');
       $this->form->bind($parameters);
       do
       {
-        if (!$this->form->isValid())
+        // first_pass forces the user to interact with the form
+        // at least once. Used when we're coming from a
+        // YouTube search and we already technically have a
+        // valid form but want the user to think about whether
+        // the title is adequate and perhaps add a description,
+        // tags, etc.
+        if (($this->hasRequestParameter('first_pass')) || 
+          (!$this->form->isValid()))
         {
           break;
         }
@@ -404,15 +411,7 @@ class pkMediaActions extends sfActions
         $this->form->save();
         $object->saveImage($thumbnailCopy);
         unlink($thumbnailCopy);
-        if ($new)
-        {
-          return $this->redirect('pkMedia/resume');
-        }
-        else
-        {
-          return $this->renderPartial('pkMedia/editDone',
-            array('mediaItem' => $object));
-        }
+        return $this->redirect("pkMedia/resumeWithPage");
       } while (false);
     }
   }
@@ -420,7 +419,6 @@ class pkMediaActions extends sfActions
   public function executeUploadImages(sfRequest $request)
   {
     $this->form = new pkMediaUploadImagesForm();
-    $this->setIframeLayout();
     if ($request->isMethod('post'))
     {
       $this->form->bind(
@@ -763,11 +761,16 @@ class pkMediaActions extends sfActions
       $q = $this->form->getValue('q');
       $this->results = pkYoutube::search($q); 
     }
-    $this->setIframeLayout();
+    $this->setLayout(false);
   }
   
   protected function setIframeLayout()
   {
     $this->setLayout(sfContext::getInstance()->getConfiguration()->getTemplateDir('pkMedia', 'iframe.php').'/iframe');
+  }
+
+  public function executeNewVideo()
+  {
+    $this->videoSearchForm = new pkMediaVideoSearchForm();
   }
 }

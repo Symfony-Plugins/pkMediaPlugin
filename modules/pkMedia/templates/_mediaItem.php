@@ -1,8 +1,3 @@
-<?php if ($mediaItem->userHasPrivilege('edit')): ?>
-  <?php $id = "pk-media-iframe-container-" . $mediaItem->getId() ?>
-  <div id="<?php echo $id ?>" class="pk-media-item-edit-form"></div>
-<?php endif ?>
-
 <div class="pk-media-item-content" id="pk-media-item-content-<?php echo $mediaItem->getId() ?>">
 
   <?php $type = $mediaItem->getType() ?>

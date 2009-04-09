@@ -69,7 +69,7 @@
       <input type="submit" value="Save" class="submit" />
       <span class="or">or</span>
       <?php $id = $item->getId() ?>
-      <?php echo link_to_function("cancel", "window.parent.$('#pk-media-item-content-$id').show(); window.parent.$('#pk-media-iframe-container-$id').html('')", array("class"=>"cancel")) ?>
+      <?php echo link_to("cancel", "pkMedia/resumeWithPage", array("class" => "cancel")) ?>
         <?php echo link_to("Delete", "pkMedia/delete?" . http_build_query(
           array("slug" => $item->slug)),
           array("confirm" => "Are you sure you want to delete this item?", "class"=>"pk-btn delete"),
