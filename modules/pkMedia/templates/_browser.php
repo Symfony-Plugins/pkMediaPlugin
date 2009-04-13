@@ -10,17 +10,19 @@
 				</div>
 
 				<br class="c"/>
-				<div class="pk-media-filters">
-	        <h3>Media Types</h3>
-	        <?php echo $form['type']->render(array("id" => "pk-media-type")) ?>
-
-					<div class="pk-tag-sidebar">
-          <h3>Media Tags</h3>
-					<?php echo $form['tag']->render(array("id" => "pk-media-tag", "style" => "display: none")) ?>
-					</div>
-					
-				</div>
  			</form>
+			
+			<div class="pk-media-filters">
+        <h3>Media Types</h3>
+        <?php echo $form['type']->render(array("id" => "pk-media-type")) ?>
+
+				<div class="pk-tag-sidebar">
+        <h3>Media Tags</h3>
+				<?php echo $form['tag']->render(array("id" => "pk-media-tag", "style" => "display: none")) ?>
+				</div>
+				
+			</div>
+			
 		</div>
 	</div>
 </div>
