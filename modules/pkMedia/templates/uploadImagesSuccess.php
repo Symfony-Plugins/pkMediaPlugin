@@ -13,8 +13,6 @@
       <div class="pk-admin-controls shadow caution">
         <div class="pk-admin-controls-padding caution-padding">
           <h3>Upload Images</h3>
-        </div>
-      </div>
 
       <?php echo $form->renderGlobalErrors() ?>
 
@@ -44,6 +42,11 @@
       <?php // in it are never uploaded. ?>
       <form style="display: none" action="#" enctype="multipart/form-data" id="pk-media-upload-form-inactive">
       </form>
+
+      </div>
+    </div>
+
+
     </div>
   </div>
 </div>

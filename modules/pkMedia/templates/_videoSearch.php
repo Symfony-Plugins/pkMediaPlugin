@@ -1,32 +1,42 @@
 <?php use_helper('jQuery') ?>
-<div class="form-row q">
-<label for="videosearch_q">Search For</label><?php echo $form['q']->render() ?>
-<?php // fake buttons break ajax forms ?>
-<input type="submit" value="Go" class="submit" />
-<?php echo link_to_function("Cancel<span></span>", "$('#pk-media-video-search-form').hide(); $('#pk-media-video-search-results-container').hide(); $('#pk-media-video-search-heading').hide(); $('#pk-media-video-buttons').show();", array("class" => "pk-btn")) ?>
+<div class="form-row q" style="width:100%">
+<label for="videosearch_q" style="display:none">Search For</label>
+
+	<span class="pk-search-field"><?php echo $form['q']->render() ?></span>
+  <span class="<?php echo(strlen($form->getValue('search')) ? 'pk-search-remove' : '') ?> pk-search-submit"><input width="29" type="image" height="20" title="Click to Search" alt="Search" src="/pkContextCMSPlugin/images/pk-special-blank.gif" value="Submit" class="pk-search-submit"/></span>
+
 </div>
+<div class="form-row submit">
+<span class="or">or</span>
+<?php echo link_to_function("Cancel<span></span>", "$('#pk-media-video-search-form').hide(); $('#pk-media-video-search-results-container').hide(); $('#pk-media-video-search-heading').hide(); $('#pk-media-video-buttons').show();", array("class" => "pk-cancel")) ?>
 <br class="clear" />
+</div>
 </form>
-<script>
+
+<script type="text/javascript">
 var pkMediaVideoSearchResults = null;
 </script>
+
 <?php if ($results !== false): ?>
   <?php if (!count($results)): ?>
     <p>No matching videos were found. Try being less specific.</p>
   <?php else: ?>
-    <ul id="pk-media-video-search-results">
-    </ul>
+
+    <ul id="pk-media-video-search-results"></ul>
     <br class="clear" />
-    <div id="pk-media-video-search-pagination" class="pk_pager_navigation">
-    </div>
+
+    <div id="pk-media-video-search-pagination" class="pk_pager_navigation"></div>
     <br class="clear" />
-    <script>
-    var pkMediaVideoSearchResults = <?php echo json_encode($results) ?>;
-    var pkMediaVideoSearchPage = 1;
-    </script>
+
+		<script type="text/javascript">
+		  var pkMediaVideoSearchResults = <?php echo json_encode($results) ?>;
+		  var pkMediaVideoSearchPage = 1;
+		</script>
+
   <?php endif ?>
 <?php endif ?>
-<script>
+
+<script type="text/javascript">
 function pkMediaVideoSearchRenderResults()
 {
   if (!pkMediaVideoSearchResults)
