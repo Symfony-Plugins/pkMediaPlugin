@@ -46,7 +46,7 @@
           	<?php for ($i = $n; ($i < min(count($results), $n + 2)); $i++): ?>
             <?php $mediaItem = $results[$i] ?>
 	            <div id="pk-media-item-<?php echo $mediaItem->getId() ?>" class="pk-media-item <?php echo ($i % 2) ? "odd" : "even" ?>">
-	              <?php include_partial('pkMedia/mediaItem', array('mediaItem' => $mediaItem)) ?>
+								<?php include_partial('pkMedia/mediaItem', array('mediaItem' => $mediaItem)) ?>
 	            </div>
           	<?php endfor ?>
           </div>

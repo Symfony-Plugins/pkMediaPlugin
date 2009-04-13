@@ -25,7 +25,6 @@
   <?php endif ?>
 		<h3><a <?php echo $linkAttributes ?>><?php echo htmlspecialchars($mediaItem->getTitle()) ?></a><?php if ($mediaItem->getViewIsSecure()): ?><span class="pk-media-is-secure"></span><?php endif ?></h3>
   	<?php include_partial('pkMedia/editLinks', array('mediaItem' => $mediaItem)) ?> 
-  </div>
 
 	<div class="pk-media-item-thumbnail" id="pk-media-item-thumbnail-<?php echo $mediaItem->getId() ?>">
     <a <?php echo $linkAttributes ?> class="pk-media-thumb-link">
