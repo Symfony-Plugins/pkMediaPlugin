@@ -1,10 +1,10 @@
 	<?php slot('body_class') ?>pk-media<?php end_slot() ?>
 
 <?php use_helper('jQuery') ?>
+
 <?php include_component('pkMedia', 'breadcrumb') ?>
 
 <?php include_component('pkMedia', 'browser') ?>
-
 
 <div class="main">
 	<div class="content-container">

@@ -10,7 +10,6 @@
 				</div>
 
 				<br class="c"/>
- 			</form>
 			
 			<div class="pk-media-filters">
         <h3>Media Types</h3>
@@ -22,6 +21,7 @@
 				</div>
 				
 			</div>
+ 			</form>
 			
 		</div>
 	</div>
