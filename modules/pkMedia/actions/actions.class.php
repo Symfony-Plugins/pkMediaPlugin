@@ -72,6 +72,11 @@ class pkMediaActions extends sfActions
     {
       $query = Doctrine::getTable('pkMediaItem')->addSearchQuery($query, $search);
     }
+    else
+    {
+      // Reverse chrono order if we're not ordering them by search relevance
+      $query->orderBy('pkMediaItem.id desc');
+    }
     $user = $this->getUser();
     if (!$user->isAuthenticated())
     {
