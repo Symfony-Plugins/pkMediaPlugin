@@ -18,7 +18,7 @@ class pkMediaBrowseForm extends sfForm
     }
     $tagOptions = array_merge(array("" => "All"), $tagOptions);
     $this->setWidgets(array(
-      "search" => new sfWidgetFormInput(array(), array('class'=>'pk-search-field')),
+      "search" => new sfWidgetFormInput(array(), array('class'=>'pk-search-field',)),
       "type" => new sfWidgetFormSelect(array("choices" => $typeOptions)),
       "tag" => new sfWidgetFormSelect(array("choices" => $tagOptions))));
     $this->setValidators(

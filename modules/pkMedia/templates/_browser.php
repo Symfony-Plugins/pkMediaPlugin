@@ -61,3 +61,19 @@ pkSelectToList('#pk-media-tag',
 		$(this).toggleClass('over');		
 	});
 </script>
+
+<script type="text/javascript">
+$('.subnav input.pk-search-field').attr('value', 'Search'); // This should be done at the lib/form/helper level, not here.
+	
+$('.subnav input.pk-search-field').focus(function(){
+	if ($(this).attr('value') == 'Search') {
+		$(this).attr('value' , '');
+	}
+});
+
+$('.subnav input.pk-search-field').blur(function(){
+	if ($(this).attr('value') == '') {
+		$(this).attr('value' , 'Search');
+	}
+});
+</script>
