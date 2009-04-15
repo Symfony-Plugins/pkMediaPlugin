@@ -21,7 +21,7 @@
       <?php $linkAttributes = 'href = "' . url_for("pkMedia/selected?id=$id") . '"' ?>
     <?php endif ?>
   <?php else: ?>
-    <?php $linkAttributes = 'href = "' . url_for("pkmedia/show?" . http_build_query(array("slug" => $slug))) . '"' ?>
+    <?php $linkAttributes = 'href = "' . url_for("pkMedia/show?" . http_build_query(array("slug" => $slug))) . '"' ?>
   <?php endif ?>
 		<h3><a <?php echo $linkAttributes ?>><?php echo htmlspecialchars($mediaItem->getTitle()) ?></a><?php if ($mediaItem->getViewIsSecure()): ?><span class="pk-media-is-secure"></span><?php endif ?></h3>
   	<?php include_partial('pkMedia/editLinks', array('mediaItem' => $mediaItem)) ?> 
