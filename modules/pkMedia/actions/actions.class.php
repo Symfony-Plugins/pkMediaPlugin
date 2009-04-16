@@ -2,6 +2,15 @@
 
 class pkMediaActions extends sfActions
 {
+
+	public function preExecute()
+	{
+	    if (sfConfig::get('app_pkMedia_use_bundled_stylesheet', true))
+	    {
+	      $this->getResponse()->addStylesheet('/pkMediaPlugin/css/pkMedia.css', 'last');
+	    }
+	}
+
   public function executeSelect(sfRequest $request)
   {
     $after = $request->getParameter('after');
