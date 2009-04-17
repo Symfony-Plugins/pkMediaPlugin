@@ -725,7 +725,7 @@ class pkMediaActions extends sfActions
       // The embed HTML we suggest is a template in which they can
       // replace _WIDTH_ and _HEIGHT_ and _c-OR-s_ with
       // whatever they please
-      $info['embed'] = $item->getEmbedCode('_WIDTH_', '_HEIGHT_', '_c-OR-s_');
+      $info['embed'] = $item->getEmbedCode('_WIDTH_', '_HEIGHT_', '_c-OR-s_', '_FORMAT_');
       // The image URL we suggest is a template in which they can
       // replace _WIDTH_, _HEIGHT_, _c-OR-s_ and _FORMAT_ with
       // whatever they please
