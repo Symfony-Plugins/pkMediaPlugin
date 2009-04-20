@@ -579,7 +579,7 @@ class pkMediaActions extends sfActions
       array_keys(pkMediaItemTable::$mimeTypes)));
     $this->forward404Unless(($resizeType !== 'c') || ($resizeType !== 's'));
     $output = $this->getDirectory() . 
-      "$slug.$width.$height.$resizeType.$format";
+      DIRECTORY_SEPARATOR . "$slug.$width.$height.$resizeType.$format";
     // If .htaccess has not been set up, or we are not running
     // from the default front controller, then we may get here
     // even though the file already exists. Tolerate that situation 
@@ -596,8 +596,10 @@ class pkMediaActions extends sfActions
         $method = 'scaleToFit';
       }
       pkImageConverter::$method(
-        sfConfig::get('sf_web_dir') . 
-          "/media-items/$slug.original.$originalFormat", $output,
+        pkMediaItemTable::getDirectory() .
+          DIRECTORY_SEPARATOR .
+          "$slug.original.$originalFormat", 
+        $output,
         $width,
         $height);
     }

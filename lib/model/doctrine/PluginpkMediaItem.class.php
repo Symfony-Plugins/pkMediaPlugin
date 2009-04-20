@@ -57,7 +57,7 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
       $format = $this->getFormat();
     }
     return pkMediaItemTable::getDirectory() . 
-      $this->getSlug() . ".original.$format";
+      DIRECTORY_SEPARATOR . $this->getSlug() . ".original.$format";
   }
   public function clearImageCache($deleteOriginals = false)
   {

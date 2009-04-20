@@ -43,7 +43,7 @@ class PluginpkMediaItemTable extends Doctrine_Table
 
   static public function getDirectory()
   {
-    return sfConfig::get('sf_web_dir') .  "/media-items/";
+    return pkFiles::getUploadFolder('media_items');
   }
 
   // Returns items for all ids in $ids. If an item does not exist,

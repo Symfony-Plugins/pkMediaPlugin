@@ -142,7 +142,7 @@ class pkMediaTools
     "admin_credential" => "media_admin",
     'gallery_width' => 340,
     'gallery_height' => false,
-    'defaultrouting' => true,
+    'routes_register' => true,
     'apipublic' => false,
     'gallery_resizeType' => 's',
     'selected_width' => 100,

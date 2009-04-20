@@ -100,40 +100,50 @@ the `setup` method of your `ProjectConfiguration` class:
       sfConfig::get('sf_lib_dir') .
         '/vendor' . PATH_SEPARATOR . get_include_path());
 
-If you install the Zend framework globally on your system
-(perhaps via PEAR), then you won't need to make any changes
+If you install the Zend framework globally on your system,
+then you won't need to make any changes
 to your `ProjectConfiguration` class.
 
 === Configuring Apache ===
 
-Once you have the necessary requirements installed, you're nearly there. However
-you'll need to add a few additional rules to your site's `.htaccess` file
-to enable the delivery of previously-rendered images as static files without
-the need to invoke Symfony at all... something we strongly recommend.
+The media plugin uses carefully designed URLs to allow images to be
+served as static files after they are generated for the first time. This
+is done at the Apache level to maximize performance: PHP (and therefore
+Symfony) don't have to get involved at all after the first time an image
+is rendered at a particular size.
 
-Put these rules BEFORE the normal Symfony rewrite rules in .htaccess,
-but after RewriteBase if you are using it:
+The following special .htaccess rules are required to enable this. These
+should be copied to your .htaccess file after the 
+`RewriteBase /` rule, if you are using one, but before any other rules. 
+Note that in version 0.5 the media files have moved to a subfolder
+of the `/uploads` folder, which simplifies configuration for you because
+that directory is already writable by the web server in any new
+Symfony project.
 
     ###### BEGIN special handling for the media module's cached scaled images
     # If it exists, just deliver it
-    RewriteCond %{REQUEST_URI} ^/media-items/.+$
+    RewriteCond %{REQUEST_URI} ^/uploads/media_items/.+$
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule .* - [L]
     # If it doesn't exist, render it via the front end controller
-    RewriteCond %{REQUEST_URI} ^/media-items/.+$
+    RewriteCond %{REQUEST_URI} ^/uploads/media_items/.+$
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php [QSA,L]
     ###### END special handling for the media module's cached scaled images
 
+Please note that if you don't do this, you'll get "404 Not Found" errors for 
+your images.
+
 === Creating Writable Data Folders ===
 
-Finally, you'll need to create certain folders and, if you are running
-in a hosting environment that requires such things, make them world-writable:
+Finally, you'll need to create the data/pk-writable folder and make it
+world writable if you are operating in a typical hosting environment
+in which Apache (and therefore PHP) otherwise can't write to files:
 
-    web/media-items
-    web/uploaded-image-preview
-    data/persistent-uploads
-    data/pk-tmp
+    data/pk-writable
+
+Your web/uploads folder must also be writable, which is true by default
+in new Symfony projects. 
 
 === Security Decisions ===
 
@@ -381,11 +391,11 @@ slug does not change.
 pkMediaPlugin then automatically satisfies requests for URLs of
 the following form:
 
-    /media-items/SLUG.WIDTH.HEIGHT.[c or s].jpg
+    /uploads/media_items/SLUG.WIDTH.HEIGHT.[c or s].jpg
 
 That is, a URL like this:
 
-    /media-items/monkey.100.100.c.jpg
+    /uploads/media_items/monkey.100.100.c.jpg
 
 Will automatically generate a 100x100 image which is cropped and scaled
 down from the largest central part of the original having the same
@@ -393,7 +403,7 @@ aspect ratio as the request (thus the c in the URL).
 
 A URL like this:
 
-    /media-items/monkey.100.100.s.jpg
+    /uploads/media_items/monkey.100.100.s.jpg
 
 Will produce an image that contains every pixel in the original, scaled
 to the desired dimensions, with whitespace padding added on the
@@ -402,7 +412,7 @@ smaller axis if necessary to avoid distortion.
 Of course, if the plugin generated these images anew on every request,
 the performance would be terrible. And even simply redelivering existing 
 cached copies of the images via Symfony code would be a large performance hit. 
-So instead the plugin writes them to the actual `web/media-items` folder on 
+So instead the plugin writes them to the actual `web/uploads/media_items` folder on 
 your site. And with the Apache configuration rules shown earlier in this 
 document, those static images will automatically be re-delivered in the
 future... *without Symfony being invoked at all*. The performance
