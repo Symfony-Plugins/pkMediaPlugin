@@ -1,7 +1,18 @@
 In version 0.5 the media repository moved from web/media-items to 
 web/uploads/media_items for consistency with other writable folders
 in web space. Version 0.5 comes with a different set of rewrite rules
-and routing rules. Those upgrading from version 0.2 of the media plugin will 
+and routing rules. 
+
+We recommend using them.
+
+However, we also realize that you may have an existing project with
+a substantial amount of content and you may not be in a position to change
+paths which are already serialized in the database. This is true for
+one of our own projects. The following are our notes on how to 
+override the 0.5 settings and force the 0.2 behavior for paths
+and routes.
+
+Those upgrading from version 0.2 of the media plugin will 
 need to turn off the default routing rules of the plugin:
 
 all:
@@ -10,48 +21,72 @@ all:
 
 And supply these rules manually to keep the old web/media-items behavior:
 
-    pk_media_info:
-      url: /media/info
-      param: { module: pkMedia, action: info }
+pk_media_info:
+  url: /media/info
+  param: { module: pkMedia, action: info }
 
-    pk_media_select:
-      url: /media/select
-      param: { module: pkMedia, action: select }
+pk_media_select:
+  url: /media/select
+  param: { module: pkMedia, action: select }
 
-    pk_media_index_type_tag:
-      url: /media/:type/tag/:tag
-      param: { module: pkMedia, action: index }
-      requirements: { type: '^(image|video)$' }
+pk_media_index_type_tag:
+  url: /media/:type/tag/:tag
+  param: { module: pkMedia, action: index }
+  requirements: { type: '^(image|video)$' }
 
-    pk_media_index_tag:
-      url: /media/tag/:tag
-      param: { module: pkMedia, action: index }
+pk_media_index_tag:
+  url: /media/tag/:tag
+  param: { module: pkMedia, action: index }
 
-    pk_media_index_type:
-      url: /media/:type
-      param: { module: pkMedia, action: index }
-      requirements: { type: '^(image|video)$' }
+pk_media_index_type:
+  url: /media/:type
+  param: { module: pkMedia, action: index }
+  requirements: { type: '^(image|video)$' }
 
-    pk_media:
-      url: /media
-      param: { module: pkMedia, action: index }
+pk_media:
+  url: /media
+  param: { module: pkMedia, action: index }
 
-    pk_media_image:
-      url: '/uploads/media-items/:slug.:width.:height.:resizeType.:form'
-      at
-      param: { module: pkMedia, action: image }
-      requirements: { slug: '^[\w\-]+$', width: '^\d+$', height: '^\d+$', resizeType: '^\w$', format: '^(jpg|png|gif)$' }
+pk_media_image:
+  url: '/media-items/:slug.:width.:height.:resizeType.:format'
+  param: { module: pkMedia, action: image }
+  requirements: { slug: '^[\w\-]+$', width: '^\d+$', height: '^\d+$', resizeType: '^\w$', format: '^(jpg|png|gif)$' }
 
-    pk_media_image_original:
-      url: '/uploads/media-items/:slug.original.:format'
-      param: { module: pkMedia, action: original }
-      requirements: { slug: '^[\w\-]+$', format: '^(jpg|png|gif)$'};
+pk_media_image_original:
+  url: '/media-items/:slug.original.:format'
+  param: { module: pkMedia, action: original }
+  requirements: { slug: '^[\w\-]+$', format: '^(jpg|png|gif)$'};
 
-    pk_media_image_show:
-      url: '/media/view/:slug'
-      param: { module: pkMedia, action: show }
-      requirements: { slug: ''^[\w\-]+$' } 
+pk_media_image_show:
+  url: '/media/view/:slug'
+  param: { module: pkMedia, action: show }
+  requirements: { slug: '^[\w\-]+$' } 
 
-Also, do not update your rewrite rules in .htaccess as described in the
+pk_context_cms_action:
+  url:   /cms/:module/:action
+
+pk_context_cms_page:
+  url:   /:slug
+  param: { module: pkContextCMS, action: show }
+  requirements: { slug: .* }
+
+You will also need to override the following directory settings
+in app.yml:
+
+  pkToolkit:
+    # Force the use of the old directory locations for
+    # backwards compatibility
+    upload_media_items_dir: "SF_WEB_DIR/media-items"
+    writable_zend_indexes_dir: "SF_DATA_DIR/zendIndexes"
+    writable_persistent_uploads_dir: "SF_DATA_DIR/persistent-uploads"
+    writable_tmp_dir: "SF_DATA_DIR/pk-tmp"
+    indexes:
+      - 'HandbookArticle'
+      - 'pkMediaItem'
+      - 'pkTubesArticle'
+      - 'pkTubesEvent'
+      - 'pkContextCMSPage'
+
+Finally, do not update your rewrite rules in .htaccess as described in the
 README if you wish to keep using the web/media-items folder.
 

@@ -7,23 +7,20 @@ class pkMediaRouting
     $r = $event->getSubject();
     if (pkMediaTools::getOption("routes_register") && in_array('pkMedia', sfConfig::get('sf_enabled_modules')))
     {
-      // NEW IN 0.5: media-items is now a subfolder of /uploads by default
+      // NEW IN 0.5: media_items is now a subfolder of /uploads by default
       // because /uploads is world-writable by default in Symfony projects,
       // which removes configuration steps
-
-      // media-items maps to a physical folder, which is by design: it's our
-      // caching strategy
 
       $r->prependRoute('pk_media_image_show',
         new sfRoute('/media/view/:slug',
           array('module' => 'pkMedia', 'action' => 'show'),
           array('slug' => '^[\w\-]+$')));
       $r->prependRoute('pk_media_image_original',
-        new sfRoute('/uploads/media-items/:slug.original.:format',
+        new sfRoute('/uploads/media_items/:slug.original.:format',
           array('module' => 'pkMedia', 'action' => 'original'),
           array('slug' => '^[\w\-]+$', 'format' => '^(jpg|png|gif)$')));
       $r->prependRoute('pk_media_image',
-        new sfRoute('/uploads/media-items/:slug.:width.:height.:resizeType.:format',
+        new sfRoute('/uploads/media_items/:slug.:width.:height.:resizeType.:format',
           array('module' => 'pkMedia', 'action' => 'image'),
           array('slug' => '^[\w\-]+$', 'width' => '^\d+$', 'height' => '^\d+$',
             'resizeType' => '^\w$', 'format' => '^(jpg|png|gif)$')));
