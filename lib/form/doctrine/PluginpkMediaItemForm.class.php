@@ -20,7 +20,7 @@ abstract class PluginpkMediaItemForm extends BasepkMediaItemForm
     unset($this['owner_id']);
     $this->setWidget('tags', new sfWidgetFormInput(array("default" => implode(", ", $this->getObject()->getTags())), array("class" => "tag-input", "autocomplete" => "off")));
     $this->setValidator('tags', new sfValidatorPass());
-		$this->setWidget('view_is_secure', new sfWidgetFormSelect(array('choices' => array('1' => 'Login Required', '' => 'Public'))));
+		$this->setWidget('view_is_secure', new sfWidgetFormSelect(array('choices' => array('1' => 'Hidden', '' => 'Public'))));
     $this->setWidget('description', new sfWidgetFormRichTextarea(array('editor' => 'fck', 'tool' => 'Media', )));
 		$this->setValidator('view_is_secure', new sfValidatorChoice(array('required' => false, 'choices' => array('1', ''))));
   }

@@ -59,8 +59,8 @@
     </div>
 		<div class="form-row tags"><?php echo $form['tags']->renderRow() ?></div>
 		<div class="form-row permissions">
-			<?php echo $form['description']->renderLabel() ?>
-			<?php echo $form['description']->renderError() ?>
+			<?php echo $form['view_is_secure']->renderLabel() ?>
+			<?php echo $form['view_is_secure']->renderError() ?>
 			<?php echo $form['view_is_secure']->render() ?>
 		</div>
 
