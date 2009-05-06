@@ -54,10 +54,15 @@
 			<?php echo $form['description']->render() ?>
 		</div>
 		<div class="form-row credit"><?php echo $form['credit']->renderRow() ?></div>
-    <div class="form-row about-tags">
+
+    <div class="form-row tags help">
     Tags should be separated by commas. Example: student life, chemistry, laboratory
     </div>
 		<div class="form-row tags"><?php echo $form['tags']->renderRow() ?></div>
+
+    <div class="form-row permissions help">
+			Hidden Photos can be used in photo slots, but are not displayed in the Media section.
+    </div>
 		<div class="form-row permissions">
 			<?php echo $form['view_is_secure']->renderLabel() ?>
 			<?php echo $form['view_is_secure']->renderError() ?>
