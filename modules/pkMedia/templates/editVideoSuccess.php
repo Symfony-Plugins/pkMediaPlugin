@@ -36,9 +36,23 @@
           <?php endif ?>
           <?php echo $form['title']->render() ?>
         </div>
-        <div class="form-row service-url">
-          <?php echo $form['service_url']->renderRow() ?>
-        </div>
+        <?php if (isset($form['service_url'])): ?>
+          <div class="form-row service-url">
+            <?php echo $form['service_url']->renderRow() ?>
+          </div>
+        <?php endif ?>
+        <?php if (isset($form['embed'])): ?>
+          <div class="form-row embed">
+            <?php echo $form['embed']->renderRow() ?>
+          </div>
+          <div class="form-row thumbnail">
+            <?php echo $form['thumbnail']->renderLabel() ?>
+            <?php if (!$sf_params->get('first_pass')): ?>
+              <?php echo $form['thumbnail']->renderError() ?>
+            <?php endif ?>
+            <?php echo $form['thumbnail']->render() ?>
+          </div>
+        <?php endif ?>
         <div class="form-row description">
           <?php echo $form['description']->renderLabel() ?>
           <?php echo $form['description']->renderError() ?>

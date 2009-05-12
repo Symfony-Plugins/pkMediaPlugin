@@ -150,6 +150,7 @@ class pkMediaTools
     'selected_resizeType' => 'c',
     'show_width' => 720,
     'show_height' => 720,
+    'embed_codes' => false,
     'apikeys' => array()
   );
   static public function getOption($name)

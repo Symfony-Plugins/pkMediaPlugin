@@ -116,8 +116,8 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
   {
     if ($height === false)
     {
-      // Scale the height
-      $height = floor(($width * $this->width / $this->height) + 0.5); 
+      // Scale the height. I had this backwards
+      $height = floor(($width * $this->height / $this->width) + 0.5); 
     }
     // Accessible alt title
     $title = htmlspecialchars($this->getTitle());
@@ -125,6 +125,13 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
     // Think about whether that's possible.
     if ($this->getType() === 'video')
     {
+      if ($this->embed)
+      {
+        // Solution for non-YouTube videos based on a manually
+        // provided thumbnail and embed code
+        return str_replace(array('_TITLE_', '_WIDTH_', '_HEIGHT_'),
+          array($title, $width, $height), $this->embed);
+      }
       // TODO: less YouTube-specific
       $serviceUrl = $this->getServiceUrl();
       $embeddedUrl = $this->youtubeUrlToEmbeddedUrl($serviceUrl);

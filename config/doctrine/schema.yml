@@ -39,6 +39,21 @@ pkMediaItem:
       type: integer(4)
     height:
       type: integer(4)
+
+    # If this field is non-null, it contains HTML embed/object code to
+    # be used without alteration (except for replacing _WIDTH_ and _HEIGHT_)
+    # when embedding the video. This is used to allow embedding of 
+    # video hosted on services whose APIs are not directly supported
+    # by pkMediaPlugin (i.e. anything except YouTube, as of this writing).
+    # Note that this can actually be used to embed any scalable 
+    # applet (Flash, Java, etc) supported by embed/object/applet/param tags
+    # although our intention is simply to support black-box Flash players.
+    # 
+    # The user is required to manually supply a thumbnail when 
+    # embedding a video in this way.
+    embed:
+      type: string(1000)
+
     title:
       type: string(200)
       notnull: true

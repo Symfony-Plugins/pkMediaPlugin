@@ -355,11 +355,21 @@ class pkMediaActions extends sfActions
       $this->forward404Unless($item->userHasPrivilege('edit'));
     }
     $this->item = $item;
-    $this->form = new pkMediaVideoForm($item);
-    if ($request->hasParameter('pk_media_item[]'))
+    $subclass = 'pkMediaVideoYoutubeForm';
+    $embed = false;
+    $parameters = $request->getParameter('pk_media_item');
+    if (pkMediaTools::getOption('embed_codes') && 
+      (($item && strlen($item->embed)) || (isset($parameters['embed']))))
     {
-      $parameters = $request->getParameter('pk_media_item[]');
-      $this->form->bind($parameters);
+      $subclass = 'pkMediaVideoEmbedForm';
+      $embed = true;
+    }
+    $this->form = new $subclass($item);
+    if ($parameters)
+    {
+      $files = $request->getFiles('pk_media_item');
+      $this->form->bind($parameters, $files);
+
       do
       {
         // first_pass forces the user to interact with the form
@@ -373,68 +383,93 @@ class pkMediaActions extends sfActions
         {
           break;
         }
-        $url = $this->form->getValue("service_url");
-        // TODO: migrate this into the model and a 
-        // YouTube-specific support class
-        if (!preg_match("/youtube.com.*\?.*v=([\w\-\+]+)/", 
-          $url, $matches))
+        // TODO: this is pretty awful factoring, I should have separate actions
+        // and migrate more of this code into the model layer
+        if ($embed)
         {
-          $this->serviceError = true;
-          break;
-        }
-        // YouTube thumbnails are always JPEG
-        $format = 'jpg';
-        $videoid = $matches[1];
-        $feed = "http://gdata.youtube.com/feeds/api/videos/$videoid";
-        $entry = simplexml_load_file($feed);
-        // get nodes in media: namespace for media information
-        $media = $entry->children('http://search.yahoo.com/mrss/');
-            
-        // get a more canonical video player URL
-        $attrs = $media->group->player->attributes();
-        $canonicalUrl = $attrs['url']; 
-        // get biggest video thumbnail
-        foreach ($media->group->thumbnail as $thumbnail)
-        {
-          $attrs = $thumbnail->attributes();
-          if ((!isset($widest)) || (($attrs['width']  + 0) > 
-            ($widest['width'] + 0)))
+          $embed = $this->form->getValue("embed");
+          $thumbnail = $this->form->getValue('thumbnail');
+          // The base implementation for saving files gets confused when 
+          // $file is not set, a situation that our code tolerates as useful 
+          // because if you're updating a record containing an image you 
+          // often don't need to submit a new one.
+          unset($this->form['thumbnail']);
+          $object = $this->form->getObject();
+          if ($thumbnail)
           {
-            $widest = $attrs;
+            $object->preSaveImage($thumbnail->getTempName());
+          }
+          $this->form->save();
+          if ($thumbnail)
+          {
+            $object->saveImage($thumbnail->getTempName());                     
           }
         }
-        // The YouTube API doesn't report the original width and height of
-        // the video stream, so we use the largest thumbnail, which in practice
-        // is the same thing on YouTube.
-        if (isset($widest))
+        else
         {
-          $thumbnail = $widest['url']; 
-          // Turn them into actual numbers instead of weird XML wrapper things
-          $width = $widest['width'] + 0;
-          $height = $widest['height'] + 0;
-        }
-        if (!isset($thumbnail))
-        {
-          $this->serviceError = true;
-          break;
-        }
-        // Grab a local copy of the thumbnail, and get the pain
-        // over with all at once in a predictable way if 
-        // the service provider fails to give it to us.
+          $url = $this->form->getValue("service_url");
+          // TODO: migrate this into the model and a 
+          // YouTube-specific support class
+          if (!preg_match("/youtube.com.*\?.*v=([\w\-\+]+)/", 
+            $url, $matches))
+          {
+            $this->serviceError = true;
+            break;
+          }
+          // YouTube thumbnails are always JPEG
+          $format = 'jpg';
+          $videoid = $matches[1];
+          $feed = "http://gdata.youtube.com/feeds/api/videos/$videoid";
+          $entry = simplexml_load_file($feed);
+          // get nodes in media: namespace for media information
+          $media = $entry->children('http://search.yahoo.com/mrss/');
+            
+          // get a more canonical video player URL
+          $attrs = $media->group->player->attributes();
+          $canonicalUrl = $attrs['url']; 
+          // get biggest video thumbnail
+          foreach ($media->group->thumbnail as $thumbnail)
+          {
+            $attrs = $thumbnail->attributes();
+            if ((!isset($widest)) || (($attrs['width']  + 0) > 
+              ($widest['width'] + 0)))
+            {
+              $widest = $attrs;
+            }
+          }
+          // The YouTube API doesn't report the original width and height of
+          // the video stream, so we use the largest thumbnail, which in practice
+          // is the same thing on YouTube.
+          if (isset($widest))
+          {
+            $thumbnail = $widest['url']; 
+            // Turn them into actual numbers instead of weird XML wrapper things
+            $width = $widest['width'] + 0;
+            $height = $widest['height'] + 0;
+          }
+          if (!isset($thumbnail))
+          {
+            $this->serviceError = true;
+            break;
+          }
+          // Grab a local copy of the thumbnail, and get the pain
+          // over with all at once in a predictable way if 
+          // the service provider fails to give it to us.
        
-        $thumbnailCopy = pkFiles::getTemporaryFilename();
-        if (!copy($thumbnail, $thumbnailCopy))
-        {
-          $this->serviceError = true;
-          break;
+          $thumbnailCopy = pkFiles::getTemporaryFilename();
+          if (!copy($thumbnail, $thumbnailCopy))
+          {
+            $this->serviceError = true;
+            break;
+          }
+          $object = $this->form->getObject();
+          $new = !$object->getId();
+          $object->preSaveImage($thumbnailCopy);
+          $object->setServiceUrl($url);
+          $this->form->save();
+          $object->saveImage($thumbnailCopy);
+          unlink($thumbnailCopy);
         }
-        $object = $this->form->getObject();
-        $new = !$object->getId();
-        $object->preSaveImage($thumbnailCopy);
-        $object->setServiceUrl($url);
-        $this->form->save();
-        $object->saveImage($thumbnailCopy);
-        unlink($thumbnailCopy);
         return $this->redirect("pkMedia/resumeWithPage");
       } while (false);
     }

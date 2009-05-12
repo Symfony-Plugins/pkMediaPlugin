@@ -198,10 +198,28 @@ appears in the title or description using Zend search.
 You can also edit and delete items in context using the edit
 and delete buttons. 
 
-Since videos are hosted by YouTube and not directly hosted by the
+Since videos are hosted by YouTube (or other services when
+embed_codes is enabled) and not directly hosted by the
 plugin, adding video works a little bit differently. When you add
 a video you'll be invited to search YouTube to locate that video.
 If you prefer you can also paste in the YouTube URL of the video directly.
+
+== The Embed Code Option ==
+
+If `app_pkMedia_embed_codes` is enabled via `app.yml` you can also
+paste in embed codes for other sites using a third option that appears
+when adding videos.
+
+The embed feature does filter
+irrelevant tags and text, but does not attempt to remove all
+attributes, since so many are necessary when embedding. That means
+that users could paste in unwanted JavaScript handlers or style
+attributes. So you may or may not wish to enable it. By default 
+it is turned off.
+
+The embed feature requires you to supply a thumbnail image manually
+at the same time you supply the embed code. This is not necessary
+when using a YouTube URL. When you can, use YouTube.
 
 == The Select Action: Selecting Media ==
 

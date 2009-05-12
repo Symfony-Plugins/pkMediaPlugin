@@ -1,3 +1,9 @@
+20090510: you'll need a new field in your database:
+
+ALTER TABLE pk_media_item ADD COLUMN embed varchar(1000);
+
+* * *
+
 In version 0.5 the media repository moved from web/media-items to 
 web/uploads/media_items for consistency with other writable folders
 in web space. Version 0.5 comes with a different set of rewrite rules
