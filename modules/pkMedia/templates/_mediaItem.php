@@ -6,6 +6,17 @@
   <?php $slug = $mediaItem->getSlug() ?>
   <?php $width = pkMediaTools::getOption("gallery_width") ?>
   <?php $height = pkMediaTools::getOption("gallery_height") ?>
+  <?php // Don't let anything render smaller than actual size on either axis ?>
+  <?php if ($mediaItem->getWidth() < $width): ?>
+    <?php $width = $mediaItem->getWidth() ?>
+    <?php if ($height !== false): ?>
+      <?php $height = $width * pkMediaTools::getOption("gallery_height") / pkMediaTools("gallery_width") ?>
+    <?php endif ?>
+  <?php endif ?>
+  <?php if ($mediaItem->getHeight() < $height): ?>
+    <?php $height = $mediaItem->getHeight() ?>
+    <?php $width = $height * pkMediaTools::getOption("gallery_width") / pkMediaTools("gallery_height") ?>
+  <?php endif ?>
   <?php if ($height === false): ?>
     <?php $height = ceil(($width * $mediaItem->getHeight()) / $mediaItem->getWidth()) ?>
   <?php endif ?>
