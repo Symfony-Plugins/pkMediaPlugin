@@ -1,5 +1,10 @@
 <div class="pk-media-item-content" id="pk-media-item-content-<?php echo $mediaItem->getId() ?>">
 
+	<?php $editing = '' ?>
+	<?php if ($mediaItem->userHasPrivilege('edit')): ?>
+	<?php $editing = 'editing'; ?>
+	<?php endif ?>
+
   <?php $type = $mediaItem->getType() ?>
   <?php $id = $mediaItem->getId() ?>
   <?php $serviceUrl = $mediaItem->getServiceUrl() ?>
@@ -34,7 +39,8 @@
   <?php else: ?>
     <?php $linkAttributes = 'href = "' . url_for("pkMedia/show?" . http_build_query(array("slug" => $slug))) . '"' ?>
   <?php endif ?>
-		<h3><a <?php echo $linkAttributes ?>><?php echo htmlspecialchars($mediaItem->getTitle()) ?></a><?php if ($mediaItem->getViewIsSecure()): ?><span class="pk-media-is-secure"></span><?php endif ?></h3>
+
+		<h3 class="pk-media-title <?php echo $editing ?>"><a <?php echo $linkAttributes ?>><?php echo htmlspecialchars($mediaItem->getTitle()) ?></a><?php if ($mediaItem->getViewIsSecure()): ?><span class="pk-media-is-secure"></span><?php endif ?></h3>
   	<?php include_partial('pkMedia/editLinks', array('mediaItem' => $mediaItem)) ?> 
 
 	<div class="pk-media-item-thumbnail" id="pk-media-item-thumbnail-<?php echo $mediaItem->getId() ?>">
