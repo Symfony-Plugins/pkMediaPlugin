@@ -12,7 +12,7 @@
 			
 				<div class="pk-admin-controls shadow caution">
 					<div class="pk-admin-controls-padding caution-padding">
-						<h3>Annotate Images</h3>
+						<h3>You are editing multiple images</h3>
 					</div>
 				</div>
 				
