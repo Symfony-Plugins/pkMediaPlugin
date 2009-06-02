@@ -42,12 +42,15 @@ class pkMediaImageForm extends pkMediaItemForm
 			array(
 				'expanded' => true,
 			  'choices' => array(
-				false => "Public",
-				true => "Hidden"
+				0 => "Public",
+				1 => "Hidden"
 				),
 				'default' => false
 				)));
-			
+	
+  		$this->setValidator('view_is_secure', new sfValidatorChoice(
+  		  array('choices' => array(0, 1))));
+
     $this->widgetSchema->setLabel("view_is_secure", "Permissions");
     $this->widgetSchema->setNameFormat('pk_media_item[%s]');
 
