@@ -1,0 +1,350 @@
+
+/* == */
+/* == Apostrophe pk-media */
+/* == */
+
+#pk-media-plugin
+{
+	float: left;
+	width: 100%;
+	display: inline;
+	position: relative;
+}
+
+.pk-media .pk-area .pk-controls
+{
+	display: none;
+}
+
+.pk-media-subnav,
+.pk-media-library,
+.pk-media-toolbar,
+.pk-media-footer
+{
+	display: inline;
+	float: left;
+}
+
+.pk-media-row {
+float: left;
+display: inline;
+margin-bottom: 60px;
+width: 100%;
+}
+
+.pk-media-toolbar,
+.pk-media-library
+{
+	width: 720px;
+	float: right;
+	margin-bottom: 20px;
+}
+
+.pk-media h3
+{
+	font-size:18px;	
+}
+
+.pk-media-toolbar h3
+{
+	margin-bottom:10px;
+}
+
+.pk-media-footer
+{
+	width: 720px;
+	float: right;
+	margin: 20px 0;
+}
+
+.pk-media-item 
+{
+	float: left;
+	display: inline;
+	position: relative;
+	width: 50%;
+	margin-bottom: 20px;
+}
+
+.pk-media-item.even {
+/*margin-right: 20px;*/
+}
+
+.pk-media-item-title h3 a
+{
+	text-decoration:none;
+	font-size:18px;
+}
+
+.pk-media-select
+{
+	margin-bottom:10px;
+}
+
+#pk-media-selection-list
+{
+	float:left;
+	margin:10px 0;
+}
+
+.pk-media-selection-list-item
+{
+	float:left;
+	margin-right:20px;
+	cursor:move;
+}
+
+.pk-media #pk-media-edit-form,
+.pk-media .pk-media-item-edit-form
+{
+	float: left;
+	display: inline;
+	position: relative;
+	margin-bottom: 40px;
+	width: 100%;
+}
+
+.pk-media #pk-media-upload-form .form-row,
+.pk-media #pk-media-edit-form .form-row
+{
+	margin-bottom:10px;
+	clear:both;
+	float:left;
+}	
+
+.pk-media #pk-media-upload-form .form-row.help,
+.pk-media #pk-media-edit-form .form-row.help
+{
+	font-size:11px;
+	color:#999;
+}
+
+.pk-media #pk-media-upload-form .form-row label,
+.pk-media #pk-media-edit-form .form-row label
+{
+	float:left;
+	width:120px;
+}
+
+.pk-media #pk-media-upload-form .form-row input,
+.pk-media #pk-media-edit-form .form-row input
+{
+	float:left;
+}
+
+.pk-media #pk-media-edit-form .form-row.image {
+position: relative;
+}
+
+.pk-media #pk-media-edit-form .form-row.image input {
+position: absolute;
+top: 10px;
+left: 10px;
+}
+
+.pk-media .pk-media-upload-controls,
+.pk-media .pk-media-upload-form-footer,
+.pk-media .pk-media-edit-controls,
+.pk-media .pk-media-edit-footer
+{
+	clear:both;
+	float:left;
+	margin-bottom:10px;
+}
+
+.pk-media #pk-media-upload-form .form-row.newfile .pk-btn.pk-close
+{
+	float:left;
+}
+
+.pk-media #pk-media-edit-form .form-row.description,
+.pk-media .pk-media-item-edit-form .form-row.description
+{
+	width: 95%;
+}
+
+#pk-media-video-search-heading,
+#pk-media-video-add-by-url-heading,
+#pk-media-video-search-form,
+#pk-media-video-add-by-url-form,
+#pk-media-video-search-results-container
+{
+  display: none;
+	position: relative;
+}
+
+
+
+#pk-media-video-search-form .form-row.submit
+{
+	position: absolute;
+	top: 0;
+	left: 240px;
+	width: 100px;
+	padding: 0;
+}
+
+#pk-media-video-add-by-url-form .form-row
+{
+	padding: 0;
+	margin: 0;
+}
+
+#editing-disabled
+{
+  display: none;
+}
+
+
+.pk-media-thumb-link {
+position: relative;
+float: left;
+}
+
+.pk-media-play-btn {
+position: absolute;
+z-index: 10;
+width: 100%;
+height: 100%;
+background: url(/pkToolkitPlugin/images/pk-media-play-btn.png) no-repeat 50% 50%;
+}
+
+.pk-media-thumb-link img {
+position: relative;
+z-index: 0;
+}
+
+.pk-media-item-content li
+{
+	position: relative;
+}
+
+/* [START] pkMedia video search styles ==========================*/
+
+#pk-media-video-search-results {
+	width: 720px;
+	float: left;
+}
+
+#pk-media-video-search-results li {
+float: left;
+/*width: 240px;
+height: 200px;*/
+}
+
+#pk-media-video-search-results li a {
+display: block;
+}
+
+#pk-media-video-search-pagination li {
+display: inline;
+margin-right: 20px;
+}
+
+.pk-media-search-select {
+  display: none;
+}
+
+#pk-media-video-search-results li {
+	padding: 10px 0;
+	margin: 0 20px 0 0;
+	float: left;
+}
+
+#pk-media-video-search-results li.right-side {
+	margin-right: 0;
+}
+
+#pk-media-video-search-results a {
+  margin-bottom: 10px;
+}
+
+#pk-media-search-loading {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+/* == */
+/* == media tag sidebar */
+/* == */
+
+.pk-tag-sidebar {
+float: left;
+width: 100%;
+clear: both;
+margin: 20px 0 0 0;
+}
+
+.pk-tag-sidebar ul {
+float: left;
+width: 100%;
+list-style: none;
+list-style-position: outside !important;
+}
+
+.pk-tag-sidebar ul li {
+margin: 0;
+}
+
+.pk-tag-sidebar ul li.selected {
+position: relative;
+float: left;
+width: 100%;
+line-height: 20px;
+margin-bottom: 5px;
+}
+
+.pk-tag-sidebar ul li.selected .pk-tag-sidebar-tag {
+display: inline;
+float: left;
+}
+
+.pk-tag-sidebar ul.pk-tag-sidebar-list {
+float: left;
+width: 100%;
+margin-bottom: 20px;
+}
+ 
+.pk-tag-sidebar ul.pk-tag-sidebar-list li {
+margin: 0 0 5px 0;
+}
+
+.pk-tag-sidebar .pk-tag-sidebar-tag-count {
+color: #ccc;
+}
+
+.pk-tag-sidebar h4.pk-tag-sidebar-title.all-tags {
+color: #333;
+background: #fff url(/pkToolkitPlugin/images/pk-icon-arrow-toggle.png) -6px 0 no-repeat;
+cursor: pointer;
+text-indent: 16px;
+line-height: 20px;
+width: 100%;
+position: relative;
+}
+
+.pk-tag-sidebar h4.pk-tag-sidebar-title.all-tags.open {
+background-position: -6px -20px;
+}
+
+.pk-tag-sidebar h4.pk-tag-sidebar-title.all-tags.over {
+color: #666;
+background-position: -6px -40px;
+}
+
+.pk-tag-sidebar h4.pk-tag-sidebar-title.all-tags.open {
+background-position: -6px -60px;
+}
+
+.pk-tag-sidebar-list.all-tags {
+display: none;
+}
+
+.pk-tag-sidebar h4.pk-tag-sidebar-title span {
+position: absolute;
+right: 0;
+font-size: 12px;
+color: #999;
+display: none;
+}
