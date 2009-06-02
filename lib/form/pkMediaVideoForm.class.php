@@ -22,6 +22,21 @@ class pkMediaVideoForm extends pkMediaItemForm
           array('required' => true, 'trim' => true),
           array('required' => "Not a valid YouTube URL")));
 //    }
+	
+
+		$this->setWidget('view_is_secure', new sfWidgetFormChoice(
+			array(
+				'expanded' => true,
+			  'choices' => array(
+				false => "Public",
+				true => "Hidden"
+				),
+				'default' => false
+				)));
+
+    $this->widgetSchema->setLabel("view_is_secure", "Permissions");
+		$this->setValidator('view_is_secure', new sfValidatorChoice(array('choices' => array(true, false), )));
+		
   }
   public function updateObject($values = null)
   {

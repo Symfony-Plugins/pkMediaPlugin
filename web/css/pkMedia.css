@@ -100,8 +100,17 @@ width: 100%;
 	float: left;
 	display: inline;
 	position: relative;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 	width: 100%;
+}
+
+
+.pk-media #pk-media-edit-form .pk-media-item,
+.pk-media .pk-media-item-edit-form .pk-media-item
+{
+	width: 100%;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 30px;
 }
 
 .pk-media #pk-media-upload-form .form-row,
@@ -110,6 +119,7 @@ width: 100%;
 	margin-bottom:10px;
 	clear:both;
 	float:left;
+	width: 100%;
 }	
 
 .pk-media #pk-media-upload-form .form-row.help,
@@ -117,6 +127,37 @@ width: 100%;
 {
 	font-size:11px;
 	color:#999;
+}
+
+.pk-media #pk-media-upload-form .form-row.permissions .radio_list,
+.pk-media #pk-media-edit-form .form-row.permissions .radio_list
+{
+	float: left;
+	display: inline;
+	position: relative;
+}
+
+.pk-media #pk-media-upload-form .form-row.permissions .radio_list li,
+.pk-media #pk-media-edit-form .form-row.permissions .radio_list li
+{
+	float:left;
+	display: inline;
+	position: relative;
+	width: 120px;
+}
+
+.pk-media #pk-media-upload-form .form-row.permissions .radio_list li label,
+.pk-media #pk-media-edit-form .form-row.permissions .radio_list li label
+{
+	position: absolute;
+	top: 0;
+	left: 25px;
+}
+
+.pk-media #pk-media-upload-form .form-row.permissions .radio_list li input,
+.pk-media #pk-media-edit-form .form-row.permissions .radio_list li input
+{
+	float: left;
 }
 
 .pk-media #pk-media-upload-form .form-row label,
@@ -127,9 +168,24 @@ width: 100%;
 }
 
 .pk-media #pk-media-upload-form .form-row input,
-.pk-media #pk-media-edit-form .form-row input
+.pk-media #pk-media-edit-form .form-row input,
+.pk-media #pk-media-upload-form .form-row select,
+.pk-media #pk-media-edit-form .form-row select,
+.pk-media #pk-media-upload-form .form-row textarea,
+.pk-media #pk-media-edit-form .form-row textarea
 {
 	float:left;
+	width: 214px;
+	border: 1px solid #666;
+	padding: 2px 3px;
+	font: 12px Arial, Sans-serif;
+}
+
+.pk-media #pk-media-edit-form .form-row input[type="radio"],
+.pk-media #pk-media-edit-form .form-row input[type="checkbox"]
+{
+	width: auto;
+	border: auto;
 }
 
 .pk-media #pk-media-edit-form .form-row.image {
@@ -160,7 +216,7 @@ left: 10px;
 .pk-media #pk-media-edit-form .form-row.description,
 .pk-media .pk-media-item-edit-form .form-row.description
 {
-	width: 95%;
+	width: 343px;
 }
 
 #pk-media-video-search-heading,

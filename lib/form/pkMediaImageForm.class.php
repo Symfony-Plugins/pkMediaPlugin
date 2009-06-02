@@ -37,8 +37,21 @@ class pkMediaImageForm extends pkMediaItemForm
         array("min_length" => "Title must be at least 3 characters.",
           "max_length" => "Title must be <200 characters.",
           "required" => "You must provide a title.")));
+
+		$this->setWidget('view_is_secure', new sfWidgetFormChoice(
+			array(
+				'expanded' => true,
+			  'choices' => array(
+				false => "Public",
+				true => "Hidden"
+				),
+				'default' => false
+				)));
+			
     $this->widgetSchema->setLabel("view_is_secure", "Permissions");
     $this->widgetSchema->setNameFormat('pk_media_item[%s]');
+
+	
   }
   public function updateObject($values = null)
   {
