@@ -10,7 +10,7 @@ function pkMediaItemsIndicateSelected(ids)
   for (i = 0; (i < ids.length); i++)
   {
     id = ids[i];
-    var selector = '#pk-media-item-thumbnail-' + id;
+    var selector = '#pk-media-item-' + id;
     if (!$(selector).hasClass('pk-media-selected')) 
     {
       $(selector).addClass('pk-media-selected');
@@ -18,7 +18,7 @@ function pkMediaItemsIndicateSelected(ids)
       var overlaySelector = '#' + overlayId;
       $(selector).prepend('<div id="' + overlayId + '" class="pk-media-selected-overlay"></div>');
 
-     	$(overlaySelector).fadeTo(0, 0.66);
+     	$('.pk-media-selected-overlay').fadeTo(0, 0.66);
     }
   }
 }
@@ -32,7 +32,8 @@ function pkMediaItemsIndicateSelected(ids)
 	  <li><?php echo jq_link_to_remote("remove this item",
     array(
       "url" => "pkMedia/multipleRemove?id=$id",
-      "update" => "pk-media-selection-list"
+      "update" => "pk-media-selection-list",
+			'complete' => 'init_pk_controls("#pk-media-selection-list");', 
     ), array("class"=>"pk-btn icon pk-delete icon-only")) ?>
 		</li>
 	</ul>	
