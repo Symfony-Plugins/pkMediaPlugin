@@ -17,8 +17,10 @@
 
 	<br class="c"/>
 
-	<?php echo link_to("Save<span></span>", "pkMedia/selected", array("class"=>"pk-btn")) ?>
+	<ul class="pk-controls pk-media-slideshow-controls">
+		<li><?php echo link_to("Save", "pkMedia/selected", array("class"=>"pk-btn save")) ?></li>
+ 	  <li><?php echo link_to("cancel", "pkMedia/selectCancel", array("class"=>"pk-btn icon pk-cancel event-default")) ?></li>
+	</ul>
 	
-	<span class="or">or</span> <?php echo link_to("cancel", "pkMedia/selectCancel", array("class"=>"cancel")) ?>
 </div>
-
+	<br class="c"/>

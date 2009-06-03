@@ -1,16 +1,20 @@
 <?php use_helper('jQuery') ?>
 <div class="form-row q" style="width:100%">
-<label for="videosearch_q" style="display:none">Search For</label>
-
-	<span class="pk-search-field"><?php echo $form['q']->render() ?></span>
-  <span class="<?php echo(strlen($form->getValue('search')) ? 'pk-search-remove' : '') ?> pk-search-submit"><input width="29" type="image" height="20" title="Click to Search" alt="Search" src="/pkContextCMSPlugin/images/pk-special-blank.gif" value="Submit" class="pk-search-submit"/></span>
-
+	<?php echo $form['q']->render() ?>
 </div>
-<div class="form-row submit">
-<span class="or">or</span>
-<?php echo link_to_function("Cancel<span></span>", "$('#pk-media-video-search-form').hide(); $('#pk-media-video-search-results-container').hide(); $('#pk-media-video-search-heading').hide(); $('#pk-media-video-buttons').show();", array("class" => "pk-cancel")) ?>
-<br class="clear" />
-</div>
+
+<ul class="pk-controls">
+  <li><input type="submit" value="Go" class="pk-submit" /></li>
+	<li>
+		<?php echo link_to_function("Cancel", 
+			"$('#pk-media-video-search-form').hide(); 
+			 $('#pk-media-video-search-results-container').hide(); 
+			 $('#pk-media-video-search-heading').hide(); 
+			 $('#pk-media-video-buttons').show();", 
+			array("class" => "pk-cancel pk-btn icon event-default")) ?>
+	</li>
+</ul>
+
 </form>
 
 <script type="text/javascript">
@@ -109,6 +113,14 @@ pkMediaVideoSearchRenderResults();
 function pkMediaVideoSelected(videoInfo)
 {
   document.location = <?php echo json_encode(url_for("pkMedia/editVideo")) ?> + "?first_pass=1&pk_media_item[title]=" + escape(videoInfo['title']) + "&pk_media_item[service_url]=http://www.youtube.com/watch?v=" + escape(videoInfo['id']);
-
 }
+
+init_pk_controls();
+
+$(document).ready(function(){
+	$('#videoSearch_q').css({
+		'float':'left',
+		'width':'auto',
+	})
+});
 </script>

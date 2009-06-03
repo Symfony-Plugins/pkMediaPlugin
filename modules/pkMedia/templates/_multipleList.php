@@ -27,6 +27,15 @@ function pkMediaItemsIndicateSelected(ids)
 
 <?php foreach ($items as $item): ?>
 <li id="pk-media-selection-list-item-<?php echo $item->getId() ?>" class="pk-media-selection-list-item">
+	<?php $id = $item->getId() ?>
+  <ul class="pk-controls pk-media-multiple-list-controls">	
+	  <li><?php echo jq_link_to_remote("remove this item",
+    array(
+      "url" => "pkMedia/multipleRemove?id=$id",
+      "update" => "pk-media-selection-list"
+    ), array("class"=>"pk-btn icon pk-delete icon-only")) ?>
+		</li>
+	</ul>	
 
   <img src="<?php echo url_for("pkMedia/image?" .
     http_build_query(array(
@@ -41,14 +50,8 @@ function pkMediaItemsIndicateSelected(ids)
         $item->getFormat())))
     ?>" />
 
-		<?php $id = $item->getId() ?>
-    	
-    <?php echo jq_link_to_remote("remove this item",
-    array(
-      "url" => "pkMedia/multipleRemove?id=$id",
-      "update" => "pk-media-selection-list"
-    ), array("class"=>"pk-btn delete")) ?>
-  <?php $ids[] = $item->getId() ?>
+	  <?php $ids[] = $item->getId() ?>
+
 </li>
 <?php endforeach ?>
 
