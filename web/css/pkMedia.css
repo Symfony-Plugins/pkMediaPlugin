@@ -96,9 +96,14 @@ width: 100%;
 .pk-media-selection-list-item
 {
 	float:left;
-	margin-right:20px;
+	margin: 0 16px 16px 0;
 	cursor:move;
 	position: relative;
+}
+
+.pk-media-selection-list-item img
+{
+	float: left;
 }
 
 .pk-media #pk-media-edit-form,
