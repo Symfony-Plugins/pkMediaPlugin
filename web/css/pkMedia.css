@@ -282,6 +282,17 @@ z-index: 0;
 	position: relative;
 }
 
+.pk-media .pk-media-selected-overlay {
+position: absolute;
+z-index: 9999;
+top: 0;
+left: 0;
+height: 100%;
+width: 100%;
+background-color: #fff;
+cursor: default !important;
+}
+
 /* [START] pkMedia video search styles ==========================*/
 
 #pk-media-video-search-results {
