@@ -199,6 +199,11 @@ width: 100%;
 	font: 12px Arial, Sans-serif;
 }
 
+.pk-media #pk-media-upload-form .form-row input
+{
+	width: auto;
+}
+
 .pk-media #pk-media-edit-form .form-row input[type="radio"],
 .pk-media #pk-media-edit-form .form-row input[type="checkbox"]
 {
