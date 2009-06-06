@@ -45,7 +45,7 @@ class pkMediaImageForm extends pkMediaItemForm
 				0 => "Public",
 				1 => "Hidden"
 				),
-				'default' => false
+				'default' => 0
 				)));
 	
   		$this->setValidator('view_is_secure', new sfValidatorChoice(
