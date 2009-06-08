@@ -2,6 +2,8 @@
 
 <?php use_helper('jQuery') ?>
 
+<div id="pk-media-plugin">
+	
 <?php include_component('pkMedia', 'browser') ?>
 
 <div class="pk-media-library">
@@ -44,5 +46,7 @@ function pkMediaItemRefresh(id)
   window.location = <?php echo json_encode(url_for("pkMedia/show?slug=" . $mediaItem->getSlug())) ?>;
 }
 </script>
+
+</div>
 
 </div>

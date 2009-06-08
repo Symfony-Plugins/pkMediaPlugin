@@ -2,6 +2,8 @@
 
 <?php use_helper('jQuery') ?>
 
+<div id="pk-media-plugin">
+
 <?php include_component('pkMedia', 'browser') ?>
 
 <div class="pk-media-toolbar">
@@ -100,4 +102,6 @@
      <?php endif ?>
 
 			<div id="pk-media-video-search-results-container">I want search results displayed here</div>
+</div>
+
 </div>

@@ -2,7 +2,7 @@
 
 <?php use_helper('jQuery') ?>
 
-<?php #include_component('pkMedia', 'breadcrumb') ?>
+<div id="pk-media-plugin">
 
 <?php include_component('pkMedia', 'browser') ?>
 
@@ -93,3 +93,4 @@ $(function() {
 });
 
 </script>
+</div>

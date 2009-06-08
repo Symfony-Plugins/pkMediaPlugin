@@ -9,6 +9,13 @@ class pkMediaActions extends sfActions
 	    {
 	      $this->getResponse()->addStylesheet('/pkMediaPlugin/css/pkMedia.css', 'last');
 	    }
+	
+		// pkMediaPlugin needs pkToolkit CSS / JS to Function properly/
+	      $this->getResponse()->addStylesheet('/pkToolkitPlugin/css/pkToolkit.css', 'first');
+	      $this->getResponse()->addStylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first');	
+	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkControls.js');	
+	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');		
+		// pkMediaPlugin -may- need pkContextCMS styles to be laid out properly. Should these dependencies be resolved with duplicated CSS ??
 	}
 
   public function executeSelect(sfRequest $request)

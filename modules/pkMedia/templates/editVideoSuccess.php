@@ -2,6 +2,8 @@
 
 <?php use_helper('jQuery') ?>
 
+<div id="pk-media-plugin">
+
 <?php include_component('pkMedia', 'browser') ?>
 
 <div class="pk-media-toolbar">
@@ -92,3 +94,5 @@
 </div>
 
 <?php include_partial('pkMedia/itemFormScripts') ?>
+
+</div>

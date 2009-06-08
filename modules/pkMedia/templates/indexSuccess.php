@@ -2,6 +2,8 @@
 
 <?php use_helper('jQuery') ?>
 
+<div id="pk-media-plugin">
+
 <?php include_component('pkMedia', 'browser') ?>
 
 <?php if (pkMediaTools::isSelecting() || pkMediaTools::userHasUploadPrivilege()): ?>
@@ -55,4 +57,5 @@
 
 <div class="pk-media-footer">
  <?php include_partial('pkPager/pager', array('pager' => $pager, 'pagerUrl' => $pagerUrl)) ?>
+</div>
 </div>
