@@ -33,8 +33,7 @@ class pkMediaVideoForm extends pkMediaItemForm
 				),
 				'default' => 0
 				)));
-		$this->setValidator('view_is_secure', new sfValidatorChoice(
-		  array('choices' => array(0, 1))));
+    $this->setValidator('view_is_secure', new sfValidatorBoolean());
     $this->widgetSchema->setLabel("view_is_secure", "Permissions");
   }
   public function updateObject($values = null)
