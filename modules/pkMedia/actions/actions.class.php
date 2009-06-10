@@ -5,16 +5,23 @@ class pkMediaActions extends sfActions
 
 	public function preExecute()
 	{
-	    if (sfConfig::get('app_pkMedia_use_bundled_stylesheet', true))
-	    {
-	      $this->getResponse()->addStylesheet('/pkMediaPlugin/css/pkMedia.css', 'last');
-	    }
+
+    if(sfConfig::get('app_pkMedia_use_bundled_layout', true))
+    {
+      $this->setLayout(sfContext::getInstance()->getConfiguration()->getTemplateDir('pkMedia', 'layout.php').'/layout');
+    }
+
+    if (sfConfig::get('app_pkMedia_use_bundled_stylesheet', true))
+    {
+      $this->getResponse()->addStylesheet('/pkMediaPlugin/css/pkMedia.css', 'last');
+    }
 	
 		// pkMediaPlugin needs pkToolkit CSS / JS to Function properly/
 	      $this->getResponse()->addStylesheet('/pkToolkitPlugin/css/pkToolkit.css', 'first');
 	      $this->getResponse()->addStylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first');	
 	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkControls.js');	
-	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');		
+	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');
+	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js');		
 		// pkMediaPlugin -may- need pkContextCMS styles to be laid out properly. Should these dependencies be resolved with duplicated CSS ??
 	}
 
