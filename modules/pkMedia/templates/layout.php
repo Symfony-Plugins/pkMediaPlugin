@@ -16,37 +16,19 @@
 
 <body class="<?php if (has_slot('body_class')): ?><?php include_slot('body_class') ?><?php endif ?>">
 
-	<div id="pk-wrapper">
+	<div id="pk-media-wrapper">
 		<?php // Demo requires an obvious way to test login ?>
-		<div id="login">
-	  	<?php include_partial("pkContextCMS/login") ?>
-		</div>
 
-    <div id="header">
-      <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 125, "height" => 200, "resizeType" => "s", "link" => "/")) ?>
-  		<?php pk_context_cms_slot('header', 'pkContextCMSRichText', array("global" => true)) ?>
-    </div>
 
-		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
+		<h1>pkMedia Plugin</h1>
+
+
+		<!-- your top level navigation would be placed here -->
 
 		<?php echo $sf_data->getRaw('sf_content') ?>
 
-	  <?php pk_context_cms_slot('footer', 'pkContextCMSRichText', array("global" => true)) ?>
-
+		<!-- your footer would be placed here -->
 	</div>
-
-	<script type="text/javascript" charset="utf-8">
-		$(document).ready(function() {
-			$('#pk-area-logo .pkContextCMSImage a').prepend('<div id="pk-area-logo-overlay" class="slot-overlay"></div>')
-			$('.slot-overlay').fadeTo(0,.6);
-			$('#pk-area-logo .pkContextCMSImage a').hover(function(){
-				$(this).children('.slot-overlay').css('display','block');
-			},function(){
-				$(this).children('.slot-overlay').css('display','none');				
-			});
-		});
-		
-	</script>
 
 </body>
 </html>

@@ -3,6 +3,21 @@
 /* == Apostrophe pk-media */
 /* == */
 
+#pk-media-wrapper
+{
+	width:960px;
+	margin:40px auto;
+}
+
+#pk-media-wrapper h1
+{
+	margin:40px 0;
+	width:118px;
+	height:200px;
+	text-indent:-9999px;
+	background:url(../images/pkMediaPlugin-logo.png) top left;
+}
+
 #pk-media-plugin
 {
 	float: left;
