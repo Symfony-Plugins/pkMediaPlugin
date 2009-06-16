@@ -115,7 +115,7 @@ function pkMediaVideoSelected(videoInfo)
   document.location = <?php echo json_encode(url_for("pkMedia/editVideo")) ?> + "?first_pass=1&pk_media_item[title]=" + escape(videoInfo['title']) + "&pk_media_item[service_url]=http://www.youtube.com/watch?v=" + escape(videoInfo['id']);
 }
 
-init_pk_controls();
+pkUI();
 
 $(document).ready(function(){
 	$('#videoSearch_q').css({

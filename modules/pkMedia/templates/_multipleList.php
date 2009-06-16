@@ -33,7 +33,7 @@ function pkMediaItemsIndicateSelected(ids)
     array(
       "url" => "pkMedia/multipleRemove?id=$id",
       "update" => "pk-media-selection-list",
-			'complete' => 'init_pk_controls("#pk-media-selection-list");', 
+			'complete' => 'pkUI("#pk-media-selection-list");', 
     ), array("class"=>"pk-btn icon pk-delete icon-only")) ?>
 		</li>
 	</ul>	

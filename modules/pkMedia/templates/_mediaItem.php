@@ -18,7 +18,7 @@
     <?php $linkAttributes = 'href = "#" onClick="' . 
       jq_remote_function(array(
 				"update" => "pk-media-selection-list",
-				'complete' => "init_pk_controls();",  
+				'complete' => "pkUI();",  
         "url" => "pkMedia/multipleAdd?id=$id")).'; return false;"' ?>
   <?php else: ?>
     <?php $linkAttributes = 'href = "' . url_for("pkMedia/selected?id=$id") . '"' ?>
