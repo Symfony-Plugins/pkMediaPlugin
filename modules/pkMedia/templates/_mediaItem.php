@@ -8,6 +8,10 @@
 <?php if ($height === false): ?>
   <?php $height = ceil(($width * $mediaItem->getHeight()) / $mediaItem->getWidth()) ?>
 <?php endif ?>
+<?php if (($width > $mediaItem->width) || ($height > $mediaItem->height)): ?>
+  <?php $width = $mediaItem->width ?>
+  <?php $height = $mediaItem->height ?>
+<?php endif ?>
 
 <?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
 <?php $format = $mediaItem->getFormat() ?>
