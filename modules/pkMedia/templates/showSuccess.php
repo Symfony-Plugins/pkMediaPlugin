@@ -15,9 +15,9 @@
 <?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
 <?php $format = $mediaItem->getFormat() ?>
 
-<?php if (($width > $item->width) || ($height > $item->height)): ?>
-  <?php $width = $item->width ?>
-  <?php $height = $item->height ?>
+<?php if (($width > $mediaItem->width) || ($height > $mediaItem->height)): ?>
+  <?php $width = $mediaItem->width ?>
+  <?php $height = $mediaItem->height ?>
 <?php endif ?>
 <?php $embedCode = $mediaItem->getEmbedCode($width, $height, $resizeType, $format) ?>
 
