@@ -14,6 +14,11 @@
 <?php $height = pkMediaTools::getOption("gallery_height") ?>
 <?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
 <?php $format = $mediaItem->getFormat() ?>
+
+<?php if (($width > $item->width) || ($height > $item->height)): ?>
+  <?php $width = $item->width ?>
+  <?php $height = $item->height ?>
+<?php endif ?>
 <?php $embedCode = $mediaItem->getEmbedCode($width, $height, $resizeType, $format) ?>
 
 <ul class="pk-media-item-content" id="pk-media-item-content-<?php echo $mediaItem->getId()?>">
