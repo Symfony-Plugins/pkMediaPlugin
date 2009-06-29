@@ -1,4 +1,4 @@
-<div class="pk-media-subnav subnav">
+<div id="pk-subnav" class="pk-media-subnav subnav">
 	
 	<h3>Find in Media</h3>
 	<form method="POST" action="<?php echo url_for("pkMedia/index") ?>" class="pk-search-form media" id="pk-search-form-sidebar">

@@ -40,6 +40,29 @@
 	float: left;
 }
 
+.pk-media-subnav
+{
+	width: 178px;
+	margin-bottom: 20px;
+	float: left;
+}
+
+.pk-media-subnav .pk-search-form span.pk-search-field
+{
+background: url(/pkContextCMSPlugin/images/pk-search-bg-180.png) no-repeat 0 0;
+width: 178px;
+}
+
+.pk-media-subnav .pk-search-form input.pk-search-field
+{
+width: 150px;
+}
+
+.pk-media-subnav .pk-search-form
+{
+	width: 178px;
+}
+
 .pk-media-row {
 float: left;
 display: inline;
@@ -91,6 +114,14 @@ width: 100%;
 	position: relative;
 	width: 50%;
 	margin-bottom: 20px;
+}
+
+.pk-media-item-thumbnail
+{
+	float: left;
+	display: inline;
+	clear: both;
+	width: 100%;
 }
 
 .pk-media-item.even {
