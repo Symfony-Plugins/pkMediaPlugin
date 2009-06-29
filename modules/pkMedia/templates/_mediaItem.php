@@ -49,7 +49,7 @@
 		<?php if ($mediaItem->getViewIsSecure()): ?><span class="pk-media-is-secure"></span><?php endif ?>
 	</h3>
 </li>
-<li class="pk-media-description"><?php echo $mediaItem->getDescription() ?></li>
-<li class="pk-media-createdat pk-media-meta"><span>Uploaded:</span> <?php echo pkDate::pretty($mediaItem->getCreatedAt()) ?></li>
-<li class="pk-media-credit pk-media-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
-<li class="pk-media-tags pk-media-meta"><span>Tags:</span> <?php include_partial('pkMedia/showTags', array('tags' => $mediaItem->getTags())) ?></li>
+<li class="pk-media-item-description"><?php echo $mediaItem->getDescription() ?></li>
+<li class="pk-media-item-createdat pk-media-item-meta"><span>Uploaded:</span> <?php echo pkDate::pretty($mediaItem->getCreatedAt()) ?></li>
+<li class="pk-media-item-credit pk-media-item-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
+<li class="pk-media-item-tags pk-media-item-meta"><span>Tags:</span> <?php include_partial('pkMedia/showTags', array('tags' => $mediaItem->getTags())) ?></li>

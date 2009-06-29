@@ -116,7 +116,10 @@ width: 100%;
 	margin-bottom: 20px;
 }
 
-.pk-media-item-thumbnail
+.pk-media-item-thumbnail,
+.pk-media-item-title,
+.pk-media-description,
+.pk-media-meta,
 {
 	float: left;
 	display: inline;
@@ -127,6 +130,7 @@ width: 100%;
 .pk-media-item.even {
 /*margin-right: 20px;*/
 }
+
 
 .pk-media-item-title h3 a
 {
