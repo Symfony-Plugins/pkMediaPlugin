@@ -4,6 +4,8 @@
 <?php $slug = $mediaItem->getSlug() ?>
 <?php $width = pkMediaTools::getOption("gallery_width") ?>
 <?php $height = pkMediaTools::getOption("gallery_height") ?>
+<?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
+<?php $format = $mediaItem->getFormat() ?>
 
 <?php if ($height === false): ?>
   <?php $height = ceil(($width * $mediaItem->getHeight()) / $mediaItem->getWidth()) ?>
@@ -13,16 +15,14 @@
   <?php $height = $mediaItem->height ?>
 <?php endif ?>
 
-<?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
-<?php $format = $mediaItem->getFormat() ?>
 
 <?php if (pkMediaTools::isSelecting()): ?>
 
   <?php if (pkMediaTools::isMultiple()): ?>
-    <?php $linkAttributes = 'href = "#" onClick="' . 
+    <?php $linkAttributes = 'href = "#" onClick="'. 
       jq_remote_function(array(
 				"update" => "pk-media-selection-list",
-				'complete' => "pkUI();",  
+				'complete' => "pkUI('pk-media-selection-list');",  
         "url" => "pkMedia/multipleAdd?id=$id")).'; return false;"' ?>
   <?php else: ?>
     <?php $linkAttributes = 'href = "' . url_for("pkMedia/selected?id=$id") . '"' ?>
@@ -49,6 +49,7 @@
 		<?php if ($mediaItem->getViewIsSecure()): ?><span class="pk-media-is-secure"></span><?php endif ?>
 	</h3>
 </li>
+
 <li class="pk-media-item-description"><?php echo $mediaItem->getDescription() ?></li>
 <li class="pk-media-item-createdat pk-media-item-meta"><span>Uploaded:</span> <?php echo pkDate::pretty($mediaItem->getCreatedAt()) ?></li>
 <li class="pk-media-item-credit pk-media-item-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
