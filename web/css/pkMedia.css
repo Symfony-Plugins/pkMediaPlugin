@@ -101,6 +101,12 @@ width: 100%;
 	margin: 20px 0;
 }
 
+.pk-media-toolbar .pk-media-controls,
+.pk-media-toolbar .pk-media-slideshow-controls
+{
+	clear: both;
+}
+
 .pk-media-subnav .pk-media-filters .pk-radio-option-selected
 {
 	color: #000;
