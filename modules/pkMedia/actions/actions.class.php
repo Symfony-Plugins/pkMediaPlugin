@@ -22,7 +22,9 @@ class pkMediaActions extends sfActions
 	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkControls.js');	
 	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');
 	      $this->getResponse()->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js');		
-		// pkMediaPlugin -may- need pkContextCMS styles to be laid out properly. Should these dependencies be resolved with duplicated CSS ??
+
+    pkContextCMSTools::setAllowSlotEditing(false);
+
 	}
 
   public function executeSelect(sfRequest $request)
