@@ -16,6 +16,9 @@ original:
 info:
   is_secure: off
 
+tags:
+  is_secure: off
+  
 # Credentials for uploading, implemented in the code: you must
 # be a member of the group specified by app_pkMedia_upload_group.
 # If that setting does not exist, then any logged-in user can upload.

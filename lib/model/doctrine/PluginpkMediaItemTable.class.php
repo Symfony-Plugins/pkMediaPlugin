@@ -71,7 +71,7 @@ class PluginpkMediaItemTable extends Doctrine_Table
       select('m.*, FIELD(m.id, ' . implode(",", $ids) . ') AS rank')->
       from('pkMediaItem m')->
       whereIn("m.id", $ids)->
-      orderby("rank")->
+      orderBy("rank")->
       execute();
   }
   static public $mimeTypes = array(
@@ -79,4 +79,91 @@ class PluginpkMediaItemTable extends Doctrine_Table
     "png" => "image/png",
     "jpg" => "image/jpeg"
   );
+  
+  // Returns a query matching media items satisfying the specified parameters, all of which
+  // are optional:
+  //
+  // tag
+  // search
+  // type (video or image)
+  // user (a username, to determine access rights)
+  // aspect-width and aspect-height (returns only images with the specified aspect ratio)
+  // minimum-width
+  // minimum-height
+  // width
+  // height 
+  // ids
+  //
+  // Parameters are passed safely via wildcards so it should be OK to pass unsanitized
+  // external API inputs to this method.
+  //
+  // 'ids' is an array of item IDs. If it is present, only items with one of those IDs are
+  // potentially returned.
+  //
+  // If 'search' is present, results are returned in descending order by match quality.
+  // Otherwise, if 'ids' is present, results are returned in that order. Otherwise,
+  // results are returned newest first.
+  
+  static public function getBrowseQuery($params)
+  {
+    $query = Doctrine_Query::create();
+    // We can't use an alias because that is incompatible with getObjectTaggedWithQuery
+    $query->from('pkMediaItem');
+    if (isset($params['ids']))
+    {
+      // MySQL-specific.
+      $query->select('pkMediaItem.*, FIELD(pkMediaItem.id, ' . implode(",", $params['ids']) . ') AS rank');
+      $query->andWhereIn("pkMediaItem.id", $params['ids']);
+    }
+    if (isset($params['tag']))
+    {
+      $query = TagTable::getObjectTaggedWithQuery(
+        'pkMediaItem', $params['tag'], $query);
+      sfContext::getInstance()->getLogger()->info("ZZZZZZ added query for tag " . $params['tag'] . " now it is " . $query->getSql());
+    }
+    if (isset($params['type']))
+    {
+      $query->andWhere("pkMediaItem.type = ?", array($params['type']));
+    }
+    if (isset($params['search']))
+    {
+      $query = Doctrine::getTable('pkMediaItem')->addSearchQuery($query, $params['search']);
+    }
+    elseif (isset($params['ids']))
+    {
+      $query->orderBy('rank asc');
+    }
+    else
+    {
+      // Reverse chrono order if we're not ordering them by search relevance
+      $query->orderBy('pkMediaItem.id desc');
+    }
+    // This will be more interesting later
+    if (!isset($params['user']))
+    {
+      $query->andWhere('pkMediaItem.view_is_secure = false');
+    }
+    if (isset($params['aspect-width']) && isset($params['aspect-height']))
+    {
+      $query->andWhere('(pkMediaItem.width * ? / ?) = pkMediaItem.height', array($params['aspect-height'] + 0, $params['aspect-width'] + 0));
+    }
+    if (isset($params['minimum-width']))
+    {
+      $query->andWhere('pkMediaItem.width >= ?', array($params['minimum-width'] + 0));
+    }
+    if (isset($params['minimum-height']))
+    {
+      $query->andWhere('pkMediaItem.height >= ?', array($params['minimum-height'] + 0));
+    }
+    if (isset($params['width']))
+    {
+      $query->andWhere('pkMediaItem.width = ?', array($params['width'] + 0));
+    }
+    if (isset($params['height']))
+    {
+      $query->andWhere('pkMediaItem.height = ?', array($params['height'] + 0));
+    }
+    sfContext::getInstance()->getLogger()->info("ZZZZZ" . $query->getSql());
+    return $query;
+  }
 }

@@ -4,13 +4,19 @@
 
 class pkMediaAPI
 {
+  // These two are now conveniences built on top of the 
+  // new pkMediaAPI object methods. The key argument has
+  // been removed in favor of the simplified client key
+  // discovery mechanism
+  
   static public function getSelectedItem(
-    sfRequest $request, $key, $type = false)
+    sfRequest $request, $type = false)
   {
-    return self::getSelectedItems($request, $key, true, $type);
+    return self::getSelectedItems($request, true, $type);
   }
+  
   static public function getSelectedItems(
-    sfRequest $request, $key, $singular = false, $type = false)
+    sfRequest $request, $singular = false, $type = false)
   {
     if ($singular)
     {
@@ -39,20 +45,131 @@ class pkMediaAPI
         return false;
       }
     }
-
-    // apikey gives us permission to inspect media as a particular user
-    $options = array(
-      'apikey' => sfConfig::get($key . '_apikey'),
-      'pkMediaIds' => $ids);
-    $user = sfContext::getInstance()->getUser();
-    if ($user->isAuthenticated())
+    $ids = explode(",", $ids);
+    if ($ids === false)
     {
-      $options['user'] = $user->getGuardUser()->getUsername();
+      // Empty list, nothing to ask for
+      return array();
     }
+    $api = new pkMediaAPI();
+    $results = $api->getItems($ids);
+    if ($type !== false)
+    {
+      // This is intended to filter out user attempts to jam video into the list
+      // of ids before we ever got to the API stage
+      foreach ($results as $result)
+      {
+        if ($result->type === $type)
+        {
+          $nresults[] = $result;
+        }
+      }
+      $results = $nresults;
+    }
+    return $results;
+  }
+  
+  public function __construct($apikey = false, $site = false)
+  {
+    if ($apikey === false)
+    {
+      $apikey = sfConfig::get('app_pkMedia_client_apikey');
+    }
+    $this->apikey = $apikey;
+    if ($site === false)
+    {
+      $site = sfConfig::get('app_pkMedia_client_site', sfContext::getInstance()->getRequest()->getUriPrefix());
+    }
+    $this->site = $site;
+  }
+  
+  // List all media tags (returns an array of strings)
+  public function getTags()
+  {
+    return $this->query('tags');
+  }
+        
+  // Returns a query matching media items satisfying the specified parameters, all of which
+  // are optional:
+  //
+  // tag
+  // search
+  // type (video or image)
+  // user (a username, to determine access rights)
+  // aspect-width and aspect-height (returns only images with the specified aspect ratio)
+  // minimum-width
+  // minimum-height
+  // width
+  // height 
+  // offset (zero-based offset into complete set of results)
+  // limit (max items to return, often used with offset to implement pagination)
+  //
+  // All parameters are optional. The server may impose a ceiling on the 
+  // number of results returned even if limit is not given, but will also indicate
+  // the true number of total matching items (see below).
+  //
+  // Matching items are returned in newest-first order unless a search parameter is present,
+  // in which case they are returned in descending order by match quality.
+  //
+  // The response will consist of an object with two members,
+  // total and items. total contains the total # of items matching the browse criteria
+  // (regardless of offset and limit). items contains an array of item info in exactly the same format
+  // returned by the getItems() method.
+  
+  public function browseItems($parameters)
+  {
+    return $this->query('info', $parameters);
+  }
+  
+  public function getItems($ids)
+  {
+    $result = $this->query('info', array('ids' => implode(',', $ids)));
+    if ($result !== false)
+    {
+      return $result->items;
+    }
+    return false;
+  }
 
-    $url = sfConfig::get($key . '_site', sfContext::getInstance()->getRequest()->getUriPrefix()) . 
-        '/media/info?' . http_build_query($options);
-    $content = file_get_contents($url);
+  protected $apikey;
+  protected $site;
+  
+  protected function getUrl($action)
+  {
+    return $this->site . "/media/$action";
+  }
+  
+  protected function completeParams(&$params)
+  {
+    $params['apikey'] = $this->apikey;
+    $user = sfContext::getInstance()->getUser();
+    // Send the user's username so the media plugin can decide if they are worthy of
+    // performing a particular action... unless this is disabled via app.yml or
+    // there is no sfGuardUser to get a username from.
+    if (sfConfig::get('app_pkMedia_client_send_user', true))
+    {
+      if ($user->isAuthenticated() && method_exists($user, 'getGuardUser'))
+      {
+        $params['user'] = $user->getGuardUser()->getUsername();
+      }
+    }
+  }
+
+  protected function query($action, $params = array())
+  {
+    $this->completeParams($params);
+    $context = stream_context_create(array(
+       'http' => array(
+         'method'  => 'POST',
+         'header'  => "Content-type: application/x-www-form-urlencoded",
+         'content' => http_build_query($params),
+         'timeout' => 30,
+       ),
+     ));
+    $url = $this->site . "/media/$action";
+    $content = file_get_contents($url, false, $context);  
+    sfContext::getInstance()->getLogger()->info('ZZ action: ' . $url . ' params: ' . http_build_query($params) . ' tags: ' . $content);
+    
     $response = json_decode($content);
     if (!is_object($response))
     {
@@ -62,30 +179,6 @@ class pkMediaAPI
     {
       return false;
     }
-    if (!is_array($response->result))
-    {
-      return false;
-    }
-    if ($type !== false)
-    {
-      $nresult = array();
-      foreach ($response->result as $item)
-      {
-        if ($item->type === $type)
-        {
-          $nresult[] = $item;
-        }
-      }
-      $response->result = $nresult;
-    }
-    if ($singular)
-    {
-      if (!count($response->result))
-      {
-        return false;
-      }
-      return $response->result[0];
-    }
-    return $response->result;
+    return $response->result;    
   }
 }

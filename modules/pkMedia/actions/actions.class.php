@@ -61,8 +61,10 @@ class pkMediaActions extends sfActions
       
     return $this->redirect("pkMedia/index");
   }
+  
   public function executeIndex(sfRequest $request)
   {
+    $params = array();
     $tag = $request->getParameter('tag');
     $type = $request->getParameter('type');
     if (pkMediaTools::getType())
@@ -82,30 +84,22 @@ class pkMediaActions extends sfActions
       return $this->redirect(pkUrl::addParams("pkMedia/index",
         array("tag" => $tag, "search" => $search, "type" => $type)));
     }
-    $query = Doctrine_Query::create();
-    $query->from('pkMediaItem');
-    if ($tag)
+    if (!empty($tag))
     {
-      $query = TagTable::getObjectTaggedWithQuery(
-        'pkMediaItem', $tag, $query);
+      $params['tag'] = $tag;
     }
-    if ($type)
+    if (!empty($search))    
     {
-      $query->addWhere("pkMediaItem.type = ?", array($type));
+      $params['search'] = $search;      
     }
-    if ($search)
+    if (!empty($type))
     {
-      $query = Doctrine::getTable('pkMediaItem')->addSearchQuery($query, $search);
-    }
-    else
-    {
-      // Reverse chrono order if we're not ordering them by search relevance
-      $query->orderBy('pkMediaItem.id desc');
+      $params['type'] = $type;
     }
     $user = $this->getUser();
-    if (!$user->isAuthenticated())
+    if ($user->isAuthenticated() && method_exists($user, "getGuardUser"))
     {
-      $query->andWhere('pkMediaItem.view_is_secure = false');
+      $params['user'] = $user->getGuardUser()->getUsername();
     }
     // Cheap insurance that these are integers
     $aspectWidth = floor(pkMediaTools::getAttribute('aspect-width'));
@@ -116,28 +110,33 @@ class pkMediaActions extends sfActions
     // common denominator aspect ratio and index that.
     if ($aspectWidth && $aspectHeight)
     {
-      $query->andWhere('(pkMediaItem.width * ? / ?) = pkMediaItem.height', array($aspectHeight, $aspectWidth));
+      $params['aspect-width'] = $aspectWidth;
+      $params['aspect-height'] = $aspectHeight;
     }
+
     $minimumWidth = floor(pkMediaTools::getAttribute('minimum-width'));
     if ($minimumWidth)
     {
-      $query->andWhere('pkMediaItem.width >= ?', array($minimumWidth));
+      $params['minimum-width'] = $minimumWidth;
     }
     $minimumHeight = floor(pkMediaTools::getAttribute('minimum-height'));
     if ($minimumHeight)
     {
-      $query->andWhere('pkMediaItem.height >= ?', array($minimumHeight));
+      $params['minimum-height'] = $minimumHeight;
     }
     $width = floor(pkMediaTools::getAttribute('width'));
     if ($width)
     {
-      $query->andWhere('pkMediaItem.width = ?', array($width));
+      $params['width'] = $width;
     }
     $height = floor(pkMediaTools::getAttribute('height'));
     if ($height)
     {
-      $query->andWhere('pkMediaItem.height = ?', array($height));
+      $params['height'] = $height;
     }
+
+    $query = pkMediaItemTable::getBrowseQuery($params);
+
     $this->pager = new sfDoctrinePager(
       'pkMediaItem',
       pkMediaTools::getOption('per_page'));
@@ -146,19 +145,6 @@ class pkMediaActions extends sfActions
     $this->pager->setPage($page);
     $this->pager->init();
     $this->results = $this->pager->getResults();
-    $params = array();
-    if ($search)
-    {
-      $params['search'] = $search;
-    }
-    if ($tag)
-    {
-      $params['tag'] = $tag;
-    }
-    if ($type)
-    {
-      $params['type'] = $type;
-    }
     pkMediaTools::setSearchParameters(
       array("tag" => $tag, "type" => $type, 
         "search" => $search, "page" => $page));
@@ -180,7 +166,7 @@ class pkMediaActions extends sfActions
       }
     }
   }
-
+  
   public function executeResume()
   {
     return $this->resumeBody(false);
@@ -699,44 +685,33 @@ class pkMediaActions extends sfActions
   }
   protected $validAPIKey = false;
   // TODO: beef this up to challenge/response
+  protected $user = false;
   private function validateAPIKey()
   {
     if (!$this->hasRequestParameter('apikey'))
     {
       if (!pkMediaTools::getOption("apipublic"))
       {
+        $this->logMessage('info', 'ZZ flunking because no apikey');
         $this->unauthorized();
       }
       return;
     }
     $apikey = $this->getRequestParameter('apikey');
     $apikeys = array_flip(pkMediaTools::getOption('apikeys'));
+    if (!isset($apikeys[$apikey]))
+    {
+      $this->logMessage('info', 'ZZ flunking because bad apikey');      
+    }
     $this->forward404Unless(isset($apikeys[$apikey]));
     $this->validAPIKey = true;
-  }
-  protected function unauthorized()
-  {
-    header("HTTP/1.1 401 Unauthorization Required");
-    exit(0);
-  }
-  public function executeInfo(sfRequest $request)
-  {
-    $this->validateAPIKey();
-    $ids = $request->getParameter('pkMediaIds');
-    if (!preg_match("/^(\d+\,?)*$/", $ids))
-    {
-      // Malformed request
-      $this->jsonResponse('malformed');
-    }
-    $ids = explode(",", $ids);
-    $items = pkMediaItemTable::retrieveByIds($ids);
-    $user = false;
+    $this->user = false;
     if ($this->validAPIKey)
     {
       // With a valid API key you can request media info on behalf of any user
-      $user = $request->getParameter('user');
+      $this->user = $this->getRequestParameter('user');
     }
-    if (!$user)
+    if (!$this->user)
     {
       // Use of the API from javascript as an already authenticated user
       // is permitted
@@ -745,27 +720,96 @@ class pkMediaActions extends sfActions
         $guardUser = $this->getUser()->getGuardUser();
         if ($guardUser)
         {
-          $user = $guardUser->getUsername();
+          $this->user = $guardUser->getUsername();
         }
       }
     }
-    $result = array();
+  }
+  protected function unauthorized()
+  {
+    header("HTTP/1.1 401 Unauthorization Required");
+    exit(0);
+  }
+  
+  public function executeTags(sfRequest $request)
+  {
+    $this->validateAPIKey();
+    $tags = PluginTagTable::getAllTagName();  
+    $this->jsonResponse('ok', $tags);
+  }
+  
+  public function executeInfo(sfRequest $request)
+  {
+    $params = array();
+    $this->validateAPIKey();
+    
+    if ($request->hasParameter('ids'))
+    {
+      if (!preg_match("/^(\d+\,?)*$/", $ids))
+      {
+        // Malformed request
+        $this->jsonResponse('malformed');
+      }
+      $ids = explode(",", $request->getParameter('ids'));
+      if ($ids === false)
+      {
+        $ids = array();
+      }
+      $params['ids'] = $ids;
+    }
+    
+    $numbers = array(
+      "width", "height", "minimum-width", "minimum-height", "aspect-width", "aspect-height"
+    );
+    foreach ($numbers as $number)
+    {
+      if ($request->hasParameter($number))
+      {
+        $n = $request->getParameter($number) + 0;
+        if ($number < 0)
+        {
+          $n = 0;
+        }
+        $params[$number] = $n;
+      }
+    }
+    $strings = array(
+      "tag", "search", "type"
+    );
+    foreach ($strings as $string)
+    {
+      if ($request->hasParameter($string))
+      {
+        $params[$string] = $request->getParameter($string);
+      }
+    }    
+    if (isset($params['tag']))
+    {
+      $this->logMessage("ZZZZZ got tag: " . $params['tag'], "info");
+    }
+    $query = pkMediaItemTable::getBrowseQuery($params);
+    $countQuery = clone $query;
+    $countQuery->offset(0);
+    $countQuery->limit(0);
+    $result = new StdClass();
+    $result->total = $countQuery->count();
+    
+    if ($request->hasParameter('offset'))
+    {
+      $offset = max($request->getParameter('offset') + 0, 0);
+      $query->offset($offset);
+    }
+    if ($request->hasParameter('limit'))
+    {
+      $limit = max($request->getParameter('limit') + 0, 0);
+      $query->limit($limit);
+    }
+    
+    $items = $query->execute();
+    $nitems = array();
     foreach ($items as $item)
     {
       $info = array();
-      if ($item->getViewIsSecure())
-      {
-        // If we ever add more advanced permissions this will be a lot
-        // more complicated, but right now we just require that there
-        // be a logged-in user to view certain content. We're not attempting
-        // to create airtight security for media, just roadblocks to
-        // casual misuse.
-        if (!$user) 
-        {
-          // Just don't respond for this item
-          continue;
-        }
-      }
       $info['type'] = $item->getType();
       $info['id'] = $item->getId();
       $info['slug'] = $item->getSlug();
@@ -775,6 +819,7 @@ class pkMediaActions extends sfActions
       $info['title'] = $item->getTitle();
       $info['description'] = $item->getDescription();
       $info['credit'] = $item->getCredit();
+      $info['tags'] = array_keys($item->getTags());
       // The embed HTML we suggest is a template in which they can
       // replace _WIDTH_ and _HEIGHT_ and _c-OR-s_ with
       // whatever they please
@@ -808,8 +853,9 @@ class pkMediaActions extends sfActions
       }
       $info['original'] = $controller->genUrl("pkMedia/image?" .
         http_build_query(array("slug" => $item->getSlug()), true));
-      $result[] = $info;
+      $nitems[] = $info;
     }
+    $result->items = $nitems;
     $this->jsonResponse('ok', $result);
   }
 

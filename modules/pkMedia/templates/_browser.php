@@ -12,9 +12,10 @@
 
 		<div class="pk-media-filters">
 
-			<h3>Media Types</h3>
-			<?php echo $form['type']->render(array("id" => "pk-media-type")) ?>
-
+      <?php if (!pkMediaTools::getType()): ?>
+  			<h3>Media Types</h3>
+  			<?php echo $form['type']->render(array("id" => "pk-media-type")) ?>
+      <?php endif ?>
 			<div class="pk-tag-sidebar">
 				<h3>Media Tags</h3>
 				<?php echo $form['tag']->render(array("id" => "pk-media-tag", "style" => "display: none")) ?>
@@ -25,7 +26,6 @@
 </div>
 
 <script type="text/javascript">
-
 pkRadioSelect('#pk-media-type', { 'autoSubmit': true });
 
 pkSelectToList('#pk-media-tag', 

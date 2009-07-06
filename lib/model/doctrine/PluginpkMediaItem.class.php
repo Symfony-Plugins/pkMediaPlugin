@@ -196,4 +196,9 @@ EOM
       return true;
     }
   }
+  public function search($params)
+  {
+    
+  
+  }
 }

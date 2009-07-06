@@ -10,8 +10,8 @@
 	
 <?php $id = $mediaItem->getId() ?>
 <?php $slug = $mediaItem->getSlug() ?>
-<?php $width = pkMediaTools::getOption("gallery_width") ?>
-<?php $height = pkMediaTools::getOption("gallery_height") ?>
+<?php $width = pkMediaTools::getOption("show_width") ?>
+<?php $height = pkMediaTools::getOption("show_height") ?>
 <?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
 <?php $format = $mediaItem->getFormat() ?>
 

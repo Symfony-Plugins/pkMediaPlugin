@@ -55,6 +55,9 @@ class pkMediaRouting
       $r->prependRoute('pk_media_info',
         new sfRoute('/media/info',
           array('module' => 'pkMedia', 'action' => 'info')));
+      $r->prependRoute('pk_media_tags',
+        new sfRoute('/media/tags',
+          array('module' => 'pkMedia', 'action' => 'tags')));
     }
   }
 }

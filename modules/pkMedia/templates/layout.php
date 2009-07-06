@@ -3,9 +3,11 @@
 <?php // can safely include the same navigational elements and can ?>
 <?php // also include global slots. ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<?php use_helper('pkContextCMS') ?>
-	<?php $page = pkContextCMSTools::getCurrentPage() ?>
-
+  <?php if (in_array('pkContextCMS', sfContext::getInstance()->getConfiguration()->getPlugins())): )?>
+    <?php // Inside here it's safe to call pkContextCMS stuff even if some projects won't have it ?>
+  	<?php use_helper('pkContextCMS') ?>
+  	<?php $page = pkContextCMSTools::getCurrentPage() ?>
+  <?php endif ?>
 <head>
 	<?php include_http_metas() ?>
 	<?php include_metas() ?>

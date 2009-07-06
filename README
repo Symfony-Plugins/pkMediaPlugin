@@ -136,11 +136,11 @@ your images.
 
 === Creating Writable Data Folders ===
 
-Finally, you'll need to create the data/pk-writable folder and make it
+Finally, you'll need to create the data/pk_writable folder and make it
 world writable if you are operating in a typical hosting environment
 in which Apache (and therefore PHP) otherwise can't write to files:
 
-    data/pk-writable
+    data/pk_writable
 
 Your web/uploads folder must also be writable, which is true by default
 in new Symfony projects. 
@@ -291,14 +291,16 @@ are limited in size both by browser limitations and by the strong
 preference of many developers. And the API provides a more flexible
 way to pass detailed information.
 
-The quickest way to obtain information about media IDs is to use
-the methods provided in the pkMediaAPI class, which is intended
+*The quickest way to obtain information about media IDs is to use
+the methods provided in the pkMediaAPI class*, which is intended
 for use in Symfony applications and makes it very easy to 
 fetch the data. Here I'll explain in a bit more detail so that
 you understand what is going on and so that non-Symfony and
 non-PHP programmers can take advantage of the API.
 
-To find out everything you need to know about a media ID, 
+To obtain information about media items, just pass zero or more of 
+To find out everything you need to know about a media ID, or a
+string of IDs separated by commas,
 just take advantage of PHP's built-in support for accessing URLs
 (most other languages can do this too). Note that in rare cases
 PHP might not be built with support for URLs in file-related functions.
@@ -310,6 +312,9 @@ In such cases you may be able to use the cURL functions instead:
         "apikey" => $apikey,
         "pkMediaIds" => $ids,
         "user" => $username));
+
+You can also use the POST method to ensure you do not hit the URL length limit
+(hint: see the pkMediaAPI class for an example of how to do this in PHP without the need for cURL).
 
 Note that you may pass an api key, which must be listed
 under app_pkMedia_apikeys unless app_pkMedia_apipublic is set to true:
@@ -335,10 +340,52 @@ Then make sure the response is valid:
       // We got a good reply
     }
 
-Now you can check out `$response->result`, which will contain an
-array of objects with `title`, `description`, `type`, `id`, 
+Now you can check out `$response->result`, which will contain an object
+array with two properties, `total` and `items`. `total` contains the total number
+of items matching the criteria you provided, while `items` contains the 
+actual items returned. If your browsing criteria were excessively broad,
+or if you explicitly specified the `offset` and `limit` criteria, you may
+receive fewer items than indicated by `total`.
+
+The `items` array is made up of objects with `title`, `description`, `type`, `id`, 
 `embed`, `image`, `originalImage`, `width`, `serviceUrl` and `height` 
 properties.
+
+`ids` is not the only criterion you can pass. You can pass any of the 
+following (or pass no criteria at all to match all items):
+
+tag
+search
+type (video or image)
+aspect-width and aspect-height (returns only images with the specified aspect ratio)
+minimum-width
+minimum-height
+width
+height 
+ids (a comma-separated string of numeric item IDs)
+offset
+limit
+
+The `offset` and `limit` parameters work just as they do in SQL. To fetch beginning from the first item, specify an offset of zero (or do not specify an offset at all). To skip the first ten items, specify an offset of 10. To fetch ten items, specify a limit of 10.
+
+If the `search` parameter is present, items are returned in descending order of relevance. If the `ids` parameter is present, items are returned in the order specified in `ids`. Otherwise, items are returned in newest-first order.
+
+The pkMediaAPI class can be used to take advantage of the API conveniently from a Symfony application. Note that when using the pkMediaAPI class you should set the location and apikey of the media server via the following app.yml settings:
+
+    pkMedia:
+      # When acting as a client, we need to know where the 
+      # media site is. If you don't set this, it is assumed
+      # that the media server is on the same site
+  
+      # client_site: "http://www.mymediasite.com/"
+  
+      # when acting as a client, we need an api key that
+      # is on the server's apikeys list. When the server and
+      # client are the same site, just make sure the key you
+      # have here is also the (only?) key listed for apikeys
+      client_apikey: 'dummy'
+
+See `pkMediaAPI.class.php` for more information (TODO: document this better).
 
 === Embedding Images and Videos In Your Application ===
 
