@@ -75,11 +75,11 @@
 			<?php echo $form['view_is_secure']->renderError() ?>
 			<?php echo $form['view_is_secure']->render() ?>
 
-			<script type="text/javascript" charset="utf-8">
 			<?php if (isset($i)): ?>
+			<script type="text/javascript" charset="utf-8">
 			 	pkRadioSelect('#pk_media_items_item-<?php echo $i ?>_view_is_secure', { }); //This is for multiple editing			  
-			<?php endif ?>
 			</script>
+			<?php endif ?>
 
 		</div>
 
