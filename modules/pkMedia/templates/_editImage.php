@@ -24,15 +24,7 @@
 		<?php // Output the item's image only if a preview of a newer one is ?>
 		<?php // not already present courtesy of the persistent file upload widget ?>
 		<?php if (!$previewAvailable): ?>
-		  <?php $slug = $item->getSlug() ?>
-		  <?php $width = pkMediaTools::getOption("gallery_width") ?>
-		  <?php $height = pkMediaTools::getOption("gallery_height") ?>
-      <?php if ($height === false): ?>
-        <?php $height = ceil(($width * $item->getHeight()) / $item->getWidth()) ?>
-      <?php endif ?>
-		  <?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
-		  <?php $format = $item->getFormat() ?>
-		  <img src="<?php echo url_for("pkMedia/image?" . http_build_query(array("slug" => $slug, "width" => $width, "height" => $height, "resizeType" => $resizeType, "format" => $format))) ?>" />
+		  <img src="<?php echo url_for($item->getScaledUrl(pkMediaTools::getOption('gallery_constraints'))) ?>" />
 		<?php endif ?>
 		<?php echo $form['file']->render() ?>
 		<?php else: ?>

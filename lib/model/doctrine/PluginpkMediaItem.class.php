@@ -201,4 +201,15 @@ EOM
     
   
   }
+  
+  // Returns a Symfony action URL. Call url_for or use sfController for final routing.
+  
+  public function getScaledUrl($options)
+  {
+    $options = pkDimensions::constrain($this->getWidth(), $this->getHeight(), $this->getFormat(), $options);
+
+    return "pkMedia/image?" . http_build_query(
+      array("slug" => $this->slug, "width" => $options['width'], "height" => $options['height'], 
+        "resizeType" => $options['resizeType'], "format" => $options['format']));
+  }
 }

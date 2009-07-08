@@ -24,7 +24,7 @@ class pkMediaImageForm extends pkMediaItemForm
           // Not yet
           // "iframe" => true,
           // "progress" => "Uploading...",
-          "image-preview" => array("width" => pkMediaTools::getOption("gallery_width"), 'height' => pkMediaTools::getOption("gallery_height"), "resizeType" => "c"))));
+          "image-preview" => pkMediaTools::getOption('gallery_constraints'))));
     $this->setValidator('file', new pkValidatorFilePersistent(
       array("mime_types" => array("image/jpeg", "image/png", "image/gif"), 
         "required" => (!$this->getObject()->getId())),

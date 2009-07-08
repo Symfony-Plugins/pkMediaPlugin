@@ -12,7 +12,15 @@ class pkMediaAPI
   static public function getSelectedItem(
     sfRequest $request, $type = false)
   {
-    return self::getSelectedItems($request, true, $type);
+    $result = self::getSelectedItems($request, true, $type);
+    if (is_array($result))
+    {
+      if (count($result))
+      {
+        return $result[0];
+      }
+    }
+    return false;
   }
   
   static public function getSelectedItems(

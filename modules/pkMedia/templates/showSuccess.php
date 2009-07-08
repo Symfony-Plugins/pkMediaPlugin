@@ -9,28 +9,18 @@
 <div class="pk-media-library">
 	
 <?php $id = $mediaItem->getId() ?>
-<?php $slug = $mediaItem->getSlug() ?>
-<?php $width = pkMediaTools::getOption("show_width") ?>
-<?php $height = pkMediaTools::getOption("show_height") ?>
-<?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
-<?php $format = $mediaItem->getFormat() ?>
+<?php $options = pkDimensions::constrain($mediaItem->getWidth(), $mediaItem->getHeight(),
+  $mediaItem->getFormat(), pkMediaTools::getOption('show_constraints')) ?>
 
-<?php if (($width > $mediaItem->width) || ($height > $mediaItem->height)): ?>
-  <?php $width = $mediaItem->width ?>
-  <?php $height = $mediaItem->height ?>
-<?php endif ?>
-<?php $embedCode = $mediaItem->getEmbedCode($width, $height, $resizeType, $format) ?>
+<?php $embedCode = $mediaItem->getEmbedCode(
+  $options['width'], $options['height'], $options['resizeType'], $options['format']) ?>
 
 <ul class="pk-media-item-content" id="pk-media-item-content-<?php echo $mediaItem->getId()?>">
 
 	<li class="pk-media-item-source">
 		<?php include_partial('pkMedia/editLinks', array('mediaItem' => $mediaItem)) ?>
 
-		<?php if ($mediaItem->getType() === 'image'): ?>
-    	<?php echo $embedCode // media object src tag ?>
-    <?php else: ?>
-    	<?php echo $embedCode // Why is there an if here, why was this commented out? ?>
-    <?php endif ?>
+  	<?php echo $embedCode ?>
 	</li>
 
   <?php // Stored as HTML ?>

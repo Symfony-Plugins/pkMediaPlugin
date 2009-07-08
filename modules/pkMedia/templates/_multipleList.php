@@ -15,18 +15,7 @@
 		</li>
 	</ul>	
 
-  <img src="<?php echo url_for("pkMedia/image?" .
-    http_build_query(array(
-      "slug" => $item->getSlug(),
-      "width" => 
-        pkMediaTools::getOption("selected_width"),
-      "height" => 
-        pkMediaTools::getOption("selected_height"),
-      "resizeType" => 
-        pkMediaTools::getOption("selected_resizeType"),
-      "format" =>
-        $item->getFormat())))
-    ?>" />
+  <img src="<?php echo url_for($item->getScaledUrl(pkMediaTools::getOption('selected_constraints'))) ?>" />
 
 	  <?php $ids[] = $item->getId() ?>
 

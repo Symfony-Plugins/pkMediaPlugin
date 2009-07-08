@@ -2,19 +2,6 @@
 <?php $id = $mediaItem->getId() ?>
 <?php $serviceUrl = $mediaItem->getServiceUrl() ?>
 <?php $slug = $mediaItem->getSlug() ?>
-<?php $width = pkMediaTools::getOption("gallery_width") ?>
-<?php $height = pkMediaTools::getOption("gallery_height") ?>
-<?php $resizeType = pkMediaTools::getOption("gallery_resizeType") ?>
-<?php $format = $mediaItem->getFormat() ?>
-
-<?php if ($height === false): ?>
-  <?php $height = ceil(($width * $mediaItem->getHeight()) / $mediaItem->getWidth()) ?>
-<?php endif ?>
-<?php if (($width > $mediaItem->width) || ($height > $mediaItem->height)): ?>
-  <?php $width = $mediaItem->width ?>
-  <?php $height = $mediaItem->height ?>
-<?php endif ?>
-
 
 <?php if (pkMediaTools::isSelecting()): ?>
 
@@ -38,7 +25,7 @@
 <?php include_partial('pkMedia/editLinks', array('mediaItem' => $mediaItem)) ?>
   <a <?php echo $linkAttributes ?> class="pk-media-thumb-link">
     <?php if ($type == 'video'): ?><span class="pk-media-play-btn"></span><?php endif ?>
-    <img src="<?php echo url_for("pkMedia/image?" . http_build_query(array("slug" => $slug, "width" => $width, "height" => $height, "resizeType" => $resizeType, "format" => $format))) ?>" />
+    <img src="<?php echo url_for($mediaItem->getScaledUrl(pkMediaTools::getOption('gallery_constraints'))) ?>" />
   </a>
 </li>
 

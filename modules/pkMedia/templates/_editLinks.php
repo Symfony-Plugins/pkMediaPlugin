@@ -2,16 +2,6 @@
 <?php if ($mediaItem->userHasPrivilege('edit')): ?>
 	<ul class="pk-controls pk-media-edit-links">
 
-    <?php $imagewidth = pkMediaTools::getOption("gallery_width") ?>
-    <?php $imageheight = pkMediaTools::getOption("gallery_height") ?>
-
-    <?php if ($imageheight === false): ?>
-      <?php $imageheight = ceil($imagewidth * ($mediaItem->getHeight() / $mediaItem->getWidth())); ?>
-    <?php endif ?>
-
-    <?php $height = $imageheight + 500 ?>
-    <?php $mid = $mediaItem->getId() ?>
-
     <?php if ($mediaItem->getType() === 'video'): ?>
       <li><?php echo link_to("Edit", "pkMedia/editVideo", array("query_string" => http_build_query(array("slug" => $mediaItem->getSlug())), "class" => "pk-btn icon pk-edit")) ?></li>
     <?php else: ?>
