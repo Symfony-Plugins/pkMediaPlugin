@@ -1,76 +1,82 @@
+<?php use_helper('Form') ?>
 <div id="pk-subnav" class="pk-media-subnav subnav">
-	
-	<h3>Find in Media</h3>
-	<form method="POST" action="<?php echo url_for("pkMedia/index") ?>" class="pk-search-form media" id="pk-search-form-sidebar">
+  <h3>Find in Media</h3>
+  <form method="POST" action="<?php echo url_for(pkUrl::addParams($current, array("search" => false))) ?>" class="pk-search-form media" id="pk-search-form-sidebar">
 
-	<div class="form-row">
-		<span class="pk-search-field"><?php echo $form['search']->render() ?></span>
-		<span class="<?php echo(strlen($form->getValue('search')) ? 'pk-search-remove' : '') ?> pk-search-submit"><input width="29" type="image" height="20" title="Click to Search" alt="Search" src="/pkContextCMSPlugin/images/pk-special-blank.gif" value="Submit" class="pk-search-submit"/></span>
-	</div>
+  	<div class="form-row">
+  	<span class="pk-search-field"><?php echo input_tag('search', isset($search) ? $search : '', array('id' => 'pk-media-search')) ?></span>
+    <span class="pk-search-submit"><input width="29" type="image" height="20" title="Click to Search" alt="Search" src="/pkContextCMSPlugin/images/pk-special-blank.gif" value="Submit" class="pk-search-submit"/></span>
+  	</div>
+  </form>
 
 	<br class="c"/>
+<div class="pk-media-filters">
+  <h3>Media Types</h3>
+  <ul class="pk-radio-select-container">
+		<li>
+    <?php if (isset($type)): ?>
+      <a class="option-0 first" href="<?php echo url_for(pkUrl::addParams($current, array('type' => false))) ?>">All</a>
+    <?php else: ?>
+      <span class="pk-radio-option-selected option-0 first">All</span>
+    <?php endif ?>
+		</li>
 
-		<div class="pk-media-filters">
-
-      <?php if (!pkMediaTools::getType()): ?>
-  			<h3>Media Types</h3>
-  			<?php echo $form['type']->render(array("id" => "pk-media-type")) ?>
+		<li>
+    <?php if (!(isset($type) && ($type === 'image'))): ?>
+      <a class="option-1" href="<?php echo url_for(pkUrl::addParams($current, array('type' => 'image'))) ?>">Image</a>
+    <?php else: ?>
+      <span class="pk-radio-option-selected option-1">Image</span>
+    <?php endif ?>
+		</li>
+		
+		<li>
+    <?php if (!(isset($type) && ($type === 'video'))): ?>
+      <a class="option-2 last" href="<?php echo url_for(pkUrl::addParams($current, array('type' => 'video'))) ?>">Video</a>
+    <?php else: ?>
+      <span class="pk-radio-option-selected option-2 last">Video</span>
+    <?php endif ?>
+		</li>
+  </ul>
+	<div class="pk-tag-sidebar">
+    <h3>Media Tags</h3>
+    <ul class="pk-tag-sidebar-selected-tags">
+      <?php if (isset($selectedTag)): ?>
+        <li class="selected">
+          <span class="pk-tag-sidebar-tag"><?php echo htmlspecialchars($selectedTag) ?></span> <a class="pk-btn icon close" href="<?php echo url_for(pkUrl::addParams($current, array("tag" => false))) ?>">remove</a>
+        </li>
       <?php endif ?>
-			<div class="pk-tag-sidebar">
-				<h3>Media Tags</h3>
-				<?php echo $form['tag']->render(array("id" => "pk-media-tag", "style" => "display: none")) ?>
-			</div>
-
-		</div>
-	</form>
+    </ul>
+    <h4 class="pk-tag-sidebar-title popular">Popular Tags</h4>
+    <ul class="pk-tag-sidebar-list popular">
+      <?php foreach ($popularTags as $tag => $count): ?>
+        <li><a href="<?php echo url_for(pkUrl::addParams($current, array("tag" => $tag))) ?>"><span class="pk-tag-sidebar-tag"><?php echo htmlspecialchars($tag) ?></span> <span class="pk-tag-sidebar-tag-count"><?php echo $count ?></span></a></li>
+      <?php endforeach ?>
+    </ul>
+    <br class="c"/>
+    <h4 class="pk-tag-sidebar-title all-tags">All Tags</h4>
+    <ul class="pk-tag-sidebar-list all-tags">
+      <?php foreach ($allTags as $tag => $count): ?>
+        <li><a href="<?php echo url_for(pkUrl::addParams($current, array("tag" => $tag))) ?>"><span class="pk-tag-sidebar-tag"><?php echo htmlspecialchars($tag) ?></span> <span class="pk-tag-sidebar-tag-count"><?php echo $count ?></span></a></li>
+      <?php endforeach ?>
+    </ul>
+  </div>
+ </div>
 </div>
+   
+<script type="text/javascript" charset="utf-8">
+	pkInputSelfLabel('#pk-media-search', 'Search');
 
-<script type="text/javascript">
-pkRadioSelect('#pk-media-type', { 'autoSubmit': true });
+	var allTags = $('.pk-tag-sidebar-title.all-tags');
 
-pkSelectToList('#pk-media-tag', 
-  { 
-    tags: true,
-    currentTemplate: '<ul class="pk-tag-sidebar-selected-tags"><li class="selected"><span class="pk-tag-sidebar-tag">_LABEL_</span> <a href="#" class="pk-btn icon pk-close">remove</a></li></ul>',
-    popularLabel: '<h4 class="pk-tag-sidebar-title popular">Popular Tags</h4>',
-    popular: <?php echo pkMediaTools::getOption('popular_tags') ?>,
-    alpha: true,
-    // If this contains an 'a' tag it gets turned into a toggle 
-		listPopularClass: 'pk-tag-sidebar-list popular',
-		listAllClass: 'pk-tag-sidebar-list all-tags',
-    allLabel: '<br class="c"/><h4 class="pk-tag-sidebar-title all-tags">All Tags</h4>',
-    itemTemplate: "<span class='pk-tag-sidebar-tag'>_LABEL_</span> <span class='pk-tag-sidebar-tag-count'>_COUNT_</span>",
-    allVisible: true,
-    all: true
-  });
-</script>
-
-<script type="text/javascript">
-	$('.pk-tag-sidebar-title.all-tags').click(function(){
-		$('.pk-tag-sidebar-list.all-tags').toggle();
-		$(this).toggleClass('open');
+	allTags.hover(function(){
+		allTags.addClass('over');
+	},function(){
+		allTags.removeClass('over');		
 	});
 	
-	$('.pk-tag-sidebar-title.all-tags').hover(function(){
-		$(this).toggleClass('over');
-	},
-	function(){
-		$(this).toggleClass('over');		
-	});
-</script>
-
-<script type="text/javascript">
-//$('.subnav input.pk-search-field').attr('value', 'Search'); // This should be done at the lib/form/helper level, not here.
+	allTags.click(function(){
+		allTags.toggleClass('open');
+		allTags.next().toggle();
+	})
 	
-$('.subnav input.pk-search-field').focus(function(){
-	if ($(this).attr('value') == 'Search') {
-		$(this).attr('value' , '');
-	}
-});
-
-$('.subnav input.pk-search-field').blur(function(){
-	if ($(this).attr('value') == '') {
-		$(this).attr('value' , 'Search');
-	}
-});
 </script>

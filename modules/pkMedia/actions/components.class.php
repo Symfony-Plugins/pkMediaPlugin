@@ -4,11 +4,47 @@ class pkMediaComponents extends sfComponents
 {
   public function executeBrowser($request)
   {
-    $this->form = new pkMediaBrowseForm();
-    // This works because the most recent invocation of the
-    // index action will have already set this; it's stored
-    // as an attribute
-    $this->form->bind(pkMediaTools::getSearchParameters());
+    // We don't use a 1.2 form for this anymore. What we wanted was
+    // individual-link behavior, and yet we overlaid a form on that,
+    // which had some interesting aspects but was ultimately confusing 
+    // and a problem for search engine indexing etc
+    
+    $this->current = "pkMedia/index";
+    $params = array();
+    $type = pkMediaTools::getSearchParameter('type');
+    if (strlen($type))
+    {
+      $this->type = $type;
+      $params['type'] = $type;
+    }
+    $tag = pkMediaTools::getSearchParameter('tag');
+    if (strlen($tag))
+    {
+      $this->selectedTag = $tag;
+      $params['tag'] = $tag;
+    }
+    $search = pkMediaTools::getSearchParameter('search');
+    if (strlen($search))
+    {
+      $this->search = $search;
+      $params['search'] = $search;
+    }
+    $this->current .= "?" . http_build_query($params);
+    $this->allTags = pkMediaItemTable::getAllTagNameForUserWithCount();
+    $tagsByPopularity = $this->allTags;
+    arsort($tagsByPopularity);
+    $this->popularTags = array();
+    $n = 0;
+    $max = pkMediaTools::getOption('popular_tags');
+    foreach ($tagsByPopularity as $tag => $count)
+    {
+      if ($n == $max)
+      {
+        break;
+      }
+      $this->popularTags[$tag] = $count;
+      $n++;
+    }
   }
   public function executeBreadcrumb($request)
   {

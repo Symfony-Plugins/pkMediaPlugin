@@ -166,4 +166,18 @@ class PluginpkMediaItemTable extends Doctrine_Table
     sfContext::getInstance()->getLogger()->info("ZZZZZ" . $query->getSql());
     return $query;
   }
+  
+  static public function getAllTagNameForUserWithCount()
+  {
+    // Retrieves only tags relating to media items this user is allowed to see
+    $q = NULL;
+    if (!sfContext::getInstance()->getUser()->isAuthenticated())
+    {
+      $q = Doctrine_Query::create()->from('Tagging tg, tg.Tag t, pkMediaItem m');
+      // If you're not logged in, you shouldn't see tags relating to secured stuff
+      $q->andWhere('m.id = tg.taggable_id AND ((m.view_is_secure IS NULL) OR (m.view_is_secure = FALSE))');
+    }
+    return TagTable::getAllTagNameWithCount($q, 
+      array("model" => "pkMediaItem"));
+  }
 }
