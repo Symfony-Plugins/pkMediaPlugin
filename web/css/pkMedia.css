@@ -147,6 +147,10 @@ width: 100%;
 .pk-media-select
 {
 	margin-bottom:10px;
+	float:left;
+	display:inline;
+/*	border-bottom: 1px solid #ddd;*/
+	padding-bottom:10px;
 }
 
 #pk-media-selection-list
