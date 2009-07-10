@@ -65,7 +65,7 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
     {
       return;
     }
-    $cached = glob(pkMediaItemTable::getDirectory() . $this->getSlug() . ".*");
+    $cached = glob(pkMediaItemTable::getDirectory() . DIRECTORY_SEPARATOR . $this->getSlug() . ".*");
     foreach ($cached as $file)
     {
       if (!$deleteOriginals)
