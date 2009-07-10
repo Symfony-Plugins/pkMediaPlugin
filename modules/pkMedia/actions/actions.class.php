@@ -745,12 +745,13 @@ class pkMediaActions extends sfActions
     
     if ($request->hasParameter('ids'))
     {
+			$ids = $request->getParameter('ids');
       if (!preg_match("/^(\d+\,?)*$/", $ids))
       {
         // Malformed request
         $this->jsonResponse('malformed');
       }
-      $ids = explode(",", $request->getParameter('ids'));
+      $ids = explode(",", $ids);
       if ($ids === false)
       {
         $ids = array();
