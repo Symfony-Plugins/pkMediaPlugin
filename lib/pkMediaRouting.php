@@ -58,6 +58,18 @@ class pkMediaRouting
       $r->prependRoute('pk_media_tags',
         new sfRoute('/media/tags',
           array('module' => 'pkMedia', 'action' => 'tags')));
+      $r->prependRoute('pk_media_upload_images',
+        new sfRoute('/media/uploadImages',
+          array('module' => 'pkMedia', 'action' => 'uploadImages')));
+      $r->prependRoute('pk_media_edit_images',
+        new sfRoute('/media/editImages',
+          array('module' => 'pkMedia', 'action' => 'editImages')));
+      $r->prependRoute('pk_media_new_video',
+        new sfRoute('/media/newVideo',
+          array('module' => 'pkMedia', 'action' => 'newVideo')));
+      $r->prependRoute('pk_media_edit_video',
+        new sfRoute('/media/editVideo',
+          array('module' => 'pkMedia', 'action' => 'editVideo')));
     }
   }
 }
