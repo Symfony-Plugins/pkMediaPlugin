@@ -47,20 +47,15 @@
 	float: left;
 }
 
-.pk-media-subnav .pk-search-form span.pk-search-field
-{
-background: url(/pkContextCMSPlugin/images/pk-search-bg-180.png) no-repeat 0 0;
-width: 178px;
-}
-
-.pk-media-subnav .pk-search-form input.pk-search-field
-{
-width: 150px;
-}
-
 .pk-media-subnav .pk-search-form
 {
-	width: 178px;
+background-image: url(/pkContextCMSPlugin/images/pk-search-bg-180.png);
+width: 180px;
+}
+
+.pk-media-subnav .pk-search-form .pk-search-field
+{
+width: 150px;
 }
 
 .pk-media-row {
@@ -113,6 +108,12 @@ width: 100%;
 	text-decoration: none;
 }
 
+.pk-media-subnav .pk-media-filters .pk-media-filter-option
+{
+	float:left;
+	display:inline;
+}
+
 .pk-media-item 
 {
 	float: left;
@@ -124,8 +125,8 @@ width: 100%;
 
 .pk-media-item-thumbnail,
 .pk-media-item-title,
-.pk-media-description,
-.pk-media-meta,
+.pk-media-item-description,
+.pk-media-item-meta,
 {
 	float: left;
 	display: inline;
@@ -464,7 +465,7 @@ margin: 0 0 5px 0;
 color: #ccc;
 }
 
-.pk-tag-sidebar h4.pk-tag-sidebar-title.all-tags {
+.pk-tag-sidebar .pk-tag-sidebar-title.all-tags {
 color: #333;
 background: #fff url(/pkToolkitPlugin/images/pk-icon-arrow-toggle.png) -6px 0 no-repeat;
 cursor: pointer;
@@ -474,16 +475,16 @@ width: 100%;
 position: relative;
 }
 
-.pk-tag-sidebar h4.pk-tag-sidebar-title.all-tags.open {
+.pk-tag-sidebar .pk-tag-sidebar-title.all-tags.open {
 background-position: -6px -20px;
 }
 
-.pk-tag-sidebar h4.pk-tag-sidebar-title.all-tags.over {
+.pk-tag-sidebar .pk-tag-sidebar-title.all-tags.over {
 color: #666;
 background-position: -6px -40px;
 }
 
-.pk-tag-sidebar h4.pk-tag-sidebar-title.all-tags.open {
+.pk-tag-sidebar .pk-tag-sidebar-title.all-tags.open {
 background-position: -6px -60px;
 }
 
@@ -491,10 +492,13 @@ background-position: -6px -60px;
 display: none;
 }
 
-.pk-tag-sidebar h4.pk-tag-sidebar-title span {
+/*
+.pk-tag-sidebar .pk-tag-sidebar-title span {
 position: absolute;
 right: 0;
 font-size: 12px;
 color: #999;
 display: none;
-}
+} 
+RB: not sure what this is for, why it's set to display:none, but that was breaking cufon replace on EMAP
+*/
