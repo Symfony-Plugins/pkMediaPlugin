@@ -195,6 +195,7 @@ EOM
     {
       return true;
     }
+    return false;
   }
   public function search($params)
   {
