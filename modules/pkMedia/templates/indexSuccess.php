@@ -14,6 +14,8 @@
       <h3><?php echo htmlspecialchars($label) ?> or <?php echo link_to("cancel", "pkMedia/selectCancel", array("class"=>"pk-cancel event-default")) ?></h3>
     <?php endif ?>
 
+    <?php include_partial('pkMedia/describeConstraints') ?>
+
 	  <?php if (pkMediaTools::isMultiple()): ?>
 	    <?php include_partial('pkMedia/selectMultiple', array('limitSizes' => $limitSizes)) ?>
 	  <?php else: ?>
