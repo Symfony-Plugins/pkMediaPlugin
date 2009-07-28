@@ -126,7 +126,7 @@ width: 100%;
 .pk-media-item-thumbnail,
 .pk-media-item-title,
 .pk-media-item-description,
-.pk-media-item-meta,
+.pk-media-item-meta
 {
 	float: left;
 	display: inline;
