@@ -65,6 +65,7 @@ class pkMediaAPI
     {
       // This is intended to filter out user attempts to jam video into the list
       // of ids before we ever got to the API stage
+      $nresults = array();
       foreach ($results as $result)
       {
         if ($result->type === $type)
