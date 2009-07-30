@@ -775,7 +775,7 @@ class pkMediaActions extends sfActions
       }
     }
     $strings = array(
-      "tag", "search", "type"
+      "tag", "search", "type", "user"
     );
     foreach ($strings as $string)
     {

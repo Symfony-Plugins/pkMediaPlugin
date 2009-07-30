@@ -9,8 +9,7 @@ class pkMediaAPI
   // been removed in favor of the simplified client key
   // discovery mechanism
   
-  static public function getSelectedItem(
-    sfRequest $request, $type = false)
+  static public function getSelectedItem(sfRequest $request, $type = false)
   {
     $result = self::getSelectedItems($request, true, $type);
     if (is_array($result))
@@ -23,8 +22,7 @@ class pkMediaAPI
     return false;
   }
   
-  static public function getSelectedItems(
-    sfRequest $request, $singular = false, $type = false)
+  static public function getSelectedItems(sfRequest $request, $singular = false, $type = false)
   {
     if ($singular)
     {
