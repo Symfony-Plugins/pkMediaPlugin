@@ -342,6 +342,60 @@ class pkMediaActions extends sfActions
     }
   }
 
+  public function executeEditPdf(sfRequest $request)
+  {
+    $this->forward404Unless(pkMediaTools::userHasUploadPrivilege());
+    $item = null;
+    $this->slug = false;
+    if ($request->hasParameter('slug'))
+    {
+      $item = $this->getItem();
+      $this->slug = $item->getSlug();
+    }
+    if ($item)
+    {
+      $this->forward404Unless($item->userHasPrivilege('edit'));
+    }
+    $this->item = $item;
+    $this->form = new pkMediaPdfForm($item);
+    if ($request->isMethod('post'))
+    {
+      $this->firstPass = $request->getParameter('first_pass');
+      $parameters = $request->getParameter('pk_media_item');
+      $files = $request->getFiles('pk_media_item');
+      $this->form->bind($parameters, $files);
+      if ($this->form->isValid())
+      {
+        $file = $this->form->getValue('file');
+        unset($this->form['file']);
+        $object = $this->form->getObject();
+        if ($file)
+        {
+          // The base implementation for saving files gets confused when 
+          // $file is not set, a situation that our code tolerates as useful 
+          // because if you're updating a record containing a PDF you 
+          // often don't need to submit a new one.
+          
+          // This actually has to be shimmed in at a much lower level as an option if
+          // gs is not available. We can't just use a fake thumbnail as an 'original' as we
+          // do for foreign video because that would break 'download original'
+          // copy(sfConfig::get('sf_root_dir') . '/plugins/pkMediaPlugin/web/images/pdficon_large.gif', $previewFile);
+          
+          // Everything except the actual copy which can't succeed
+          // until the slug is cast in stone
+          $object->preSaveImage($file->getTempName());
+        }
+        echo("before save\n");
+        $this->form->save();
+        if ($file)
+        {
+          $object->saveImage($file->getTempName());
+        }
+        return $this->redirect("pkMedia/resumeWithPage");
+      }
+    }
+  }
+
   public function executeEditVideo(sfRequest $request)
   {
     $this->forward404Unless(pkMediaTools::userHasUploadPrivilege());

@@ -11,7 +11,6 @@
 <?php $id = $mediaItem->getId() ?>
 <?php $options = pkDimensions::constrain($mediaItem->getWidth(), $mediaItem->getHeight(),
   $mediaItem->getFormat(), pkMediaTools::getOption('show_constraints')) ?>
-
 <?php $embedCode = $mediaItem->getEmbedCode(
   $options['width'], $options['height'], $options['resizeType'], $options['format']) ?>
 

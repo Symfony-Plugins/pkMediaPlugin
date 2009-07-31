@@ -101,7 +101,7 @@ class pkMediaAPI
   //
   // tag
   // search
-  // type (video or image)
+  // type (video, image or pdf)
   // user (a username, to determine access rights)
   // aspect-width and aspect-height (returns only images with the specified aspect ratio)
   // minimum-width

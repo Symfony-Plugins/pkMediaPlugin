@@ -80,25 +80,56 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
   }
   public function preSaveImage($file)
   {
-    $formats = array(
-      IMAGETYPE_JPEG => "jpg",
-      IMAGETYPE_PNG => "png",
-      IMAGETYPE_GIF => "gif"
-    );
-    $data = getimagesize($file);
-    if (count($data) < 3)
+    $in = fopen($file, "rb");
+    $data = fread($in, 4);
+    fclose($in);
+    if ($data === '%PDF')
     {
-      return false;
+      $this->format = 'pdf';
+      $this->clearImageCache(true);
+      // PATH-constructing cleverness borrowed from pkImageConverter,
+      // which it really ought to be refactored back into as part of
+      // a dimensions function that supports PDF (TODO)
+      $path = sfConfig::get("app_pkimageconverter_path", "");
+      if (strlen($path)) {
+        if (!preg_match("/\/$/", $path)) {
+          $path .= "/";
+        }
+      }
+      # Bounding box goes to stderr, not stdout! Charming
+      $cmd = "(PATH=$path:\$PATH; export PATH; gs -sDEVICE=bbox -dNOPAUSE -dFirstPage=1 -dLastPage=1 -r100 -q " . escapeshellarg($file) . " -c quit) 2>&1";
+      $in = popen($cmd, "r");
+      list($x1, $y1, $x2, $y2) = fscanf($in, "%%%%BoundingBox: %d %d %d %d");
+      pclose($in);
+      
+      // TODO: if I don't get $x2 and $y2, ghostscript is uninstalled or misconfigured,
+      // and I should fake it by always rendering a big PDF icon
+            
+      $this->width = $x2;
+      $this->height = $y2;
     }
-    if (!isset($formats[$data[2]]))
+    else
     {
-      return false;
+      $formats = array(
+        IMAGETYPE_JPEG => "jpg",
+        IMAGETYPE_PNG => "png",
+        IMAGETYPE_GIF => "gif"
+      );
+      $data = getimagesize($file);
+      if (count($data) < 3)
+      {
+        return false;
+      }
+      if (!isset($formats[$data[2]]))
+      {
+        return false;
+      }
+      $format = $formats[$data[2]];
+      $this->clearImageCache(true);
+      $this->width = $data[0];
+      $this->height = $data[1];
+      $this->format = $format;
     }
-    $format = $formats[$data[2]];
-    $this->clearImageCache(true);
-    $this->width = $data[0];
-    $this->height = $data[1];
-    $this->format = $format;
     return true;
   }
 
@@ -140,7 +171,7 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
 EOM
       ;
     }
-    elseif ($this->getType() == 'image')
+    elseif (($this->getType() == 'image') || ($this->getType() == 'pdf'))
     {
       $controller = sfContext::getInstance()->getController();
       $slug = $this->getSlug();
@@ -156,7 +187,7 @@ EOM
     }
     else
     {
-      throw Exception("Unknown media type in getEmbedCode: " . $this->getType());
+      throw new Exception("Unknown media type in getEmbedCode: " . $this->getType());
     }
   }
   protected function youtubeUrlToEmbeddedUrl($url)
@@ -196,11 +227,6 @@ EOM
       return true;
     }
     return false;
-  }
-  public function search($params)
-  {
-    
-  
   }
   
   // Returns a Symfony action URL. Call url_for or use sfController for final routing.

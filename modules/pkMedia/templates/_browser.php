@@ -28,9 +28,16 @@
 			</li>
 			<li class="pk-media-filter-option">
 	    <?php if (!(isset($type) && ($type === 'video'))): ?>
-	      <a id="pk-media-filter-option-2" class="option-2 last" href="<?php echo url_for(pkUrl::addParams($current, array('type' => 'video'))) ?>">Video</a>
+	      <a id="pk-media-filter-option-2" class="option-2" href="<?php echo url_for(pkUrl::addParams($current, array('type' => 'video'))) ?>">Video</a>
 	    <?php else: ?>
-	      <span class="pk-radio-option-selected option-2 last">Video</span>
+	      <span class="pk-radio-option-selected option-2">Video</span>
+	    <?php endif ?>
+			</li>
+			<li class="pk-media-filter-option">
+	    <?php if (!(isset($type) && ($type === 'pdf'))): ?>
+	      <a id="pk-media-filter-option-3" class="option-3 last" href="<?php echo url_for(pkUrl::addParams($current, array('type' => 'pdf'))) ?>">PDF</a>
+	    <?php else: ?>
+	      <span class="pk-radio-option-selected option-3 last">PDF</span>
 	    <?php endif ?>
 			</li>
 	  </ul>

@@ -77,7 +77,8 @@ class PluginpkMediaItemTable extends Doctrine_Table
   static public $mimeTypes = array(
     "gif" => "image/gif",
     "png" => "image/png",
-    "jpg" => "image/jpeg"
+    "jpg" => "image/jpeg",
+    "pdf" => "application/pdf"
   );
   
   // Returns a query matching media items satisfying the specified parameters, all of which

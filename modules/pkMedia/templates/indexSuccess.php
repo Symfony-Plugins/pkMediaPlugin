@@ -37,6 +37,11 @@
      <?php if (!($selecting && $type && ($type !== 'video'))): ?>
      <li><a href="<?php echo url_for("pkMedia/newVideo") ?>" class="pk-btn icon pk-add">Add Video</a></li>
      <?php endif ?>
+
+     <?php if (!($selecting && $type && ($type !== 'pdf'))): ?>
+     <li><a href="<?php echo url_for("pkMedia/editPdf") ?>" class="pk-btn icon pk-add">Add PDF</a></li>
+     <?php endif ?>
+
    </ul>
 
   <?php endif ?>

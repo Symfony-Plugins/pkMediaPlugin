@@ -19,7 +19,8 @@ pkMediaItem:
     type:
       type: enum
       notnull: true
-      values: [image, video, audio]  
+      values: [image, video, audio, pdf]  
+    # URL on YouTube
     service_url:
       type: string(200)
     # Original image format. For video this is the format of the thumbnail
@@ -34,7 +35,7 @@ pkMediaItem:
       type: string(10)
     # Preferred still image or video dimensions. For a still image
     # these are the dimensions of the original. For video they are
-    # the dimensions of the video stream.
+    # the dimensions of the video stream. For PDF they are undefined.
     width:
       type: integer(4)
     height:

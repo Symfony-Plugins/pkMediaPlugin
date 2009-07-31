@@ -4,6 +4,8 @@
 
     <?php if ($mediaItem->getType() === 'video'): ?>
       <li><?php echo link_to("Edit", "pkMedia/editVideo", array("query_string" => http_build_query(array("slug" => $mediaItem->getSlug())), "class" => "pk-btn icon pk-edit")) ?></li>
+    <?php elseif ($mediaItem->getType() === 'pdf'): ?>
+      <li><?php echo link_to("Edit", "pkMedia/editPdf", array("query_string" => http_build_query(array("slug" => $mediaItem->getSlug())), "class" => "pk-btn icon pk-edit")) ?></li>
     <?php else: ?>
       <li><?php echo link_to("Edit", "pkMedia/editImage", array("query_string" => http_build_query(array("slug" => $mediaItem->getSlug())), "class" => "pk-btn icon pk-edit")) ?></li>
     <?php endif ?>

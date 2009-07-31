@@ -7,7 +7,8 @@ class pkMediaBrowseForm extends sfForm
     $typeOptions = array(
       "" => "All",
       "image" => "Image",
-      "video" => "Video"
+      "video" => "Video",
+      "pdf" => "PDF"
     );
     $allTags = TagTable::getAllTagNameWithCount(null, 
       array("model" => "pkMediaItem"));
