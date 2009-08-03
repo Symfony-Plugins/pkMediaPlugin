@@ -123,6 +123,11 @@ width: 100%;
 	margin-bottom: 20px;
 }
 
+.pk-media-item-meta
+{
+	margin: 0 0 10px 0;
+}
+
 .pk-media-item-thumbnail,
 .pk-media-item-title,
 .pk-media-item-description,
@@ -132,6 +137,22 @@ width: 100%;
 	display: inline;
 	clear: both;
 	width: 100%;
+}
+
+.pk-media-item-link span
+{
+	float: left;
+	width: 98px;
+	line-height: 22px;
+}
+
+.pk-media-item-link input
+{
+	float:right;
+	width: 214px;
+	border: 1px solid #666;
+	padding: 2px 3px;
+	font: 11px Arial, Sans-serif;
 }
 
 .pk-media-item.even {

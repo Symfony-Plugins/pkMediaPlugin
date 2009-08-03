@@ -43,12 +43,18 @@
 <li class="pk-media-item-credit pk-media-item-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
 <li class="pk-media-item-tags pk-media-item-meta"><span>Tags:</span> <?php include_partial('pkMedia/showTags', array('tags' => $mediaItem->getTags())) ?></li>
 <?php if ($mediaItem->getType() === 'pdf'): ?>
-  <li class="pk-media-item-link pk-media-item-meta"><span>Link:</span> <code><?php echo url_for("pkMedia/original?".http_build_query(array(
-          "slug" => $mediaItem->getSlug(),
-          "format" => $mediaItem->getFormat())),
-           array(
-			"class"=>"pk-btn icon pk-download"
-			)) ?></code>
+  <li class="pk-media-item-link pk-media-item-meta">
+		<span>URL:</span>
+		<input type="text" id="pk-media-item-link-value-<?php echo $id ?>" name="pk-media-item-link-value" value="<?php echo url_for("pkMedia/original?".http_build_query(array("slug" => $mediaItem->getSlug(),"format" => $mediaItem->getFormat()))) ?>">
 	</li>
+	
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			$('#pk-media-item-link-value-<?php echo $id ?>').focus(function(){
+				$(this).select();
+			})
+		});
+		
+	</script>
 <?php endif ?>
   
