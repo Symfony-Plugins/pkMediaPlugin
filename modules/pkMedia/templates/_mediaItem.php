@@ -25,6 +25,7 @@
 <?php include_partial('pkMedia/editLinks', array('mediaItem' => $mediaItem)) ?>
   <a <?php echo $linkAttributes ?> class="pk-media-thumb-link">
     <?php if ($type == 'video'): ?><span class="pk-media-play-btn"></span><?php endif ?>
+    <?php if ($type == 'pdf'): ?><span class="pk-media-pdf-btn"></span><?php endif ?>
     <img src="<?php echo url_for($mediaItem->getScaledUrl(pkMediaTools::getOption('gallery_constraints'))) ?>" />
   </a>
 </li>
@@ -41,3 +42,13 @@
 <li class="pk-media-item-createdat pk-media-item-meta"><span>Uploaded:</span> <?php echo pkDate::pretty($mediaItem->getCreatedAt()) ?></li>
 <li class="pk-media-item-credit pk-media-item-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
 <li class="pk-media-item-tags pk-media-item-meta"><span>Tags:</span> <?php include_partial('pkMedia/showTags', array('tags' => $mediaItem->getTags())) ?></li>
+<?php if ($mediaItem->getType() === 'pdf'): ?>
+  <li class="pk-media-item-link pk-media-item-meta"><span>Link:</span> <code><?php echo url_for("pkMedia/original?".http_build_query(array(
+          "slug" => $mediaItem->getSlug(),
+          "format" => $mediaItem->getFormat())),
+           array(
+			"class"=>"pk-btn icon pk-download"
+			)) ?></code>
+	</li>
+<?php endif ?>
+  

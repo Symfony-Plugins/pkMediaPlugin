@@ -883,8 +883,14 @@ class pkMediaActions extends sfActions
       // replace _WIDTH_, _HEIGHT_, _c-OR-s_ and _FORMAT_ with
       // whatever they please
       $controller = sfContext::getInstance()->getController();
+      
       // Must use keys that will be acceptable as property names, no hyphens!
-      $info['originalImage'] = $controller->genUrl("pkMedia/original?" .
+      
+      // original refers to the original file, if we ever had it
+      // (images and PDFs). If you ask for the original of a video, you
+      // currently get the media plugin's copy of the best available still. 
+      
+      $info['original'] = $controller->genUrl("pkMedia/original?" .
         http_build_query(
           array(
             "slug" => $item->getSlug(),
@@ -906,8 +912,6 @@ class pkMediaActions extends sfActions
       {
         $info['serviceUrl'] = $item->getServiceUrl();
       }
-      $info['original'] = $controller->genUrl("pkMedia/image?" .
-        http_build_query(array("slug" => $item->getSlug()), true));
       $nitems[] = $info;
     }
     $result->items = $nitems;

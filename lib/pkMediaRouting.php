@@ -17,10 +17,11 @@ class pkMediaRouting
         'action' => 'show'
       ), array('slug' => '^[\w\-]+$')));
       
+      // Allow permalinks for PDF originals
       $r->prependRoute('pk_media_image_original', new sfRoute('/uploads/media_items/:slug.original.:format', array(
         'module' => 'pkMedia',
         'action' => 'original'
-      ), array('slug' => '^[\w\-]+$', 'format' => '^(jpg|png|gif)$')));
+      ), array('slug' => '^[\w\-]+$', 'format' => '^(jpg|png|gif|pdf)$')));
       
       $r->prependRoute('pk_media_image', new sfRoute('/uploads/media_items/:slug.:width.:height.:resizeType.:format', array(
         'module' => 'pkMedia',
