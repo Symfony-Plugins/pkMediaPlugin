@@ -375,7 +375,9 @@ The pkMediaAPI class can be used to take advantage of the API conveniently from 
     pkMedia:
       # When acting as a client, we need to know where the 
       # media site is. If you don't set this, it is assumed
-      # that the media server is on the same site
+      # that the media server is on the same site, and 
+      # the query API does not request absolute URLs when
+      # asking for info about media items
   
       # client_site: "http://www.mymediasite.com/"
   

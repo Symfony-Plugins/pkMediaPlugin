@@ -859,7 +859,7 @@ class pkMediaActions extends sfActions
       $limit = max($request->getParameter('limit') + 0, 0);
       $query->limit($limit);
     }
-    
+    $absolute = !!$request->getParameter('absolute', false);
     $items = $query->execute();
     $nitems = array();
     foreach ($items as $item)
@@ -878,7 +878,9 @@ class pkMediaActions extends sfActions
       // The embed HTML we suggest is a template in which they can
       // replace _WIDTH_ and _HEIGHT_ and _c-OR-s_ with
       // whatever they please
-      $info['embed'] = $item->getEmbedCode('_WIDTH_', '_HEIGHT_', '_c-OR-s_', '_FORMAT_');
+      
+      // Absolute URL option
+      $info['embed'] = $item->getEmbedCode('_WIDTH_', '_HEIGHT_', '_c-OR-s_', '_FORMAT_', $absolute);
       // The image URL we suggest is a template in which they can
       // replace _WIDTH_, _HEIGHT_, _c-OR-s_ and _FORMAT_ with
       // whatever they please
@@ -894,7 +896,7 @@ class pkMediaActions extends sfActions
         http_build_query(
           array(
             "slug" => $item->getSlug(),
-            "format" => $item->getFormat()), true));
+            "format" => $item->getFormat()), $absolute));
 
       $info['image'] = $controller->genUrl("pkMedia/image?" .
         http_build_query(
@@ -904,7 +906,7 @@ class pkMediaActions extends sfActions
             "height" => "1000002", 
             "format" => "jpg", 
             "resizeType" => "c")), 
-          true);
+          $absolute);
       $info['image'] = str_replace(array("1000001", "1000002", ".c."),
         array("_WIDTH_", "_HEIGHT_", "._c-OR-s_."), $info['image']);
       $info['image'] = preg_replace("/\.jpg$/", "._FORMAT_", $info['image']);

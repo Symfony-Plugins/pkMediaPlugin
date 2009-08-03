@@ -160,6 +160,13 @@ class pkMediaAPI
         $params['user'] = $user->getGuardUser()->getUsername();
       }
     }
+    // If the server site is explicitly specified, ask for
+    // absolute URLs for images, video, etc. Otherwise relative
+    // URLs are more convenient and compact
+    if (sfConfig::get('app_pkMedia_client_site'))
+    {
+      $params['absolute'] = true;
+    }
   }
 
   protected function query($action, $params = array())

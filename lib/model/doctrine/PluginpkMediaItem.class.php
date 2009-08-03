@@ -143,7 +143,7 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
     return $result;
   }
 
-  public function getEmbedCode($width, $height, $resizeType, $format = 'jpg')
+  public function getEmbedCode($width, $height, $resizeType, $format = 'jpg', $absolute = false)
   {
     if ($height === false)
     {
@@ -182,7 +182,7 @@ EOM
             "width" => $width, 
             "height" => $height, 
             "resizeType" => $resizeType,
-            "format" => $format))) .
+            "format" => $format)), $absolute) .
             "' />";
     }
     else
