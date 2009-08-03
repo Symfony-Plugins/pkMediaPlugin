@@ -4,6 +4,7 @@ class pkMediaPdfForm extends pkMediaItemForm
 {
   public function configure()
   {
+    unset($this['id']);
     unset($this['type']);
     unset($this['service_url']);
     unset($this['slug']);

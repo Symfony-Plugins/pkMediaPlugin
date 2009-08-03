@@ -10,14 +10,6 @@ class pkMediaImageForm extends pkMediaItemForm
     unset($this['width']);
     unset($this['height']);
     unset($this['format']);
-    if ($this->getObject())
-    {
-      $id = $this->getObject()->getId();
-    }
-    else
-    {
-      $id = false;
-    }
     $this->setWidget('file', 
       new pkWidgetFormInputFilePersistent(
         array(

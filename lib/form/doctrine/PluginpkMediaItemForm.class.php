@@ -12,7 +12,6 @@ abstract class PluginpkMediaItemForm extends BasepkMediaItemForm
   public function setup()
   {
     parent::setup();
-    unset($this['id']);
     unset($this['shows_list']);
     unset($this['pk_media_item_list']);
     unset($this['pk_media_show_list']);
