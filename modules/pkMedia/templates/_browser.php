@@ -11,34 +11,16 @@
 
 	<div class="pk-media-filters">
   	<h3>Media Types</h3>
-	  <ul class="pk-radio-select-container">
+	  <ul class="pk-media-filter-options">
+			<?php $type = isset($type) ? $type : '' ?>
 			<li class="pk-media-filter-option">
-	    <?php if (isset($type)): ?>
-	      <a id="pk-media-filter-option-0" class="option-0 first" href="<?php echo url_for(pkUrl::addParams($current, array('type' => false))) ?>">All</a>
-	    <?php else: ?>
-	      <span class="pk-radio-option-selected option-0 first">All</span>
-	    <?php endif ?>
+				<?php echo link_to('Image', pkUrl::addParams($current, array('type' => ($type == 'image') ? '' : 'image')), array('class' => ($type=='image') ? 'selected' : '', )) ?>
 			</li>
 			<li class="pk-media-filter-option">
-	    <?php if (!(isset($type) && ($type === 'image'))): ?>
-	      <a id="pk-media-filter-option-1" class="option-1" href="<?php echo url_for(pkUrl::addParams($current, array('type' => 'image'))) ?>">Image</a>
-	    <?php else: ?>
-	      <span class="pk-radio-option-selected option-1">Image</span>
-	    <?php endif ?>
+				<?php echo link_to('Video', pkUrl::addParams($current, array('type' => ($type == 'video') ? '' : 'video')), array('class' => ($type=='video') ? 'selected' : '', )) ?>				
 			</li>
 			<li class="pk-media-filter-option">
-	    <?php if (!(isset($type) && ($type === 'video'))): ?>
-	      <a id="pk-media-filter-option-2" class="option-2" href="<?php echo url_for(pkUrl::addParams($current, array('type' => 'video'))) ?>">Video</a>
-	    <?php else: ?>
-	      <span class="pk-radio-option-selected option-2">Video</span>
-	    <?php endif ?>
-			</li>
-			<li class="pk-media-filter-option">
-	    <?php if (!(isset($type) && ($type === 'pdf'))): ?>
-	      <a id="pk-media-filter-option-3" class="option-3 last" href="<?php echo url_for(pkUrl::addParams($current, array('type' => 'pdf'))) ?>">PDF</a>
-	    <?php else: ?>
-	      <span class="pk-radio-option-selected option-3 last">PDF</span>
-	    <?php endif ?>
+				<?php echo link_to('PDF', pkUrl::addParams($current, array('type' => ($type == 'pdf') ? '' : 'pdf')), array('class' => ($type=='pdf') ? 'selected' : '', )) ?>
 			</li>
 	  </ul>
 
@@ -51,14 +33,14 @@
 	      <?php endif ?>
 	    </ul>
     	
-			<h4 class="pk-tag-sidebar-title popular">Popular Tags</h4>
+			<h3 class="pk-tag-sidebar-title popular">Popular Tags</h3>
     	<ul class="pk-tag-sidebar-list popular">
       	<?php foreach ($popularTags as $tag => $count): ?>
 	        <li><a href="<?php echo url_for(pkUrl::addParams($current, array("tag" => $tag))) ?>"><span class="pk-tag-sidebar-tag"><?php echo htmlspecialchars($tag) ?></span> <span class="pk-tag-sidebar-tag-count"><?php echo $count ?></span></a></li>
 	      <?php endforeach ?>
     	</ul>
 
-    	<h4 class="pk-tag-sidebar-title all-tags">All Tags</h4>
+    	<h3 class="pk-tag-sidebar-title all-tags">All Tags</h3>
 	    <ul class="pk-tag-sidebar-list all-tags">
 	      <?php foreach ($allTags as $tag => $count): ?>
 	        <li><a href="<?php echo url_for(pkUrl::addParams($current, array("tag" => $tag))) ?>"><span class="pk-tag-sidebar-tag"><?php echo htmlspecialchars($tag) ?></span> <span class="pk-tag-sidebar-tag-count"><?php echo $count ?></span></a></li>

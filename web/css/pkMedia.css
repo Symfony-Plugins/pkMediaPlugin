@@ -58,6 +58,12 @@ width: 180px;
 width: 150px;
 }
 
+.pk-search-form input.submit:hover
+{
+background-position: 0 -20px;
+cursor: pointer;
+}
+
 .pk-media-row {
 float: left;
 display: inline;
@@ -102,16 +108,41 @@ width: 100%;
 	clear: both;
 }
 
-.pk-media-subnav .pk-media-filters .pk-radio-option-selected
+.pk-media-subnav .pk-media-filters
 {
 	color: #000;
 	text-decoration: none;
+	float: left;
+	clear: both;
+	width: 100%;
 }
 
 .pk-media-subnav .pk-media-filters .pk-media-filter-option
 {
 	float:left;
-	display:inline;
+	width: 100%;
+	clear: both;
+/*	display:inline;*/
+}
+
+.pk-media-subnav .pk-media-filters .pk-media-filter-option a
+{
+	float: left;
+	clear: both;
+	line-height: 20px;
+	height: 20px;
+}
+
+.pk-media-subnav .pk-media-filters .pk-media-filter-option .selected
+{
+padding-right: 20px;
+background: url(/pkToolkitPlugin/images/pk-icon-close.png) top right no-repeat;
+text-decoration: underline;
+}
+
+.pk-media-subnav .pk-media-filters .pk-media-filter-option a.selected:hover
+{
+	background-position: bottom right;
 }
 
 .pk-media-item 
@@ -456,9 +487,14 @@ clear: both;
 margin: 20px 0 0 0;
 }
 
+.pk-tag-sidebar h3,
 .pk-tag-sidebar ul {
 float: left;
 width: 100%;
+clear: both;
+}
+
+.pk-tag-sidebar ul {
 list-style: none;
 list-style-position: outside !important;
 }
