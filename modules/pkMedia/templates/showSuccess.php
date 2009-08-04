@@ -15,7 +15,7 @@
   $options['width'], $options['height'], $options['resizeType'], $options['format']) ?>
 
 <ul class="pk-media-item-content" id="pk-media-item-content-<?php echo $mediaItem->getId()?>">
-
+<h5><?php echo link_to('&larr; Back to Media Library', '@pk_media_index')?></h5>
 	<li class="pk-media-item-source">
 		<?php include_partial('pkMedia/editLinks', array('mediaItem' => $mediaItem)) ?>
 
@@ -25,9 +25,9 @@
   <?php // Stored as HTML ?>
 	<li class="pk-media-item-title"><h3><?php echo htmlspecialchars($mediaItem->getTitle()) ?></h3></li>
   <li class="pk-media-description"><?php echo $mediaItem->getDescription() ?></li>
-  <li class="pk-media-createdat pk-media-meta"><span>Uploaded:</span> <?php echo pkDate::pretty($mediaItem->getCreatedAt()) ?></li>
-  <li class="pk-media-credit pk-media-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
-  <li class="pk-media-tags pk-media-meta"><span>Tags:</span> <?php include_partial('pkMedia/showTags', array('tags' => $mediaItem->getTags())) ?></li>
+  <li class="pk-media-createdat pk-media-item-meta"><span>Uploaded:</span> <?php echo pkDate::pretty($mediaItem->getCreatedAt()) ?></li>
+  <li class="pk-media-credit pk-media-item-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
+  <li class="pk-media-tags pk-media-item-meta"><span>Tags:</span> <?php include_partial('pkMedia/showTags', array('tags' => $mediaItem->getTags())) ?></li>
 
 </ul>
 
