@@ -385,7 +385,6 @@ class pkMediaActions extends sfActions
           // until the slug is cast in stone
           $object->preSaveImage($file->getTempName());
         }
-        echo("before save\n");
         $this->form->save();
         if ($file)
         {
