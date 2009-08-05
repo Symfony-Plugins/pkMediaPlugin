@@ -102,10 +102,20 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
       $data = stream_get_contents($in);
       // Actual nonfatal errors in the bbox output mean it's not safe to just
       // read this naively with fscanf, look for the good part
-      if (preg_match("/%%%%BoundingBox: \d+ \d+ (\d+) (\d+)/", $data, $matches))
+      if (preg_match("/%%BoundingBox: \d+ \d+ (\d+) (\d+)/", $data, $matches))
       {
         $this->width = $matches[1];
         $this->height = $matches[2];
+      }
+      else
+      {
+        // Got no dimensions. TODO: I return false here but the calling
+        // code doesn't really cope yet. It's problematic: what if this is
+        // a replacement for another file? Meanwhile, supply bogus dimensions
+        // to prevent comical scaling errors if it's somehow a valid PDF
+        $this->width = 850;
+        $this->height = 1100;
+        return false;
       }
       pclose($in);
       
