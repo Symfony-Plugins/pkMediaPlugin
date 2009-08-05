@@ -99,14 +99,20 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
       # Bounding box goes to stderr, not stdout! Charming
       $cmd = "(PATH=$path:\$PATH; export PATH; gs -sDEVICE=bbox -dNOPAUSE -dFirstPage=1 -dLastPage=1 -r100 -q " . escapeshellarg($file) . " -c quit) 2>&1";
       $in = popen($cmd, "r");
-      list($x1, $y1, $x2, $y2) = fscanf($in, "%%%%BoundingBox: %d %d %d %d");
+      $data = stream_get_contents($in);
+      // Actual nonfatal errors in the bbox output mean it's not safe to just
+      // read this naively with fscanf, look for the good part
+      if (preg_match("/%%%%BoundingBox: \d+ \d+ (\d+) (\d+)/", $data, $matches))
+      {
+        $this->width = $matches[1];
+        $this->height = $matches[2];
+      }
       pclose($in);
       
       // TODO: if I don't get $x2 and $y2, ghostscript is uninstalled or misconfigured,
-      // and I should fake it by always rendering a big PDF icon
+      // and I should fake it by always rendering a big PDF icon... it could also
+      // be a bad PDF
             
-      $this->width = $x2;
-      $this->height = $y2;
     }
     else
     {
