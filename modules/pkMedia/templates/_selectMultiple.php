@@ -3,7 +3,7 @@
 <?php if (!$type): ?>
 <?php $type = "media item" ?>
 <?php endif ?>
-	<p>Select one or more <?php echo $type ?>s by clicking on them. You can remove and reorder <?php echo $type ?>s using the controls on the right. Drag and drop <?php echo $type ?>s to reorder them within the list of selected items. 
+	<p>Select one or more <?php echo $type ?>s by clicking on them below. Drag and drop <?php echo $type ?>s to reorder them within the list of selected items. Remove <?php echo $type ?>s by clicking on the trashcan.
   <?php if ($limitSizes): ?>
   Only appropriately sized <?php echo $type ?>s are shown.
   <?php endif ?>

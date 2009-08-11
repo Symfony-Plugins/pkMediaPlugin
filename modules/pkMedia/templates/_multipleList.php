@@ -8,14 +8,16 @@
   <ul class="pk-controls pk-media-multiple-list-controls">	
 	  <li><?php echo jq_link_to_remote("remove this item",
     array(
-      "url" => "pkMedia/multipleRemove?id=$id",
-      "update" => "pk-media-selection-list",
+      'url' => 'pkMedia/multipleRemove?id='.$id,
+      'update' => 'pk-media-selection-list',
 			'complete' => 'pkUI("pk-media-selection-list"); pkMediaDeselectItem('.$id.')', 
-    ), array("class"=>"pk-btn icon pk-delete icon-only")) ?>
+    ), array(
+			'class'=> 'pk-btn icon pk-delete icon-only',
+			'title' => 'Remove', )) ?>
 		</li>
 	</ul>	
 
-  <img src="<?php echo url_for($item->getScaledUrl(pkMediaTools::getOption('selected_constraints'))) ?>" />
+  <img src="<?php echo url_for($item->getScaledUrl(pkMediaTools::getOption('selected_constraints'))) ?>" title="Drag &amp; Drop to Order" />
 
 	  <?php $ids[] = $item->getId() ?>
 
