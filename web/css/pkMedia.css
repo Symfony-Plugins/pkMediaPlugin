@@ -220,6 +220,29 @@ text-decoration: underline;
 	position: relative;
 }
 
+.pk-media-selection-list-item .pk-media-selected-item-drag-overlay,
+.pk-media-selection-list-item .pk-media-selected-item-overlay
+{
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: none;
+}
+
+.pk-media-selection-list-item.over .pk-media-selected-item-drag-overlay
+{
+	background: url(/pkToolkitPlugin/images/pk-icon-drag.png) center center no-repeat;
+	z-index: 299;
+}
+
+.pk-media-selection-list-item.over .pk-media-selected-item-overlay
+{
+	background-color: #000;
+	z-index:199;
+}
+
 .pk-media-selection-list-item img
 {
 	float: left;

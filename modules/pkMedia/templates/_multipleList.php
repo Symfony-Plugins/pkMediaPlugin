@@ -17,7 +17,9 @@
 		</li>
 	</ul>	
 
-  <img src="<?php echo url_for($item->getScaledUrl(pkMediaTools::getOption('selected_constraints'))) ?>" title="Drag &amp; Drop to Order" />
+	<div class="pk-media-selected-item-drag-overlay" title="Drag &amp; Drop to Order"></div>
+	<div class="pk-media-selected-item-overlay"></div>
+  <img src="<?php echo url_for($item->getScaledUrl(pkMediaTools::getOption('selected_constraints'))) ?>" />
 
 	  <?php $ids[] = $item->getId() ?>
 
@@ -29,6 +31,15 @@
 
 	$(document).ready(function() { // On page ready indicate selected items
 		pkMediaItemsIndicateSelected(<?php echo json_encode($ids) ?>) 
+
+		$('.pk-media-selected-item-overlay').fadeTo(0,.35); //cross-browser opacity for overlay
+					
+		$('.pk-media-selection-list-item').hover(function(){
+			$(this).addClass('over');
+		},function(){
+			$(this).removeClass('over');			
+		});
+		
 	});
 
 	function pkMediaItemsIndicateSelected(ids)
