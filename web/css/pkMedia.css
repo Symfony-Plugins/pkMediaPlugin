@@ -388,7 +388,20 @@ left: 10px;
 	position: relative;
 }
 
+#pk-media-video-search-form
+{
+	float:left;
 
+}
+
+#pk-media-video-search-form.pk-search-form input.pk-search-field
+{
+	float:left;
+	position:relative;
+	width:220px;
+	height:20px;
+	margin-bottom:10px;
+}
 
 #pk-media-video-search-form .form-row.submit
 {
@@ -403,6 +416,15 @@ left: 10px;
 {
 	padding: 0;
 	margin: 0;
+	float:left;
+	clear:both;
+}
+
+#pk-media-video-add-by-url-form .form-row.example
+{
+	position:relative;
+	float:left;
+	margin-top:20px;
 }
 
 #editing-disabled

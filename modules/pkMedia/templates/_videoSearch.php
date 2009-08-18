@@ -1,7 +1,8 @@
 <?php use_helper('jQuery') ?>
-<div class="form-row q" style="width:100%">
-	<?php echo $form['q']->render() ?>
-</div>
+
+
+	<?php echo $form['q']->render(array('class'=>'pk-search-field')) ?>
+
 
 <ul class="pk-controls">
   <li><input type="submit" value="Go" class="pk-submit" /></li>
@@ -15,7 +16,7 @@
 	</li>
 </ul>
 
-</form>
+
 
 <script type="text/javascript">
 var pkMediaVideoSearchResults = null;
@@ -117,10 +118,10 @@ function pkMediaVideoSelected(videoInfo)
 
 pkUI();
 
-$(document).ready(function(){
-	$('#videoSearch_q').css({
-		'float':'left',
-		'width':'auto',
-	})
-});
+// $(document).ready(function(){
+// 	$('#videoSearch_q').css({
+// 		'float':'left',
+// 		'width':'auto',
+// 	})
+// });
 </script>

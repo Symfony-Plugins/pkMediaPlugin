@@ -37,6 +37,8 @@
 	  <li><?php echo link_to("Cancel", "pkMedia/resumeWithPage", array("class" => "pk-cancel pk-btn icon event-default")) ?></li>
 	</ul>
 
+	<h4 id="pk-media-video-search-heading">Search YouTube</h4>     
+
     <?php echo jq_form_remote_tag(
 			array(
         'url' => 'pkMedia/videoSearch',
@@ -46,18 +48,19 @@
         'id' => 'pk-media-video-search-form', 
 				'class' => 'pk-search-form', )) ?>
 
-			<h4 id="pk-media-video-search-heading">Search YouTube</h4>          				
+     				
 
     	<?php include_partial('pkMedia/videoSearch', array('form' => $videoSearchForm, 'results' => false)) ?>
     </form>
 
-    <form id="pk-media-video-add-by-url-form" method="POST" action="<?php echo url_for("pkMedia/editVideo") ?>">
+ 		<h4 id="pk-media-video-add-by-url-heading">Add by URL</h4>   
 
-  		<h4 id="pk-media-video-add-by-url-heading">Add by URL</h4>    
+    <form id="pk-media-video-add-by-url-form" class="pk-search-form" method="POST" action="<?php echo url_for("pkMedia/editVideo") ?>">
+
 
 			<div class="form-row" style="position:relative">
         <label for="pk-media-video-url"></label>
-        <input type="text" id="pk-media-video-url" name="pk_media_item[service_url]" value="" />
+        <input type="text" id="pk-media-video-url" class="pk-search-field" name="pk_media_item[service_url]" value="" />
 			</div>
 
 			<div class="form-row example">
