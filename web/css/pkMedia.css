@@ -382,6 +382,7 @@ left: 10px;
 #pk-media-video-add-by-url-heading,
 #pk-media-video-search-form,
 #pk-media-video-add-by-url-form,
+#pk-media-video-add-by-embed-form,
 #pk-media-video-search-results-container
 {
   display: none;
