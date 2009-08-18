@@ -64,6 +64,7 @@ pkMediaPlugin requires:
 * sfDoctrineActAsTaggablePlugin
 * pkImageConverterPlugin
 * Zend Search
+* FCK (provided in pkToolkitPlugin, but you must enable it)
 
 === Installing the Required Plugins ===
 
@@ -85,6 +86,16 @@ netpbm utilities (free, open-source tools for image conversion without
 memory overhead). Also, it does not currently run on Windows although
 you could certainly be the one to patch that. See the README for that 
 plugin for details.
+
+=== Enabling the FCK Editor ===
+
+In your `apps/frontend/config/settings.yml`:
+
+    all:
+      .settings:
+        rich_text_fck_js_dir: pkToolkitPlugin/js/fckeditor
+
+This installation of FCK is already set up nicely for reasonable editing of rich text blurbs without too many distracting features enabled. You can use another if you wish.
 
 === Installing Zend Search ===
 
