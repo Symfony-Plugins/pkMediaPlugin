@@ -43,8 +43,8 @@
 
 </div>
 
-<script>
-$(function() {
+<script type="text/javascript" charset="utf-8">
+	$(function() {
   <?php // Why don't I just do this once? Because I have to re-bind handlers ?>
   <?php // to elements when I remove them and then re-add them elsewhere ?>
   <?php // in the document. ?>
