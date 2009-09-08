@@ -64,6 +64,17 @@ background-position: 0 -20px;
 cursor: pointer;
 }
 
+.pk-search-video
+{
+width: 150px;
+border: 1px solid #666;
+font-family: Arial, sans-serif;
+font-size: 12px;
+padding: 2px 3px;
+float: left;
+clear: both;
+}
+
 .pk-media-row {
 float: left;
 display: inline;

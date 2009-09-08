@@ -1,7 +1,7 @@
 <?php use_helper('jQuery') ?>
 
 
-	<?php echo $form['q']->render(array('class'=>'pk-search-field')) ?>
+	<?php echo $form['q']->render(array('class'=>'pk-search-video')) ?>
 
 
 <ul class="pk-controls">

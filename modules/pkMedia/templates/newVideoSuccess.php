@@ -60,7 +60,7 @@
 
 			<div class="form-row" style="position:relative">
         <label for="pk-media-video-url"></label>
-        <input type="text" id="pk-media-video-url" class="pk-search-field" name="pk_media_item[service_url]" value="" />
+        <input type="text" id="pk-media-video-url" class="pk-search-video" name="pk_media_item[service_url]" value="" />
 			</div>
 
 			<div class="form-row example">
