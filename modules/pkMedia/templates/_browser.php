@@ -25,13 +25,15 @@
 	  </ul>
 
 		<div class="pk-tag-sidebar">
-    	<ul class="pk-tag-sidebar-selected-tags">
-	      <?php if (isset($selectedTag)): ?>
+
+		 <?php if (isset($selectedTag)): ?>
+				<h4 class="pk-tag-sidebar-title selected-tag">Selected Tag</h4>  
+	    	<ul class="pk-tag-sidebar-selected-tags">
 	        <li class="selected">
-	          <span class="pk-tag-sidebar-tag"><?php echo htmlspecialchars($selectedTag) ?></span> <a class="pk-btn icon close" href="<?php echo url_for(pkUrl::addParams($current, array("tag" => false))) ?>">remove</a>
+						<?php echo link_to(htmlspecialchars($selectedTag), pkUrl::addParams($current, array("tag" => false)), array('class' => 'selected',)) ?>
 	        </li>
-	      <?php endif ?>
-	    </ul>
+	    	</ul>
+      <?php endif ?>
     	
 			<h3 class="pk-tag-sidebar-title popular">Popular Tags</h3>
     	<ul class="pk-tag-sidebar-list popular">
