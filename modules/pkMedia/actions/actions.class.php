@@ -271,8 +271,12 @@ class pkMediaActions extends sfActions
       // but there's no clean way to implement that feature in
       // addParam, and it wastes URL space anyway
       // (remember the 1024-byte limit)
+      
+      // addParamsNoDelete never attempts to eliminate a field just because
+      // its value is empty. This is how we distinguish between cancellation
+      // and selecting zero items
       return $this->redirect(
-        pkUrl::addParams($after,
+        pkUrl::addParamsNoDelete($after,
         array("pkMediaIds" => implode(",", $selection))));
     }
     // Single select
