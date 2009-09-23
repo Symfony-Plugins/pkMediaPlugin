@@ -39,6 +39,7 @@
 </li>
 
 <li class="pk-media-item-description"><?php echo $mediaItem->getDescription() ?></li>
+<li class="pk-media-item-dimensions pk-media-item-meta"><span>Original Dimensions:</span> <?php echo $mediaItem->getHeight(); ?>x<?php echo $mediaItem->getWidth(); ?></li>
 <li class="pk-media-item-createdat pk-media-item-meta"><span>Uploaded:</span> <?php echo pkDate::pretty($mediaItem->getCreatedAt()) ?></li>
 <li class="pk-media-item-credit pk-media-item-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
 <li class="pk-media-item-tags pk-media-item-meta"><span>Tags:</span> <?php include_partial('pkMedia/showTags', array('tags' => $mediaItem->getTags())) ?></li>
