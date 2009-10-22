@@ -47,13 +47,12 @@ class pkMediaPdfForm extends pkMediaItemForm
 				'default' => 0
 				)));
 	
-  		$this->setValidator('view_is_secure', new sfValidatorBoolean());
+  	$this->setValidator('view_is_secure', new sfValidatorBoolean());
 
     $this->widgetSchema->setLabel("view_is_secure", "Permissions");
     $this->widgetSchema->setNameFormat('pk_media_item[%s]');
-
-	
   }
+  
   public function updateObject($values = null)
   {
     $object = parent::updateObject($values);

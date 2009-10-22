@@ -78,82 +78,33 @@ abstract class PluginpkMediaItem extends BasepkMediaItem
       unlink($file); 
     }
   }
+  
   public function preSaveImage($file)
   {
-    $in = fopen($file, "rb");
-    $data = fread($in, 4);
-    fclose($in);
-    if ($data === '%PDF')
+    // Refactored into pkImageConverter for easier reuse of this should-be-in-PHP functionality
+    $info = pkImageConverter::getInfo($file);
+    if ($info)
     {
-      $this->format = 'pdf';
+      $this->width = $info['width'];
+      $this->height = $info['height'];
+      $this->format = $info['format'];
       $this->clearImageCache(true);
-      // PATH-constructing cleverness borrowed from pkImageConverter,
-      // which it really ought to be refactored back into as part of
-      // a dimensions function that supports PDF (TODO)
-      $path = sfConfig::get("app_pkimageconverter_path", "");
-      if (strlen($path)) {
-        if (!preg_match("/\/$/", $path)) {
-          $path .= "/";
-        }
-      }
-      # Bounding box goes to stderr, not stdout! Charming
-      $cmd = "(PATH=$path:\$PATH; export PATH; gs -sDEVICE=bbox -dNOPAUSE -dFirstPage=1 -dLastPage=1 -r100 -q " . escapeshellarg($file) . " -c quit) 2>&1";
-      $in = popen($cmd, "r");
-      $data = stream_get_contents($in);
-      // Actual nonfatal errors in the bbox output mean it's not safe to just
-      // read this naively with fscanf, look for the good part
-      if (preg_match("/%%BoundingBox: \d+ \d+ (\d+) (\d+)/", $data, $matches))
-      {
-        $this->width = $matches[1];
-        $this->height = $matches[2];
-      }
-      else
-      {
-        // Got no dimensions. TODO: I return false here but the calling
-        // code doesn't really cope yet. It's problematic: what if this is
-        // a replacement for another file? Meanwhile, supply bogus dimensions
-        // to prevent comical scaling errors if it's somehow a valid PDF
-        $this->width = 850;
-        $this->height = 1100;
-        return false;
-      }
-      pclose($in);
-      
-      // TODO: if I don't get $x2 and $y2, ghostscript is uninstalled or misconfigured,
-      // and I should fake it by always rendering a big PDF icon... it could also
-      // be a bad PDF
-            
+      return true;
     }
     else
     {
-      $formats = array(
-        IMAGETYPE_JPEG => "jpg",
-        IMAGETYPE_PNG => "png",
-        IMAGETYPE_GIF => "gif"
-      );
-      $data = getimagesize($file);
-      if (count($data) < 3)
-      {
-        return false;
-      }
-      if (!isset($formats[$data[2]]))
-      {
-        return false;
-      }
-      $format = $formats[$data[2]];
-      $this->clearImageCache(true);
-      $this->width = $data[0];
-      $this->height = $data[1];
-      $this->format = $format;
+      return false;
     }
-    return true;
   }
 
   public function saveImage($file)
   {
     if (!$this->width)
     {
-      $this->preSaveImage($file);
+      if (!$this->preSaveImage($file))
+      {
+        return false;
+      }
     }
     $result = copy($file, $this->getOriginalPath($this->getFormat()));
     return $result;
