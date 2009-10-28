@@ -54,7 +54,7 @@
 </div>
    
 <script type="text/javascript" charset="utf-8">
-	pkInputSelfLabel('#pk-media-search', 'Search');
+	pkInputSelfLabel('#pk-media-search', 'Search Two');
 
 	var allTags = $('.pk-tag-sidebar-title.all-tags');
 
