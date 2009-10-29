@@ -7,6 +7,7 @@
   <form method="POST" action="<?php echo url_for(pkUrl::addParams($current, array("search" => false))) ?>" class="pk-search-form media" id="pk-search-form-sidebar">
 		<?php echo input_tag('search', isset($search) ? $search : '', array('id' => 'pk-media-search', 'class' => 'pk-search-field')) ?>
     <input width="29" type="image" height="20" title="Click to Search" alt="Search" src="/pkContextCMSPlugin/images/pk-special-blank.gif" value="Submit" class="pk-search-submit submit"/>
+    <?php echo isset($search) ? link_to('X', pkUrl::addParams($current, array('search' => ''))) : '' ?>
   </form>
 
 	<div class="pk-media-filters">
@@ -54,7 +55,7 @@
 </div>
    
 <script type="text/javascript" charset="utf-8">
-	pkInputSelfLabel('#pk-media-search', 'Search Two');
+	pkInputSelfLabel('#pk-media-search', 'Search');
 
 	var allTags = $('.pk-tag-sidebar-title.all-tags');
 
