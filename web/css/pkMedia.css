@@ -64,6 +64,21 @@ background-position: 0 -20px;
 cursor: pointer;
 }
 
+#pk-media-search-remove
+{
+	float: left;
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 20px;
+	height: 20px;
+	background: #0f0;
+	color: #fff;
+	text-indent: -9999;
+	overflow: hidden;
+}
+
 .pk-search-video
 {
 width: 150px;

@@ -1,3 +1,11 @@
+<?php // For backwards compatibility reasons it is best to implement these as before and after partials ?>
+<?php // rather than a wrapper partial. If we use a wrapper that passes on each variable individually to an inner partial, ?>
+<?php // it will break as new variables are added. If we had used a single $params array as the only variable ?>
+<?php // in the first place, we could have avoided this, but we didn't, so let's be backwards compatible with all ?>
+<?php // of the existing overrides of _browser in our sites and those of others. ?>
+
+<?php include_partial('pkMedia/browserBefore') ?>
+
 <?php use_helper('Form') ?>
 
 <div id="pk-subnav" class="pk-media-subnav subnav">
@@ -6,8 +14,8 @@
 
   <form method="POST" action="<?php echo url_for(pkUrl::addParams($current, array("search" => false))) ?>" class="pk-search-form media" id="pk-search-form-sidebar">
 		<?php echo input_tag('search', isset($search) ? $search : '', array('id' => 'pk-media-search', 'class' => 'pk-search-field')) ?>
-    <input width="29" type="image" height="20" title="Click to Search" alt="Search" src="/pkContextCMSPlugin/images/pk-special-blank.gif" value="Submit" class="pk-search-submit submit"/>
-    <?php echo isset($search) ? link_to('X', pkUrl::addParams($current, array('search' => ''))) : '' ?>
+    <input width="29" type="image" height="20" title="Click to Search" alt="Search" src="/pkContextCMSPlugin/images/pk-special-blank.gif" value="Submit" class="pk-search-submit submit" id="pk-media-search-submit" />
+    <?php echo isset($search) ? link_to('Remove Search', pkUrl::addParams($current, array('search' => '')), array('id' => 'pk-media-search-remove')) : '' ?>
   </form>
 
 	<div class="pk-media-filters">
@@ -55,8 +63,33 @@
 </div>
    
 <script type="text/javascript" charset="utf-8">
-	pkInputSelfLabel('#pk-media-search', 'Search');
 
+	pkInputSelfLabel('#pk-media-search', <?php echo json_encode(isset($search) ? $search : 'Search') ?>);
+
+  <?php if (isset($search)): ?>
+    $('#pk-media-search-remove').show();
+    $('#pk-media-search-submit').hide();
+    var search = <?php echo json_encode($search) ?>;
+    $('#pk-media-search').bind("keyup blur", function(e) 
+    {
+      if ($(this).val() === search)
+      {
+        $('#pk-media-search-remove').show();
+        $('#pk-media-search-submit').hide();
+      }
+      else
+      {
+        $('#pk-media-search-remove').hide();
+        $('#pk-media-search-submit').show();
+      }
+    });
+
+    $('#pk-media-search').bind('pkInputSelfLabelClear', function(e) {
+      $('#pk-media-search-remove').show();
+      $('#pk-media-search-submit').hide();
+    });
+  <?php endif ?>
+  
 	var allTags = $('.pk-tag-sidebar-title.all-tags');
 
 	allTags.hover(function(){
@@ -71,3 +104,5 @@
 	})
 	
 </script>
+
+<?php include_partial('pkMedia/browserAfter') ?>
