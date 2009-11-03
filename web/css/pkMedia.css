@@ -64,7 +64,7 @@ background-position: 0 -20px;
 cursor: pointer;
 }
 
-#pk-media-search-remove
+a#pk-media-search-remove
 {
 	float: left;
 	display: none;
@@ -73,10 +73,16 @@ cursor: pointer;
 	right: 0;
 	width: 20px;
 	height: 20px;
-	background: #0f0;
-	color: #fff;
 	text-indent: -9999;
+	background: url(/pkMediaPlugin/images/pk-icon-close.png) top left no-repeat;
+	color: #fff;
 	overflow: hidden;
+	text-indent: -9999px !important;
+}
+
+a#pk-media-search-remove:hover
+{
+	background-position: bottom left;
 }
 
 .pk-search-video
