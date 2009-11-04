@@ -66,13 +66,12 @@ class PluginpkMediaItemTable extends Doctrine_Table
         return array();
       }
     }
-    // Return in the order requested (MySQL-specific).
-    return Doctrine_Query::create()->
-      select('m.*, FIELD(m.id, ' . implode(",", $ids) . ') AS rank')->
+    $q = Doctrine_Query::create()->
+      select('m.*')->
       from('pkMediaItem m')->
-      whereIn("m.id", $ids)->
-      orderBy("rank")->
-      execute();
+      whereIn("m.id", $ids);
+    pkDoctrine::orderByList($q, $ids);
+    return $q->execute();
   }
   static public $mimeTypes = array(
     "gif" => "image/gif",
@@ -112,8 +111,8 @@ class PluginpkMediaItemTable extends Doctrine_Table
     $query->from('pkMediaItem');
     if (isset($params['ids']))
     {
-      // MySQL-specific.
-      $query->select('pkMediaItem.*, FIELD(pkMediaItem.id, ' . implode(",", $params['ids']) . ') AS rank');
+      $query->select('pkMediaItem.*');
+      pkDoctrine::orderByList($query, $params['ids']);
       $query->andWhereIn("pkMediaItem.id", $params['ids']);
     }
     if (isset($params['tag']))
@@ -132,7 +131,7 @@ class PluginpkMediaItemTable extends Doctrine_Table
     }
     elseif (isset($params['ids']))
     {
-      $query->orderBy('rank asc');
+      // orderBy added by pkDoctrine::orderByIds
     }
     else
     {
@@ -176,7 +175,8 @@ class PluginpkMediaItemTable extends Doctrine_Table
     {
       $q = Doctrine_Query::create()->from('Tagging tg, tg.Tag t, pkMediaItem m');
       // If you're not logged in, you shouldn't see tags relating to secured stuff
-      $q->andWhere('m.id = tg.taggable_id AND ((m.view_is_secure IS NULL) OR (m.view_is_secure = FALSE))');
+      // Always IS FALSE, never = FALSE
+      $q->andWhere('m.id = tg.taggable_id AND ((m.view_is_secure IS NULL) OR (m.view_is_secure IS  FALSE))');
     }
     return TagTable::getAllTagNameWithCount($q, 
       array("model" => "pkMediaItem"));
