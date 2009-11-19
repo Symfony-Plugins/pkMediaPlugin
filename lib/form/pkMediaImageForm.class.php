@@ -18,6 +18,12 @@ class pkMediaImageForm extends pkMediaItemForm
       'image-preview' => pkMediaTools::getOption('gallery_constraints')
     )));
 
+    $item = $this->getObject();
+    if (!$item->isNew())
+    {
+      $this->getWidget('file')->setOption('default-preview', $item->getOriginalPath());
+    }
+    
     $this->setValidator('file', new pkValidatorFilePersistent(array(
       'mime_types' => array('image/jpeg', 'image/png', 'image/gif'), 
       'required' => (!$this->getObject()->getId())
@@ -46,6 +52,8 @@ class pkMediaImageForm extends pkMediaItemForm
 
     $this->widgetSchema->setLabel('view_is_secure', 'Permissions');
     $this->widgetSchema->setNameFormat('pk_media_item[%s]');
+    // $this->widgetSchema->setFormFormatterName('pkAdmin');
+    
   }
   
   public function updateObject($values = null)

@@ -21,11 +21,6 @@
 		<?php endif ?>
 		<?php // But we must have this ?>
 		<?php echo $form['file']->renderError() ?>
-		<?php // Output the item's image only if a preview of a newer one is ?>
-		<?php // not already present courtesy of the persistent file upload widget ?>
-		<?php if (!$previewAvailable): ?>
-		  <img src="<?php echo url_for($item->getScaledUrl(pkMediaTools::getOption('gallery_constraints'))) ?>" />
-		<?php endif ?>
 		<?php echo $form['file']->render() ?>
 		<?php else: ?>
 		<div class="form-row newfile">

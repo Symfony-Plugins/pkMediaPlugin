@@ -17,6 +17,7 @@ class pkMediaVideoEmbedForm extends pkMediaVideoForm
       new pkValidatorFilePersistent(array('mime_types' =>
         array('image/jpeg', 'image/png', 'image/gif'),
         "required" => (!$this->getObject()->getId()))));
+    $this->widgetSchema->setFormFormatterName('pkAdmin');  
   }
   static public function validateEmbed($validator, $value, $arguments)
   {

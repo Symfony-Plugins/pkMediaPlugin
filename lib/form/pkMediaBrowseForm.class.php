@@ -38,7 +38,7 @@ class pkMediaBrowseForm extends sfForm
     // they exist
     $this->validatorSchema->setOptions('allow_extra_fields', true);
     $this->widgetSchema->setIdFormat('pk_media_browser_%s');
-    $this->widgetSchema->setFormFormatterName('list');
+    $this->widgetSchema->setFormFormatterName('pkAdmin');
 
     // Yes, really: this makes it contextual without extra effort
     $this->widgetSchema->setNameFormat('%s');

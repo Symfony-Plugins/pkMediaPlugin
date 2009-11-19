@@ -51,6 +51,8 @@ class pkMediaPdfForm extends pkMediaItemForm
 
     $this->widgetSchema->setLabel("view_is_secure", "Permissions");
     $this->widgetSchema->setNameFormat('pk_media_item[%s]');
+    $this->widgetSchema->setFormFormatterName('pkAdmin');
+    
   }
   
   public function updateObject($values = null)

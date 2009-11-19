@@ -35,6 +35,8 @@ class pkMediaVideoForm extends pkMediaItemForm
 				)));
     $this->setValidator('view_is_secure', new sfValidatorBoolean());
     $this->widgetSchema->setLabel("view_is_secure", "Permissions");
+    $this->widgetSchema->setFormFormatterName('pkAdmin');  
+    
   }
   public function updateObject($values = null)
   {

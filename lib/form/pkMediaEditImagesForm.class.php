@@ -21,5 +21,7 @@ class pkMediaEditImagesForm extends sfForm
     }
     
     $this->widgetSchema->setNameFormat('pk_media_items[%s]'); 
+    // $this->widgetSchema->setFormFormatterName('pkAdmin');
+    
   }
 }

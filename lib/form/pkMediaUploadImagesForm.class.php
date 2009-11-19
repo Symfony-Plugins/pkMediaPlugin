@@ -10,8 +10,8 @@ class pkMediaUploadImagesForm extends sfForm
       $this->embedForm("item-$i", $uploadImageForm);
       $this->widgetSchema->setNameFormat('pk_media_items[%s]');
       $this->validatorSchema->setPostValidator(new sfValidatorCallback(array('callback' => array($this, 'atLeastOne'))));
-
     }
+    $this->widgetSchema->setFormFormatterName('pkAdmin');
   }
   // Thanks yet again to http://thatsquality.com/articles/can-the-symfony-forms-framework-be-domesticated-a-simple-todo-list
   public function atLeastOne($validator, $values, $args)

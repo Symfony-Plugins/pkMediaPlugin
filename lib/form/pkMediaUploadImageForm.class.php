@@ -15,5 +15,7 @@ class pkMediaUploadImageForm extends sfForm
       array("mime_types" => "Only JPEG, PNG and GIF-format images are accepted.")));
     // The same as the edit form by design
     $this->widgetSchema->setNameFormat('pk_media_item[%s]');
+    $this->widgetSchema->setFormFormatterName('pkAdmin');
+    
   }
 }

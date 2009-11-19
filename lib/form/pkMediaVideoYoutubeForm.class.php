@@ -10,5 +10,6 @@ class pkMediaVideoYoutubeForm extends pkMediaVideoForm
       new sfValidatorUrl(
         array('required' => true, 'trim' => true),
         array('required' => "Not a valid YouTube URL")));
+    $this->widgetSchema->setFormFormatterName('pkAdmin');  
   }
 }
