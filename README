@@ -1,8 +1,8 @@
 == READ THIS NOTE FIRST ==
 
-This is a technology preview release of pkMediaPlugin. Although the
-media plugin already works quite well and we are close to launching a production
-site based on it, certain aspects are still maturing. In particular
+This is a beta release of pkMediaPlugin. Although the
+media plugin already works quite well and we have launched several production
+sites based on it, certain aspects are still maturing. In particular
 we intend to ship a stylesheet containing just what you need for an
 attractive pkMediaPlugin site. Right now we ship a more complete
 stylesheet in the cmstest project which utilizes pkMediaPlugin. You can
