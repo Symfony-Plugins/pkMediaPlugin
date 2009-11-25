@@ -1,23 +1,23 @@
 default:
-  is_secure: on
+  is_secure: true
 
 index:
-  is_secure: off
+  is_secure: false
 
 image:
-  is_secure: off
+  is_secure: false
 
 show:
-  is_secure: off
+  is_secure: false
 
 original:
-  is_secure: off
+  is_secure: false
 
 info:
-  is_secure: off
+  is_secure: false
 
 tags:
-  is_secure: off
+  is_secure: false
   
 # Credentials for uploading, implemented in the code: you must
 # be a member of the group specified by app_pkMedia_upload_group.
