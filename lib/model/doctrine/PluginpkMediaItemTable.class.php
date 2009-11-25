@@ -119,7 +119,6 @@ class PluginpkMediaItemTable extends Doctrine_Table
     {
       $query = TagTable::getObjectTaggedWithQuery(
         'pkMediaItem', $params['tag'], $query);
-      sfContext::getInstance()->getLogger()->info("ZZZZZZ added query for tag " . $params['tag'] . " now it is " . $query->getSql());
     }
     if (isset($params['type']))
     {
@@ -163,7 +162,6 @@ class PluginpkMediaItemTable extends Doctrine_Table
     {
       $query->andWhere('pkMediaItem.height = ?', array($params['height'] + 0));
     }
-    sfContext::getInstance()->getLogger()->info("ZZZZZ" . $query->getSql());
     return $query;
   }
   
