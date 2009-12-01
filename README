@@ -2,14 +2,15 @@
 
 This is a beta release of pkMediaPlugin. Although the
 media plugin already works quite well and we have launched several production
-sites based on it, certain aspects are still maturing. In particular
-we intend to ship a stylesheet containing just what you need for an
-attractive pkMediaPlugin site. Right now we ship a more complete
-stylesheet in the cmstest project which utilizes pkMediaPlugin. You can
-refer to that for ideas. See pkContextCMSPlugin for more information
-about cmstest.
+sites based on it, certain aspects are still maturing.
 
-== pkMediaPlugin ==
+== Quick Start ==
+
+You can find a complete and fully configured example in the cmstest project, which we use as a starting point for all of our own production sites. If your goal is to add media slots to our CMS plugin, you should start from the cmstest project, which can be easily duplicated in your own svn repository. See pkContextCMSPlugin/README for more information about the cmstest project and how to duplicate it in your own repository.
+
+pkMediaPlugin can be used by itself and is also part of a suite of plugins that make up the [Apostrophe Content Management System](http://www.apostrophenow.com/). The philosophy of Apostrophe is that editing should be done "in context" whenever possible.
+
+== Overview ==
 
 pkMedia provides five key services:
 
