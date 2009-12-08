@@ -25,10 +25,23 @@
   <?php // Stored as HTML ?>
 	<li class="pk-media-item-title"><h3><?php echo htmlspecialchars($mediaItem->getTitle()) ?></h3></li>
   <li class="pk-media-description"><?php echo $mediaItem->getDescription() ?></li>
+	<li class="pk-media-item-dimensions pk-media-item-meta"><span>Original Dimensions:</span> <?php echo $mediaItem->getWidth(); ?>x<?php echo $mediaItem->getHeight(); ?></li>
   <li class="pk-media-createdat pk-media-item-meta"><span>Uploaded:</span> <?php echo pkDate::pretty($mediaItem->getCreatedAt()) ?></li>
   <li class="pk-media-credit pk-media-item-meta"><span>Credit:</span> <?php echo htmlspecialchars($mediaItem->getCredit()) ?></li>
   <li class="pk-media-tags pk-media-item-meta"><span>Tags:</span> <?php include_partial('pkMedia/showTags', array('tags' => $mediaItem->getTags())) ?></li>
-
+	<li class="pk-media-item-download">
+		<?php if ($mediaItem->getType() !== 'video'): ?>
+        <?php // download link ?>
+        <?php echo link_to(
+          "Download Original<span></span>",
+          "pkMedia/original?" .
+            http_build_query(
+              array(
+                "slug" => $mediaItem->getSlug(),
+                "format" => $mediaItem->getFormat())), 
+                array("class"=>"pk-btn download")) ?>
+      <?php endif ?>
+	</li>
 </ul>
 
 <script type="text/javascript">
