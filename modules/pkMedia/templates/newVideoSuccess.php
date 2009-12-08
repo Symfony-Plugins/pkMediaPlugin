@@ -37,7 +37,7 @@
 	  <li><?php echo link_to("Cancel", "pkMedia/resumeWithPage", array("class" => "pk-cancel pk-btn icon event-default")) ?></li>
 	</ul>
 
-	<h4 id="pk-media-video-search-heading">Search YouTube</h4>     
+	<h4 id="pk-media-video-search-heading" class="pk-media-video-heading">Search YouTube</h4>     
 
     <?php echo jq_form_remote_tag(
 			array(
@@ -46,25 +46,27 @@
 				'before' => '$("#pk-media-video-search-form .pk-search-field").append("<span class=\"pk-spinner\"></span>");'), 
       array(
         'id' => 'pk-media-video-search-form', 
-				'class' => 'pk-search-form', )) ?>
+				'class' => 'pk-media-search-form', )) ?>
 
-     				
-
+    				
+				<?php if (0) {
+					# form tag has a height of 20px. this is messing up the height causing the footer to crash into the results.
+					# Need to rework the input background or the markup to allow this stuff to work properly
+				} ?>
     	<?php include_partial('pkMedia/videoSearch', array('form' => $videoSearchForm, 'results' => false)) ?>
     </form>
 
- 		<h4 id="pk-media-video-add-by-url-heading">Add by URL</h4>   
+ 		<h4 id="pk-media-video-add-by-url-heading" class="pk-media-video-heading">Add by URL</h4>   
 
-    <form id="pk-media-video-add-by-url-form" class="pk-search-form" method="POST" action="<?php echo url_for("pkMedia/editVideo") ?>">
+    <form id="pk-media-video-add-by-url-form" class="pk-media-search-form" method="POST" action="<?php echo url_for("pkMedia/editVideo") ?>">
 
-
-			<div class="form-row" style="position:relative">
+			<div class="form-row pk-search-field" style="position:relative">
         <label for="pk-media-video-url"></label>
-        <input type="text" id="pk-media-video-url" class="pk-search-video" name="pk_media_item[service_url]" value="" />
+        <input type="text" id="pk-media-video-url" class="pk-search-video pk-search-form" name="pk_media_item[service_url]" value="" />
 			</div>
 
 			<div class="form-row example">
-        <p style="font-size:11px;color:#999;padding:5px 0 15px 0;">Example: http://www.youtube.com/watch?v=EwTZ2xpQwpA</p>
+        <p>Example: http://www.youtube.com/watch?v=EwTZ2xpQwpA</p>
         <input type="hidden" name="first_pass" value="1" /> 
 			</div>
 
@@ -74,21 +76,22 @@
       </ul>
 		
      </form>
+		
+		<?php if (pkMediaTools::getOption('embed_codes')): ?>
+			<h4 id="pk-media-video-add-by-embed-heading" class="pk-media-video-heading">Add by Embed Code</h4>
+			
+			<form id="pk-media-video-add-by-embed-form" class="pk-media-search-form" method="POST" action="<?php echo url_for("pkMedia/editVideo") ?>">
 
-     <?php if (pkMediaTools::getOption('embed_codes')): ?>
-     <form id="pk-media-video-add-by-embed-form" method="POST" action="<?php echo url_for("pkMedia/editVideo") ?>">
-
-		  <h4 id="pk-media-video-add-by-embed-heading">Add by Embed Code</h4>          
+			<div class="form-row pk-search-field" style="position:relative">
+        <label for="pk-media-video-embed"></label>
+        <input type="text" id="pk-media-video-embed" class="pk-search-video pk-search-form" name="pk_media_item[embed]" value="" />
+			</div>
 
 			<div class="form-row example">
         <p>Example: <?php echo htmlspecialchars('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="437" height="291" ...</object>') ?></p>
         <input type="hidden" name="first_pass" value="1" /> 
 			</div>
 			
-			<div class="form-row" style="position:relative">
-        <label for="pk-media-video-embed">Embed code</label>
-        <input type="text" id="pk-media-video-embed" name="pk_media_item[embed]" value="" />
-			</div>
 
 			<ul class="pk-controls pk-media-upload-form-footer" id="pk-media-video-add-by-embed-form-submit">
         <li><input type="submit" value="Go" class="pk-submit" /></li>
@@ -108,3 +111,12 @@
 </div>
 
 </div>
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+			pkInputSelfLabel('#videoSearch_q', <?php echo json_encode(isset($search) ? $search : 'Search') ?>);
+			pkInputSelfLabel('#pk-media-video-url', <?php echo json_encode(isset($search) ? $search : 'http://') ?>);
+			pkInputSelfLabel('#pk-media-video-embed', <?php echo json_encode(isset($search) ? $search : '<object>...</object>') ?>);			
+	});
+	
+</script>

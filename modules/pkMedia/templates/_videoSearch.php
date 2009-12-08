@@ -1,8 +1,6 @@
 <?php use_helper('jQuery') ?>
 
-
-	<?php echo $form['q']->render(array('class'=>'pk-search-video')) ?>
-
+	<?php echo $form->render() ?>
 
 <ul class="pk-controls">
   <li><input type="submit" value="Go" class="pk-submit" /></li>
@@ -15,8 +13,6 @@
 			array("class" => "pk-cancel pk-btn icon event-default")) ?>
 	</li>
 </ul>
-
-
 
 <script type="text/javascript">
 var pkMediaVideoSearchResults = null;
