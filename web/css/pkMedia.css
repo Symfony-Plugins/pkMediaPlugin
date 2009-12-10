@@ -211,6 +211,7 @@ float: left;
 display: inline;
 clear: both;
 width: 100%;
+position: relative;
 }
 
 .pk-media-item-link span
@@ -535,7 +536,7 @@ position: relative;
 .pk-media .pk-media-selected-overlay
 {
 position: absolute;
-z-index: 9999;
+z-index: 699;
 top: 0;
 left: 0;
 height: 100%;

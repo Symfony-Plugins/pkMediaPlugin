@@ -61,7 +61,7 @@
 		$('.pk-media-item').each(function(){
 			if ($(this).hasClass('.pk-media-selected'))
 			{
-				$(this).prepend('<div class="pk-media-selected-overlay"></div>');
+				$(this).children(':first').prepend('<div class="pk-media-selected-overlay"></div>');
 			}
 		});
 
