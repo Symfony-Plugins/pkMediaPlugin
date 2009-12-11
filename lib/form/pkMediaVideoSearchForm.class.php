@@ -9,6 +9,5 @@ class pkMediaVideoSearchForm extends sfForm
     $this->widgetSchema->setNameFormat('videoSearch[%s]');
     $this->widgetSchema->setFormFormatterName('pkAdmin');  
     $this->widgetSchema->setLabel('q', ' ');
-    $this->widgetSchema->setAttributes('q');
   }
 }
