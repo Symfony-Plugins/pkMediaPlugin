@@ -6,7 +6,7 @@
 
 <?php include_partial('pkMedia/browserBefore') ?>
 
-<?php use_helper('Form') ?>
+<?php use_helper('Url') ?>
 
 <div id="pk-subnav" class="pk-media-subnav subnav">
 

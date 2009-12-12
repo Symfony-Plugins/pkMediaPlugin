@@ -42,8 +42,7 @@ class pkMediaImageForm extends pkMediaItemForm
       'required' => 'You must provide a title.')
     ));
 
-		$this->setWidget('view_is_secure', new sfWidgetFormChoice(array(
-		  'expanded' => true,
+		$this->setWidget('view_is_secure', new sfWidgetFormSelectRadio(array(
 		  'choices' => array(0 => 'Public', 1 => 'Hidden'),
 		  'default' => 0
 		)));
@@ -58,6 +57,10 @@ class pkMediaImageForm extends pkMediaItemForm
   
   public function updateObject($values = null)
   {
+    if (!isset($values))
+    {
+      $values = $this->getValues();
+    }
     $object = parent::updateObject($values);
     $object->type = 'image';
     return $object;

@@ -605,8 +605,6 @@ class pkMediaActions extends sfActions
     $this->active = explode(",", $request->getParameter('active'));
 
     $this->form = new pkMediaEditImagesForm($this->active);
-    // TODO: fix the hole: ids must not be set, this invocation 
-    // is for new uploads only
     $this->form->bind(
       $request->getParameter('pk_media_items'),
       $request->getFiles('pk_media_items'));
