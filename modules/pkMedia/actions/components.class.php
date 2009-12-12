@@ -4,10 +4,12 @@ class pkMediaComponents extends sfComponents
 {
   public function executeBrowser($request)
   {
-    // We don't use a 1.2 form for this anymore. What we wanted was
+    // We don't use a single integrated form for this anymore. What we wanted was
     // individual-link behavior, and yet we overlaid a form on that,
     // which had some interesting aspects but was ultimately confusing 
     // and a problem for search engine indexing etc
+    
+    // ... But we do now use a simple form for the search form
     
     $this->current = "pkMedia/index";
     $params = array();
@@ -29,6 +31,8 @@ class pkMediaComponents extends sfComponents
       $this->search = $search;
       $params['search'] = $search;
     }
+    $this->searchForm = new pkMediaSearchForm();
+    $this->searchForm->bind(array('search' => $request->getParameter('search')));
     $this->current .= "?" . http_build_query($params);
     $this->allTags = pkMediaItemTable::getAllTagNameForUserWithCount();
     $tagsByPopularity = $this->allTags;

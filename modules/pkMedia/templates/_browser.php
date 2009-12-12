@@ -14,7 +14,7 @@
 
   <form method="POST" action="<?php echo url_for(pkUrl::addParams($current, array("search" => false))) ?>" class="pk-search-form media" id="pk-search-form-sidebar">
     <?php echo isset($search) ? link_to('Clear Search', pkUrl::addParams($current, array('search' => '')), array('id' => 'pk-media-search-remove', 'title' => 'Clear Search', )) : '' ?>
-		<?php echo input_tag('search', isset($search) ? $search : '', array('id' => 'pk-media-search', 'class' => 'pk-search-field')) ?>
+    <?php echo $searchForm['search']->render() ?>
     <input width="29" type="image" height="20" title="Click to Search" alt="Search" src="/pkContextCMSPlugin/images/pk-special-blank.gif" value="Submit" class="pk-search-submit submit" id="pk-media-search-submit" />
   </form>
 
