@@ -88,6 +88,10 @@ class pkMediaAPI
       $site = sfConfig::get('app_pkMedia_client_site', sfContext::getInstance()->getRequest()->getUriPrefix());
     }
     $this->site = $site;
+    if ($this->site === 'http://')
+    {
+      throw new sfException('You are probably running a task that utilizes pkMediaAPI without calling pkTaskTools::setCliHost(), or you are calling pkTaskTools::setCliHost() but app_cli_host is not set in app.yml. It should be set to the fully qualified domain name of your site. Alternatively you can also set app_pkMedia_client_site to specify a media plugin server running on a separate site.');
+    }
   }
   
   // List all media tags (returns an array of strings)
