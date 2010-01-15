@@ -40,11 +40,12 @@ display: inline;
 float: left;
 }
 
-.pk-media-subnav
+#pk-subnav.pk-media-subnav
 {
 width: 178px;
 margin-bottom: 20px;
 float: left;
+position: relative;
 }
 
 .pk-media-subnav .pk-search-form
@@ -193,8 +194,13 @@ background-position: bottom right;
 float: left;
 display: inline;
 position: relative;
-width: 50%;
+width: 340px;
 margin-bottom: 20px;
+}
+
+.pk-media-item.even
+{
+	margin-right: 40px;
 }
 
 .pk-media-item-meta
