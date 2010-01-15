@@ -66,6 +66,7 @@ pkMediaPlugin requires:
 * pkImageConverterPlugin
 * Zend Search
 * FCK (provided in pkToolkitPlugin, but you must enable it)
+* Support for http URLs in fopen() calls ( allow_url_fopen must be set to "on", which is typical ) 
 
 === Installing the Required Plugins ===
 
