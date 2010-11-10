@@ -6,7 +6,7 @@
 <?php endif ?>
 
 <?php if ($item): ?>
-<form method="POST" id="pk-media-edit-form" enctype="multipart/form-data" 
+<form method="post" id="pk-media-edit-form" enctype="multipart/form-data" 
   action="<?php echo url_for(pkUrl::addParams("pkMedia/editImage",
     array("slug" => $item->getSlug())))?>">
 <?php endif ?>

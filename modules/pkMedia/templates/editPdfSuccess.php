@@ -29,7 +29,7 @@
   <h3>That is not a valid PDF.</h3>
   <?php endif ?>
 
-  <form method="POST" id="pk-media-edit-form" enctype="multipart/form-data" action="<?php echo url_for(pkUrl::addParams("pkMedia/editPdf", array("slug" => $slug)))?>">
+  <form method="post" id="pk-media-edit-form" enctype="multipart/form-data" action="<?php echo url_for(pkUrl::addParams("pkMedia/editPdf", array("slug" => $slug)))?>">
 
     <div class="form-row file">
       <?php echo $form['file']->renderLabel() ?>

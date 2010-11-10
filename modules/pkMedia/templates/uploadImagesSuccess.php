@@ -11,7 +11,7 @@
 
     <?php echo $form->renderGlobalErrors() ?>
 
-    <form method="POST" action="<?php echo url_for("pkMedia/uploadImages") ?>" enctype="multipart/form-data" id="pk-media-upload-form">
+    <form method="post" action="<?php echo url_for("pkMedia/uploadImages") ?>" enctype="multipart/form-data" id="pk-media-upload-form">
       <?php // I use this in js code, don't kill it please, style it if you want ?>
       <div id="pk-media-upload-form-subforms">
         <?php for ($i = 0; ($i < pkMediaTools::getOption('batch_max')); $i++): ?>

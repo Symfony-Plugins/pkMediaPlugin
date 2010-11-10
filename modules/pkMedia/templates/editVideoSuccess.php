@@ -29,7 +29,7 @@
   <h3>That is not a valid YouTube video URL.</h3>
   <?php endif ?>
 
-  <form method="POST" id="pk-media-edit-form" enctype="multipart/form-data" action="<?php echo url_for(pkUrl::addParams("pkMedia/editVideo", array("slug" => $slug)))?>">
+  <form method="post" id="pk-media-edit-form" enctype="multipart/form-data" action="<?php echo url_for(pkUrl::addParams("pkMedia/editVideo", array("slug" => $slug)))?>">
 
     <div class="form-row title">
       <?php echo $form['title']->renderLabel() ?>

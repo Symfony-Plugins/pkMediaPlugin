@@ -58,7 +58,7 @@
 
  		<h4 id="pk-media-video-add-by-url-heading" class="pk-media-video-heading">Add by URL</h4>   
 
-    <form id="pk-media-video-add-by-url-form" class="pk-media-search-form" method="POST" action="<?php echo url_for("pkMedia/editVideo") ?>">
+    <form id="pk-media-video-add-by-url-form" class="pk-media-search-form" method="post" action="<?php echo url_for("pkMedia/editVideo") ?>">
 
 			<div class="form-row pk-search-field" style="position:relative">
         <label for="pk-media-video-url"></label>
@@ -80,7 +80,7 @@
 		<?php if (pkMediaTools::getOption('embed_codes')): ?>
 			<h4 id="pk-media-video-add-by-embed-heading" class="pk-media-video-heading">Add by Embed Code</h4>
 			
-			<form id="pk-media-video-add-by-embed-form" class="pk-media-search-form" method="POST" action="<?php echo url_for("pkMedia/editVideo") ?>">
+			<form id="pk-media-video-add-by-embed-form" class="pk-media-search-form" method="post" action="<?php echo url_for("pkMedia/editVideo") ?>">
 
 			<div class="form-row pk-search-field" style="position:relative">
         <label for="pk-media-video-embed"></label>

@@ -11,7 +11,7 @@
 	</div>
 
 	<div class="pk-media-library">				
-		<form method="POST" action="<?php echo url_for("pkMedia/editImages") ?>" enctype="multipart/form-data" id="pk-media-edit-form">
+		<form method="post" action="<?php echo url_for("pkMedia/editImages") ?>" enctype="multipart/form-data" id="pk-media-edit-form">
 	
 		<input type="hidden" name="active" value="<?php echo implode(",", $active) ?>" />
 
